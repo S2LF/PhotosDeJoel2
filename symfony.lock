@@ -35,6 +35,58 @@
             "./migrations/.gitignore"
         ]
     },
+    "friendsofsymfony/ckeditor-bundle": {
+        "version": "2.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "f5ad42002183a6881962683e6d84bbb25cdfce5d"
+        },
+        "files": [
+            "./config/packages/fos_ckeditor.yaml"
+        ]
+    },
+    "google/recaptcha": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.1",
+            "ref": "e5a4aa21f2e98d7440ae9aab6b56e307f99dd084"
+        },
+        "files": [
+            "./config/packages/google_recaptcha.yaml"
+        ]
+    },
+    "karser/karser-recaptcha3-bundle": {
+        "version": "0.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "c51ce07c10331d506762efe25b6f5843c1a5ea17"
+        },
+        "files": [
+            "./config/packages/karser_recaptcha3.yaml"
+        ]
+    },
+    "liip/imagine-bundle": {
+        "version": "2.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.8",
+            "ref": "d1227d002b70d1a1f941d91845fcd7ac7fbfc929"
+        },
+        "files": [
+            "./config/packages/liip_imagine.yaml",
+            "./config/routes/liip_imagine.yaml"
+        ]
+    },
+    "php-flasher/flasher-symfony": {
+        "version": "v1.13.1"
+    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {
@@ -274,6 +326,25 @@
         },
         "files": [
             "./config/packages/messenger.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.16",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.10",
+            "ref": "f8fc53f1942f76679e9ee3c25fd44865355707b5"
+        },
+        "files": [
+            "./assets/app.js",
+            "./assets/bootstrap.js",
+            "./assets/controllers.json",
+            "./assets/controllers/hello_controller.js",
+            "./assets/styles/app.css",
+            "./config/packages/webpack_encore.yaml",
+            "./package.json",
+            "./webpack.config.js"
         ]
     },
     "twig/extra-bundle": {
