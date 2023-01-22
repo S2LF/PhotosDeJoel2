@@ -39,6 +39,15 @@ class ActualityRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOrderByPos()
+    {
+			return $this->createQueryBuilder('a')
+				->orderBy('a.position', 'ASC')
+				->getQuery()
+				->getResult()
+			;
+    }
+    
 //    /**
 //     * @return Actuality[] Returns an array of Actuality objects
 //     */

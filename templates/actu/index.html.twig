@@ -5,14 +5,15 @@
 {% block body %}
 <h1 class="text-center">Actualités</h1>
 
-<section class="row text-center">
+
   {% if actus|length == 0 %}
-  <p>
-  <h3 class="text-center">
-    Aucune actualité
-  </h3>
-  </p>
+  <section>
+    <h3 class="text-center">
+      Aucune actualité
+    </h3>
+  </section>
   {% else %}
+  <section class="row text-center">
   <section class="m-auto">
     {% for actu in actus %}
     {% if actu.path is null %}
