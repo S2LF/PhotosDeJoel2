@@ -1,0 +1,12 @@
+<div class="mt-5 mb-5">
+	<h1 class="text-center  mb-3">Espace Admin</h1>
+
+	<nav class="text-center">
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_general' ? 'active' : ''}}" href="{{ path('admin_general') }}">Informations générales</a>
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_categories' ? 'active' : ''}}" href="{{ path('admin_categories') }}">Catégories & Photos</a>
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_actu' ? 'active' : ''}}" href="{{ path('admin_actu') }}">Actualités</a>
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_expos' ? 'active' : ''}}" href="{{ path('admin_expos') }}">Expos</a>
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_lien' ? 'active' : ''}}" href="{{ path('admin_lien' )}}">Liens</a>
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'app_logout' ? 'active' : ''}}" href="{{ path('app_logout' )}}">Déconnexion</a>
+	</nav>
+</div>

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les Photos de Joël | Catégories de photos{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center">Photos</h1>
+
+<section class="row justify-content-center mx-auto text-center">
+  {% for cat in cats %}
+  <article class="m-3 rounded">
+    <a href="{{ path('photo', {'id':cat.id}) }}">
+      <h3>{{ cat.titre }}
+        <a href="{{ path('admin_edit_cat', {'id':cat.id})}}"></a>
+      </h3>
+    </a>
+    <a href="{{ path('photo', {'id':cat.id}) }}">
+      {% if cat.photoCoverPath == null %}
+      <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.titre }}">
+      {% else %}
+      <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.titre }}">
+      {% endif %}
+    </a>
+  </article>
+  {% endfor %}
+</section>
+
+{% endblock %}

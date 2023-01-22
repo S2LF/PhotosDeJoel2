@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les Photos de Joël | Admin{% endblock %}
+
+{% block body %}
+
+{% include "admin/adminNav.html.twig" %}
+
+
+<div class="container">
+  <div class="card bg-dark">
+    <div class="card-header">
+      <h2 class="text-center">Informations générale du site</h2>
+    </div>
+    <div class="card-body">
+      {{ form_start(form)}}
+
+      {{ form_row(form.titre_du_site_header)}}
+      {{ form_row(form.texte_header)}}
+      {{ form_row(form.mot_page_accueil)}}
+      {{ form_row(form.photo_accueil_path)}}
+      {{ form_row(form.text_footer)}}
+
+      <button class="btn btn-success" type="submit">Valider</button>
+      {{ form_end(form)}}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

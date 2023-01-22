@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les Photos de Joël{% endblock %}
+
+{% block body %}
+
+<h1>{{ general.motPageAccueil|raw}}</h1>
+
+
+{% if general.photoAccueilPath == NULL %}
+<img style="width: 350px" src="{{ asset('img/default/Default.png' ) }}" alt="">
+{% else %}
+<figure class="text-center">
+  <img src="{{ asset('img/'~ general.photoAccueilPath ) |imagine_filter('home') }}"
+    alt="{{ general.titreDuSiteHeader }}">
+</figure>
+{% endif %}
+
+{% endblock %}
