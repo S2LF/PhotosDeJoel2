@@ -2,22 +2,19 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Lien;
-use App\Form\LienType;
-use App\Repository\LienRepository;
 use App\Service\FileUploaderService;
 use App\Controller\BaseController;
 use App\Entity\Link;
-use App\Repository\BaseRepository;
 use App\Repository\LinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
+#[Route(path: '/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminLiensController extends BaseController
 {
   #[Route(path: '/lien', name: 'admin_link')]

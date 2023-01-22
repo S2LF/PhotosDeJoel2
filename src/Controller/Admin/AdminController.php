@@ -8,11 +8,12 @@ use App\Service\FileUploaderService;
 use App\Controller\BaseController;
 use App\Repository\BaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
+#[Route(path: '/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminController extends BaseController
 {
   /**

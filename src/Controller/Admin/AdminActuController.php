@@ -4,20 +4,19 @@ namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
 use App\Form\ActuType;
-use App\Entity\Actualite;
 use App\Entity\Actuality;
 use App\Service\FileUploaderService;
-use App\Repository\ActualiteRepository;
 use App\Repository\ActualityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
+#[Route(path: '/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminActuController extends BaseController
 {
 

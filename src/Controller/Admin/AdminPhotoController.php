@@ -6,21 +6,19 @@ use App\Entity\CategoryPhoto;
 use App\Entity\Photo;
 use App\Form\PhotoType;
 use App\Form\PhotoEditType;
-use App\Entity\PhotoCategorie;
 use App\Repository\PhotoRepository;
 use App\Service\FileUploaderService;
 use App\Repository\BaseRepository;
 use App\Repository\CategoryPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\PhotoCategorieRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
+#[Route(path: '/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminPhotoController extends AbstractController
 {
   #[Route(path: '/cat/{id}/photos', name: 'admin_cat_photos')]

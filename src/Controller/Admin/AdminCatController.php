@@ -10,13 +10,13 @@ use App\Controller\BaseController;
 use App\Entity\CategoryPhoto;
 use App\Repository\CategoryPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\PhotoCategorieRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
+#[Route(path: '/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminCatController extends BaseController
 {
 
