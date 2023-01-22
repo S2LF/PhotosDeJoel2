@@ -15,7 +15,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ContactController extends GeneralController
+class ContactController extends BaseController
 {
 
   #[Route(path: '/contact', name: 'contact')]
@@ -95,7 +95,7 @@ class ContactController extends GeneralController
     }
 
     return $this->render('contact/index.html.twig', [
-      'general' => $this->general,
+      'base' => $this->base,
       'contactForm' => $contactForm->createView()
     ]);
   }

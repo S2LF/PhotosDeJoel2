@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use App\Repository\GeneralRepository;
+use App\Repository\BaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class GeneralController extends AbstractController
+class BaseController extends AbstractController
 {
-  protected $general;
+  protected $base;
 
-  public function __construct(GeneralRepository $generalRepo)
+  public function __construct(BaseRepository $BaseRepository)
   {
-    $general = $generalRepo->findOneBy(['id' => 1]);
-    if ($general == null) {
-      $general = [
+    $base = $BaseRepository->findOneBy(['id' => 1]);
+    if ($base == null) {
+      $base = [
         "titreDuSiteHeader" => "Titre par défaut",
         "texteHeader" => "Texte à écrire par défaut",
         "motPageAccueil" => "Mot page d'accueil par défaut",
@@ -21,6 +21,6 @@ class GeneralController extends AbstractController
         "textFooter" => "texte pied de page par défaut"
       ];
     }
-    $this->general = $general;
+    $this->base = $base;
   }
 }

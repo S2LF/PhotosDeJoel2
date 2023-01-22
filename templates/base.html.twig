@@ -23,9 +23,9 @@
         <img class="position-absolute" style="left: 0;" src="{{ asset('/img/Pupille-removebg.png') | imagine_filter('icon' )}}" alt="Logo">
       </div>
       <div class=" pt-4">
-        <h1 class="display-4 font-weight-bold text-center">{{ general.titreDuSiteHeader }}</h1>
+        <h1 class="display-4 font-weight-bold text-center">{{ base.titreDuSiteHeader }}</h1>
       </div>
-      {{ general.texteHeader|raw }}
+      {{ base.texteHeader|raw }}
     </div>
     <nav class="text-center my-4">
       <a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}"
@@ -44,7 +44,7 @@
   {% block body %}{% endblock %}
 
   <footer class="text-center pt-5 pb-2 position-relative">
-    {{ general.textFooter|raw }}
+    {{ base.textFooter|raw }}
     <p class="position-absolute" style="right:0px; bottom:-5px" >
       <a href="{{ path('admin') }}">Espace admin</a>
     </p>

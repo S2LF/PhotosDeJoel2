@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
-use App\Repository\LienRepository;
+use App\Repository\LinkRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LinkController extends GeneralController
+class LinkController extends BaseController
 {
 
   #[Route(path: '/liens', name: 'links')]
-  public function index(LienRepository $lienrepo): Response
+  public function index(LinkRepository $lienrepo): Response
   {
     $links =  $lienrepo->findBy([], ['position' => 'ASC']);
 
     return $this->render('link/index.html.twig', [
-      'general' => $this->general,
+      'base' => $this->base,
       'links' => $links
     ]);
   }

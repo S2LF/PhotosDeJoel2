@@ -4,15 +4,15 @@
 
 {% block body %}
 
-<h1>{{ general.motPageAccueil|raw}}</h1>
+<h1>{{ base.motPageAccueil|raw}}</h1>
 
 
-{% if general.photoAccueilPath == NULL %}
+{% if base.photoAccueilPath == NULL %}
 <img style="width: 350px" src="{{ asset('img/default/Default.png' ) }}" alt="">
 {% else %}
 <figure class="text-center">
-  <img src="{{ asset('img/'~ general.photoAccueilPath ) |imagine_filter('home') }}"
-    alt="{{ general.titreDuSiteHeader }}">
+  <img src="{{ asset('img/'~ base.photoAccueilPath ) |imagine_filter('home') }}"
+    alt="{{ base.titreDuSiteHeader }}">
 </figure>
 {% endif %}
 

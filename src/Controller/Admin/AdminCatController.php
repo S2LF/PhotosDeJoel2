@@ -6,7 +6,9 @@ use App\Form\CatType;
 use App\Entity\PhotoCategorie;
 use App\Repository\PhotoRepository;
 use App\Service\FileUploaderService;
-use App\Controller\GeneralController;
+use App\Controller\BaseController;
+use App\Entity\CategoryPhoto;
+use App\Repository\CategoryPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PhotoCategorieRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,27 +17,27 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
-class AdminCatController extends GeneralController
+class AdminCatController extends BaseController
 {
 
   #[Route(path: '/cat', name: 'admin_categories')]
-  public function Index(PhotoCategorieRepository $pcrepo, PhotoRepository $prepo)
+  public function Index(CategoryPhotoRepository $pcrepo, PhotoRepository $prepo)
   {
     // $cats = $pcrepo->findAll();
     $cats = $pcrepo->findAllOrderByPos();
 
     return $this->render('admin/cats/index.html.twig', [
-      'general' => $this->general,
+      'base' => $this->base,
       'cats' => $cats,
     ]);
   }
 
   #[Route(path: '/cat/editCat/{id}', name: 'admin_edit_cat')]
   #[Route(path: '/cat/addCat', name: 'admin_add_cat')]
-  public function add_cat(PhotoCategorie $cat = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  public function add_cat(CategoryPhoto $cat = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$cat) {
-      $cat = new PhotoCategorie;
+      $cat = new CategoryPhoto;
     }
 
     $form = $this->createForm(CatType::class, $cat);
@@ -43,7 +45,7 @@ class AdminCatController extends GeneralController
     $form->handleRequest($request);
 
     if ($imageFile = $form->get("path")->getData()) {
-      $newFilename = $cat->getTitre();
+      $newFilename = $cat->getTitle();
     }
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -61,13 +63,13 @@ class AdminCatController extends GeneralController
 
     return $this->render('admin/cats/addCat.html.twig', [
       'form' => $form->createView(),
-      'general' => $this->general,
+      'base' => $this->base,
       'cat' => $cat
     ]);
   }
 
   #[Route(path: '/cat/delete/{id}', name: 'admin_delete_cat')]
-  public function deleteCat(PhotoCategorie $cat,EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
+  public function deleteCat(CategoryPhoto $cat,EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
   {
     $photos = $prepo->getPhotoCatByPos($cat->getId());
 
@@ -89,7 +91,7 @@ class AdminCatController extends GeneralController
   }
 
   #[Route(path: '/cat/sort', name: 'admin_cat_sort')]
-  public function sortableCat(Request $request, EntityManagerInterface $em, PhotoCategorieRepository $lrepo)
+  public function sortableCat(Request $request, EntityManagerInterface $em, CategoryPhotoRepository $lrepo)
   {
     $cat_id = $request->request->get('cat_id');
     $position = $request->request->get('position');

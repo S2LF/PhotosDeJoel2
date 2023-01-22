@@ -2,11 +2,13 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\GeneralController;
+use App\Controller\BaseController;
 use App\Form\ActuType;
 use App\Entity\Actualite;
+use App\Entity\Actuality;
 use App\Service\FileUploaderService;
 use App\Repository\ActualiteRepository;
+use App\Repository\ActualityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
@@ -16,27 +18,27 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
-class AdminActuController extends GeneralController
+class AdminActuController extends BaseController
 {
 
   #[Route(path: '/actus', name: 'admin_actu')]
-  public function index(ActualiteRepository $arepo)
+  public function index(ActualityRepository $arepo)
   {
     $actus = $arepo->findAllOrderByPos();
 
 
     return $this->render('admin/actu/index.html.twig', [
-      'general' => $this->general,
+      'base' => $this->base,
       'actus' => $actus
     ]);
   }
 
   #[Route(path: '/actu/add', name: 'admin_actu_add')]
   #[Route(path: '/actu/edit/{id}', name: 'admin_actu_edit')]
-  public function formCat(Actualite $actu = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  public function formCat(Actuality $actu = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$actu) {
-      $actu = new Actualite;
+      $actu = new Actuality;
     }
 
     $form = $this->createForm(ActuType::class, $actu);
@@ -45,10 +47,10 @@ class AdminActuController extends GeneralController
 
     if ($form->isSubmitted() && $form->isValid()) {
 
-      $actu->setDateCreation(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+      $actu->setCreationDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
       if ($imageFile = $form->get("path")->getData()) {
-        $newFilename = $actu->getTitre();
+        $newFilename = $actu->getTitle();
       }
 
       $em->persist($actu);
@@ -70,12 +72,12 @@ class AdminActuController extends GeneralController
 
     return $this->render('admin/actu/addActu.html.twig', [
       'form' => $form->createView(),
-      'general' => $this->general,
+      'base' => $this->base,
     ]);
   }
 
   #[Route(path: '/actu/delete/{id}', name: 'admin_actu_delete')]
-  public function deleteActu(Actualite $actu = null,EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  public function deleteActu(Actuality $actu = null,EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$actu) {
       throw new NotFoundException('Actualité non trouvé');
@@ -94,7 +96,7 @@ class AdminActuController extends GeneralController
   }
 
   #[Route(path: '/actu/sort', name: 'admin_actu_sort')]
-  public function sortableActu(Request $request, EntityManagerInterface $em, ActualiteRepository $arepo)
+  public function sortableActu(Request $request, EntityManagerInterface $em, ActualityRepository $arepo)
   {
     $actu_id = $request->request->get('actu_id');
     $position = $request->request->get('position');

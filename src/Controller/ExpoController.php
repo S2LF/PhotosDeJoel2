@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
-use App\Repository\ExpoRepository;
+use App\Repository\ExpositionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ExpoController extends GeneralController
+class ExpoController extends BaseController
 {
 
   #[Route(path: '/expositions', name: 'expo')]
-  public function index(ExpoRepository $exporepo): Response
+  public function index(ExpositionRepository $exporepo): Response
   {
     $expos =  $exporepo->findBy([], ['position' => 'ASC']);
 
     return $this->render('expo/index.html.twig', [
-      'general' => $this->general,
+      'base' => $this->base,
       'expos' => $expos
     ]);
   }

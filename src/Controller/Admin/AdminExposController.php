@@ -6,8 +6,10 @@ use App\Entity\Expo;
 use App\Form\ExpoType;
 use App\Repository\ExpoRepository;
 use App\Service\FileUploaderService;
-use App\Controller\GeneralController;
-use App\Repository\GeneralRepository;
+use App\Controller\BaseController;
+use App\Entity\Exposition;
+use App\Repository\BaseRepository;
+use App\Repository\ExpositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,25 +19,25 @@ use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
-class AdminExposController extends GeneralController
+class AdminExposController extends BaseController
 {
-  #[Route(path: '/expos', name: 'admin_expos')]
-  public function index(GeneralRepository $grepo, ExpoRepository $erepo)
+  #[Route(path: '/expositions', name: 'admin_expos')]
+  public function index(BaseRepository $grepo, ExpositionRepository $erepo)
   {
     $expos = $erepo->findAllOrderByPos();
 
     return $this->render('admin/expos/index.html.twig', [
-      'general' => $this->general,
+      'base' => $this->base,
       'expos' => $expos
     ]);
   }
 
-  #[Route(path: '/expos/add', name: 'admin_expo_add')]
-  #[Route(path: '/expos/edit/{id}', name: 'admin_expo_edit')]
-  public function formCat(Expo $expo = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  #[Route(path: '/expositions/add', name: 'admin_expo_add')]
+  #[Route(path: '/expositions/edit/{id}', name: 'admin_expo_edit')]
+  public function formCat(Exposition $expo = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$expo) {
-      $expo = new Expo;
+      $expo = new Exposition;
     }
 
     $form = $this->createForm(ExpoType::class, $expo);
@@ -44,10 +46,10 @@ class AdminExposController extends GeneralController
 
     if ($form->isSubmitted() && $form->isValid()) {
 
-      $expo->setDateCreation(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+      $expo->setCreationDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
       if ($imageFile = $form->get("path")->getData()) {
-        $newFilename = $expo->getTitre();
+        $newFilename = $expo->getTitle();
       }
 
       $em->persist($expo);
@@ -68,12 +70,12 @@ class AdminExposController extends GeneralController
 
     return $this->render('admin/expos/addExpo.html.twig', [
       'form' => $form->createView(),
-      'general' => $this->general,
+      'base' => $this->base,
     ]);
   }
 
-  #[Route(path: '/expo/sort', name: 'admin_expo_sort')]
-  public function sortableExpo(Request $request, EntityManagerInterface $em, ExpoRepository $erepo)
+  #[Route(path: '/expositions/sort', name: 'admin_expo_sort')]
+  public function sortableExpo(Request $request, EntityManagerInterface $em, ExpositionRepository $erepo)
   {
     $expo_id = $request->request->get('expo_id');
     $position = $request->request->get('position');
@@ -89,8 +91,8 @@ class AdminExposController extends GeneralController
     }
   }
 
-  #[Route(path: '/expo/delete/{id}', name: 'admin_expo_delete')]
-  public function deleteActExpou(Expo $expo = null, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  #[Route(path: '/expositions/delete/{id}', name: 'admin_expo_delete')]
+  public function deleteActExpou(Exposition $expo = null, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$expo) {
       throw new NotFoundException('Exposition non trouvé');
