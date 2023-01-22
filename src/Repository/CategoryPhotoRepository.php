@@ -39,28 +39,12 @@ class CategoryPhotoRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return CategoryPhoto[] Returns an array of CategoryPhoto objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?CategoryPhoto
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAllOrderByPos()
+    {
+        return $this->createQueryBuilder('cp')
+            ->orderBy('cp.position', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -105,7 +105,7 @@ class AdminPhotoController extends AbstractController
   //  * @ParamConverter("cat", options={"mapping": {"id_cat" : "id"}})
   //  * @ParamConverter("photo", options={"mapping": {"id_photo" : "id"}})
   //  */
-  #[Route(path: '/cat/{id_cat}/editPhoto/{id_photo}', name: 'admin_actu_sort')]
+  #[Route(path: '/cat/{id_cat}/editPhoto/{id_photo}', name: 'admin_edit_photo')]
   // #[ParamConverter(path: '/actu/sort', name: 'admin_actu_sort')]
   // #[ParamConverter(path: '/actu/sort', name: 'admin_actu_sort')]
   public function editPhoto(CategoryPhoto $cat, Photo $photo, BaseRepository $grepo, CategoryPhotoRepository $pcrepo, Request $request, FileUploaderService $fileUploaderService, EntityManagerInterface $em)
