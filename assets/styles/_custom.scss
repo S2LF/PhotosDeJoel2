@@ -1,0 +1,75 @@
+
+.draggable article{
+    cursor: pointer;
+}
+
+nav a{
+    color: white;
+    &:hover{
+        color: white;
+        text-decoration: none;;
+    }
+}
+/* Detail EXIF */
+
+details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+}
+
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+}
+
+details[open] {
+    padding: .5em;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+}
+
+// hr
+
+hr.style-seven {
+    overflow: visible; /* For IE */
+    height: 30px;
+    border-style: solid;
+    border-color: white;
+    border-width: 1px 0 0 0;
+    border-radius: 20px;
+}
+hr.style-seven:before { /* Not really supposed to work, but does */
+    display: block;
+    content: "";
+    height: 30px;
+    margin-top: -31px;
+    border-style: solid;
+    border-color: white;
+    border-width: 0 0 1px 0;
+    border-radius: 20px;
+}
+
+a.active {
+    background-color: #543E3A;
+    border-radius: 10px;
+    color: #FFE8E3;
+    padding: 0.5em;
+}
+
+a {
+    color: white !important;
+    text-decoration: inherit !important;
+    &:hover{
+        color:white !important;
+        text-decoration: inherit !important;
+    }
+}
+
+.row {
+    margin: 0 !important;
+}
