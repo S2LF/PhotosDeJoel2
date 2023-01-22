@@ -11,21 +11,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class baseType extends AbstractType
+class BaseType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('titre_du_site_header', TextType::class, [
+      ->add('siteTitle', TextType::class, [
         'label' => 'Titre du site* :'
       ])
-      ->add('texte_header', CKEditorType::class, [
+      ->add('headerContent', CKEditorType::class, [
         'label' => 'Texte en-tête* :'
       ])
-      ->add('mot_page_accueil', CKEditorType::class, [
+      ->add('homepageWord', CKEditorType::class, [
         'label' => "Texte page d'accueil* :"
       ])
-      ->add('photo_accueil_path', FileType::class, [
+      ->add('homepageImagePath', FileType::class, [
         'label' => 'Photo de couverture (JPG/PNG/GIF, max 1Mo)',
 
         // Unmapped because not associated to any entity property

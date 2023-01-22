@@ -12,12 +12,13 @@ class BaseController extends AbstractController
   public function __construct(BaseRepository $BaseRepository)
   {
     $base = $BaseRepository->findOneBy(['id' => 1]);
+
     if ($base == null) {
       $base = [
-        "titreDuSiteHeader" => "Titre par défaut",
-        "texteHeader" => "Texte à écrire par défaut",
-        "motPageAccueil" => "Mot page d'accueil par défaut",
-        "photoAccueilPath" => null,
+        "siteTitle" => "Titre par défaut",
+        "headerContent" => "Texte à écrire par défaut",
+        "homepageWord" => "Mot page d'accueil par défaut",
+        "homepageImagePath" => null,
         "textFooter" => "texte pied de page par défaut"
       ];
     }

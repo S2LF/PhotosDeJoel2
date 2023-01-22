@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\base;
-use App\Form\baseType;
+use App\Form\BaseType;
 use App\Service\FileUploaderService;
 use App\Controller\BaseController;
 use App\Repository\BaseRepository;
@@ -16,18 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_ADMIN')]
 class AdminController extends BaseController
 {
-  /**
-   * @Route("/", name="admin")
-   */
+
   #[Route(path: '/', name: 'admin')]
   public function index()
   {
     return $this->redirectToRoute('admin_base');
   }
 
-  /**
-   * @Route("/base", name="admin_base")
-   */
   #[Route(path: '/base', name: 'admin_base')]
   public function base(Request $request, EntityManagerInterface $em, BaseRepository $grepo, FileUploaderService $fileUploaderService)
   {
@@ -36,13 +31,13 @@ class AdminController extends BaseController
       $baseForm = new base;
     }
 
-    $form = $this->createForm(baseType::class, $baseForm);
+    $form = $this->createForm(BaseType::class, $baseForm);
 
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
 
-      if ($imageFile = $form->get("photo_accueil_path")->getData()) {
+      if ($imageFile = $form->get("homepageImagePath")->getData()) {
         $newFilename = "home";
         $directory = "/base/";
         $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);

@@ -23,9 +23,9 @@
         <img class="position-absolute" style="left: 0;" src="{{ asset('/img/Pupille-removebg.png') | imagine_filter('icon' )}}" alt="Logo">
       </div>
       <div class=" pt-4">
-        <h1 class="display-4 font-weight-bold text-center">{{ base.titreDuSiteHeader }}</h1>
+        <h1 class="display-4 font-weight-bold text-center">{{ base.siteTitle }}</h1>
       </div>
-      {{ base.texteHeader|raw }}
+      {{ base.headerContent|raw }}
     </div>
     <nav class="text-center my-4">
       <a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}"

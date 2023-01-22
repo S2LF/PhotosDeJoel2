@@ -20,8 +20,8 @@
     <article class="m-3" data-id="{{ lien.id }}">
       <div class="rounded border p-2 d-flex">
         <div class="d-flex align-items-center">
-          <h3>{{lien.titre}}&nbsp;<a href="{{ path('admin_lien_edit', {'id':lien.id})}}"><i
-                class="fas fa-pen-square text-warning"></i></a>&nbsp;<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_lien_delete', {'id':lien.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
+          <h3>{{lien.titre}}&nbsp;<a href="{{ path('admin_link_edit', {'id':lien.id})}}"><i
+                class="fas fa-pen-square text-warning"></i></a>&nbsp;<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
 
             <small>&nbsp;-&nbsp;<a href="{{ lien.lien | raw}}" target="_blank">{{ lien.lien }}</a></small>
           </h3>
@@ -32,7 +32,7 @@
   </section>
   {% endif %}
   <div class="text-center">
-    <a href="{{ path('admin_lien_add') }}" class="btn btn-success">Ajouter un lien</a>
+    <a href="{{ path('admin_link_add') }}" class="btn btn-success">Ajouter un lien</a>
   </div>
 </div>
 {% endblock %}
@@ -48,7 +48,7 @@
       let position = ui.item.index()
       console.log("pos:" + position)
       $.post(
-        "{{ path('admin_lien_sort') }}",
+        "{{ path('admin_link_sort') }}",
         {
           'lien_id': id,
           'position': position
