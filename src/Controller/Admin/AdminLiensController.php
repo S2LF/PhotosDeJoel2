@@ -15,15 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 
-/**
- * @Route("/admin")
- * @IsGranted("ROLE_ADMIN")
- */
+#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
 class AdminLiensController extends GeneralController
 {
-  /**
-   * @Route("/lien", name="admin_lien")
-   */
+  #[Route(path: '/lien', name: 'admin_lien')]
   public function index(LienRepository $lrepo)
   {
     $liens = $lrepo->findAllOrderByPos();
@@ -34,10 +29,8 @@ class AdminLiensController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/lien/add", name="admin_lien_add")
-   * @Route("/lien/edit/{id}", name="admin_lien_edit")
-   */
+  #[Route(path: '/lien/add', name: 'admin_lien_add')]
+  #[Route(path: '/lien/edit/{id}', name: 'admin_lien_edit')]
   public function formCat(Lien $lien = null, Request $request, EntityManagerInterface $em)
   {
     if (!$lien) {
@@ -61,9 +54,7 @@ class AdminLiensController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/lien/sort", name="admin_lien_sort")
-   */
+  #[Route(path: '/lien/sort', name: 'admin_lien_sort')]
   public function sortableLien(Request $request, EntityManagerInterface $em, LienRepository $lrepo)
   {
 
@@ -81,9 +72,7 @@ class AdminLiensController extends GeneralController
     }
   }
 
-  /**
-   * @Route("/liens/delete/{id}", name="admin_lien_delete")
-   */
+  #[Route(path: '/liens/delete/{id}', name: 'admin_lien_delete')]
   public function deleteActu(Lien $lien = null, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$lien) {

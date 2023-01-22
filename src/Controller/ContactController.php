@@ -17,9 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends GeneralController
 {
-  /**
-   * @Route("/contact", name="contact")
-   */
+
+  #[Route(path: '/contact', name: 'contact')]
   public function index(Request $request, MailerInterface $mailer): Response
   {
     $contactForm = $this->createFormBuilder()

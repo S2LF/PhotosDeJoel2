@@ -8,9 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActuController extends GeneralController
 {
-  /**
-   * @Route("/actualites", name="actu")
-   */
+
+  #[Route(path: '/actualites', name: 'actu')]
   public function index(ActualiteRepository $acturepo): Response
   {
     $actus =  $acturepo->findBy([], ['position' => 'ASC']);

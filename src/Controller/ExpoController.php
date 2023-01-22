@@ -8,9 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExpoController extends GeneralController
 {
-  /**
-   * @Route("/expositions", name="expo")
-   */
+
+  #[Route(path: '/expositions', name: 'expo')]
   public function index(ExpoRepository $exporepo): Response
   {
     $expos =  $exporepo->findBy([], ['position' => 'ASC']);

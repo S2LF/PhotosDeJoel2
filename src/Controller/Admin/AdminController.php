@@ -12,15 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-/**
- * @Route("/admin")
- * @IsGranted("ROLE_ADMIN")
- */
+#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
 class AdminController extends GeneralController
 {
   /**
    * @Route("/", name="admin")
    */
+  #[Route(path: '/', name: 'admin')]
   public function index()
   {
     return $this->redirectToRoute('admin_general');
@@ -29,6 +27,7 @@ class AdminController extends GeneralController
   /**
    * @Route("/general", name="admin_general")
    */
+  #[Route(path: '/general', name: 'admin_general')]
   public function general(Request $request, EntityManagerInterface $em, GeneralRepository $grepo, FileUploaderService $fileUploaderService)
   {
     $generalForm = $grepo->findOneBy(['id' => 1]);

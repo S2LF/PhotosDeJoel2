@@ -18,15 +18,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-/**
- * @Route("/admin")
- * @IsGranted("ROLE_ADMIN")
- */
+#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
 class AdminPhotoController extends AbstractController
 {
-  /**
-   * @Route("/cat/{id}/photos", name="admin_cat_photos")
-   */
+  #[Route(path: '/cat/{id}/photos', name: 'admin_cat_photos')]
   public function index(PhotoCategorie $cat, GeneralRepository $grepo, PhotoCategorieRepository $pcrepo, PhotoRepository $prepo)
   {
     $general = $grepo->findOneBy(['id' => 1]);
@@ -49,9 +44,7 @@ class AdminPhotoController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/cat/{id}/addPhoto", name="admin_add_photo")
-   */
+  #[Route(path: '/cat/{id}/addPhoto', name: 'admin_add_photo')]
   public function addPhoto(PhotoCategorie $cat, GeneralRepository $grepo, PhotoCategorieRepository $pcrepo, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     $general = $grepo->findOneBy(['id' => 1]);
@@ -107,11 +100,14 @@ class AdminPhotoController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/cat/{id_cat}/editPhoto/{id_photo}", name="admin_edit_photo")
-   * @ParamConverter("cat", options={"mapping": {"id_cat" : "id"}})
-   * @ParamConverter("photo", options={"mapping": {"id_photo" : "id"}})
-   */
+  // /**
+  //  * @Route("/cat/{id_cat}/editPhoto/{id_photo}", name="admin_edit_photo")
+  //  * @ParamConverter("cat", options={"mapping": {"id_cat" : "id"}})
+  //  * @ParamConverter("photo", options={"mapping": {"id_photo" : "id"}})
+  //  */
+  #[Route(path: '/cat/{id_cat}/editPhoto/{id_photo}', name: 'admin_actu_sort')]
+  // #[ParamConverter(path: '/actu/sort', name: 'admin_actu_sort')]
+  // #[ParamConverter(path: '/actu/sort', name: 'admin_actu_sort')]
   public function editPhoto(PhotoCategorie $cat, Photo $photo, GeneralRepository $grepo, PhotoCategorieRepository $pcrepo, Request $request, FileUploaderService $fileUploaderService, EntityManagerInterface $em)
   {
     $general = $grepo->findOneBy(['id' => 1]);
@@ -145,9 +141,7 @@ class AdminPhotoController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/photo/sort", name="admin_photo_sort")
-   */
+  #[Route(path: '/photo/sort', name: 'admin_photo_sort')]
   public function sortablePhoto(Request $request, EntityManagerInterface $em, PhotoRepository $prepo)
   {
 
@@ -165,9 +159,7 @@ class AdminPhotoController extends AbstractController
     }
   }
 
-  /**
-   * @Route("/photo/delete/{id}", name="admin_delete_photo")
-   */
+  #[Route(path: '/photo/delete/{id}', name: 'admin_delete_photo')]
   public function deletePhoto(Photo $photo, EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
   {
     $cat = $photo->getPhotoCategorie();

@@ -7,14 +7,11 @@ use App\Repository\PhotoRepository;
 use App\Repository\PhotoCategorieRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/category")
- */
+#[Route(path: '/category')]
 class PhotoController extends GeneralController
 {
-  /**
-   * @Route("/", name="cats")
-   */
+
+  #[Route(path: '/', name: 'cats')]
   public function index(PhotoCategorieRepository $pcrepo)
   {
     $cats =  $pcrepo->findBy([], ['position' => 'ASC']);
@@ -25,9 +22,7 @@ class PhotoController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/{id}/photos", name="photo")
-   */
+  #[Route(path: '/{id}/photos', name: 'photo')]
   public function photo_cat(PhotoCategorie $cat, PhotoRepository $prepo)
   {
     $photos = $prepo->findBy(['photo_categorie' => $cat], ['position' => 'ASC']);

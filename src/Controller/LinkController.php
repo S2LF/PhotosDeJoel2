@@ -8,9 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LinkController extends GeneralController
 {
-  /**
-   * @Route("/liens", name="links")
-   */
+
+  #[Route(path: '/liens', name: 'links')]
   public function index(LienRepository $lienrepo): Response
   {
     $links =  $lienrepo->findBy([], ['position' => 'ASC']);

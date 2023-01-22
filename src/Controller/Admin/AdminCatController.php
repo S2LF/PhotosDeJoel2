@@ -14,16 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-/**
- * @Route("/admin")
- * @IsGranted("ROLE_ADMIN")
- */
+#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
 class AdminCatController extends GeneralController
 {
 
-  /**
-   * @Route("/cat", name="admin_categories")
-   */
+  #[Route(path: '/cat', name: 'admin_categories')]
   public function Index(PhotoCategorieRepository $pcrepo, PhotoRepository $prepo)
   {
     // $cats = $pcrepo->findAll();
@@ -35,12 +30,8 @@ class AdminCatController extends GeneralController
     ]);
   }
 
-
-
-  /**
-   * @Route("/cat/editCat/{id}", name="admin_edit_cat")
-   * @Route("/cat/addCat", name="admin_add_cat")
-   */
+  #[Route(path: '/cat/editCat/{id}', name: 'admin_edit_cat')]
+  #[Route(path: '/cat/addCat', name: 'admin_add_cat')]
   public function add_cat(PhotoCategorie $cat = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$cat) {
@@ -75,9 +66,7 @@ class AdminCatController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/cat/delete/{id}", name="admin_delete_cat")
-   */
+  #[Route(path: '/cat/delete/{id}', name: 'admin_delete_cat')]
   public function deleteCat(PhotoCategorie $cat,EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
   {
     $photos = $prepo->getPhotoCatByPos($cat->getId());
@@ -99,9 +88,7 @@ class AdminCatController extends GeneralController
     return $this->redirectToRoute('admin_categories');
   }
 
-  /**
-   * @Route("/cat/sort", name="admin_cat_sort")
-   */
+  #[Route(path: '/cat/sort', name: 'admin_cat_sort')]
   public function sortableCat(Request $request, EntityManagerInterface $em, PhotoCategorieRepository $lrepo)
   {
     $cat_id = $request->request->get('cat_id');

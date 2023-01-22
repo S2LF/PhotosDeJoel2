@@ -16,15 +16,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("/admin")
- * @IsGranted("ROLE_ADMIN")
- */
+#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
 class AdminExposController extends GeneralController
 {
-  /**
-   * @Route("/expos", name="admin_expos")
-   */
+  #[Route(path: '/expos', name: 'admin_expos')]
   public function index(GeneralRepository $grepo, ExpoRepository $erepo)
   {
     $expos = $erepo->findAllOrderByPos();
@@ -35,10 +30,8 @@ class AdminExposController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/expos/add", name="admin_expo_add")
-   * @Route("/expos/edit/{id}", name="admin_expo_edit")
-   */
+  #[Route(path: '/expos/add', name: 'admin_expo_add')]
+  #[Route(path: '/expos/edit/{id}', name: 'admin_expo_edit')]
   public function formCat(Expo $expo = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$expo) {
@@ -79,9 +72,7 @@ class AdminExposController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/expo/sort", name="admin_expo_sort")
-   */
+  #[Route(path: '/expo/sort', name: 'admin_expo_sort')]
   public function sortableExpo(Request $request, EntityManagerInterface $em, ExpoRepository $erepo)
   {
     $expo_id = $request->request->get('expo_id');
@@ -98,9 +89,7 @@ class AdminExposController extends GeneralController
     }
   }
 
-  /**
-   * @Route("/expo/delete/{id}", name="admin_expo_delete")
-   */
+  #[Route(path: '/expo/delete/{id}', name: 'admin_expo_delete')]
   public function deleteActExpou(Expo $expo = null, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$expo) {

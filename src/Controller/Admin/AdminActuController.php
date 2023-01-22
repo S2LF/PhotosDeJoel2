@@ -15,15 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-/**
- * @Route("/admin")
- * @IsGranted("ROLE_ADMIN")
- */
+#[Route(path: '/admin', IsGranted: 'ROLE_ADMIN')]
 class AdminActuController extends GeneralController
 {
-  /**
-   * @Route("/actu", name="admin_actu")
-   */
+
+  #[Route(path: '/actus', name: 'admin_actu')]
   public function index(ActualiteRepository $arepo)
   {
     $actus = $arepo->findAllOrderByPos();
@@ -35,10 +31,8 @@ class AdminActuController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/actu/add", name="admin_actu_add")
-   * @Route("/actu/edit/{id}", name="admin_actu_edit")
-   */
+  #[Route(path: '/actu/add', name: 'admin_actu_add')]
+  #[Route(path: '/actu/edit/{id}', name: 'admin_actu_edit')]
   public function formCat(Actualite $actu = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$actu) {
@@ -80,9 +74,7 @@ class AdminActuController extends GeneralController
     ]);
   }
 
-  /**
-   * @Route("/actu/delete/{id}", name="admin_actu_delete")
-   */
+  #[Route(path: '/actu/delete/{id}', name: 'admin_actu_delete')]
   public function deleteActu(Actualite $actu = null,EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$actu) {
@@ -101,9 +93,7 @@ class AdminActuController extends GeneralController
     return $this->redirectToRoute('admin_actu');
   }
 
-  /**
-   * @Route("/actu/sort", name="admin_actu_sort")
-   */
+  #[Route(path: '/actu/sort', name: 'admin_actu_sort')]
   public function sortableActu(Request $request, EntityManagerInterface $em, ActualiteRepository $arepo)
   {
     $actu_id = $request->request->get('actu_id');
