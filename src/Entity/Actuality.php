@@ -32,6 +32,9 @@ class Actuality
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $path = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $deletedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +108,30 @@ class Actuality
     public function setPath(?string $path): self
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deletedAt
+     *
+     * @return ?\DateTimeInterface
+     */
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set the value of deletedAt
+     *
+     * @param ?\DateTimeInterface $deletedAt
+     *
+     * @return self
+     */
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
