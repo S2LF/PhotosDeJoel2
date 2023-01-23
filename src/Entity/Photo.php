@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PhotoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PhotoRepository;
+use Gedmo\Mapping\Annotation\SortablePosition;
 
 #[ORM\Entity(repositoryClass: PhotoRepository::class)]
 class Photo
@@ -24,6 +25,7 @@ class Photo
     private array $exifs = [];
 
     #[ORM\Column]
+    #[SortablePosition]
     private ?int $position = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

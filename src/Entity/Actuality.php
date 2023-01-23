@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ActualityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ActualityRepository;
+use Gedmo\Mapping\Annotation\SortablePosition;
 
 #[ORM\Entity(repositoryClass: ActualityRepository::class)]
 class Actuality
@@ -27,6 +28,7 @@ class Actuality
     private ?string $content = null;
 
     #[ORM\Column]
+    #[SortablePosition]
     private ?int $position = null;
 
     #[ORM\Column(length: 255, nullable: true)]

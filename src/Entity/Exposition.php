@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ExpositionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ExpositionRepository;
+use Gedmo\Mapping\Annotation\SortablePosition;
 
 #[ORM\Entity(repositoryClass: ExpositionRepository::class)]
 class Exposition
@@ -27,6 +28,7 @@ class Exposition
     private ?string $content = null;
 
     #[ORM\Column]
+    #[SortablePosition]
     private ?int $position = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
