@@ -32,19 +32,18 @@ class LinkRepository extends ServiceEntityRepository
 
     public function remove(Link $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
     }
 
     public function findAllOrderByPos()
     {
-			return $this->createQueryBuilder('l')
-				->orderBy('l.position', 'ASC')
-				->getQuery()
-				->getResult()
-			;
+        return $this->createQueryBuilder('l')
+            ->where('l.deletedAt IS NULL')
+            ->orderBy('l.position', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

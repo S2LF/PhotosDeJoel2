@@ -75,21 +75,30 @@ class AdminActuController extends BaseController
     ]);
   }
 
-  #[Route(path: '/actu/delete/{id}', name: 'admin_actu_delete')]
-  public function deleteActu(Actuality $actu = null,EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  #[Route(path: '/actu/delete/{id}/{hardDelete}', name: 'admin_actu_delete')]
+  public function deleteActu(Actuality $actu = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, ActualityRepository $arepo)
   {
     if (!$actu) {
       throw new NotFoundException('Actualité non trouvé');
     }
 
-    if ($actu->getPath() !== null) {
-      $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $actu->getPath());
+    if($hardDelete) {
+      try {
+        $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $actu->getPath());
+
+        $em->remove($actu);
+        $em->flush();
+
+        $this->addFlash("success", "L'actualité a bien été supprimé définitivement");
+      } catch (Error $e) {
+        $this->addFlash("danger", "Une erreur est survenue, l'actualité n'a pas pu être supprimé");
+      }
+    } else {
+      // Soft delete
+      $arepo->remove($actu);
+
+      $this->addFlash("success", "L'actualité a bien été supprimé");
     }
-
-    $em->remove($actu);
-    $em->flush();
-
-    $this->addFlash("success", "L'actualité a bien été supprimé");
 
     return $this->redirectToRoute('admin_actu');
   }

@@ -10,6 +10,7 @@ use App\Controller\BaseController;
 use App\Entity\CategoryPhoto;
 use App\Repository\CategoryPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,24 +69,37 @@ class AdminCatController extends BaseController
     ]);
   }
 
-  #[Route(path: '/cat/delete/{id}', name: 'admin_delete_cat')]
-  public function deleteCat(CategoryPhoto $cat,EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
+  #[Route(path: '/cat/delete/{id}/{hardDelete}', name: 'admin_delete_cat')]
+  public function deleteCat(CategoryPhoto $cat, $hardDelete = 0, EntityManagerInterface $em, PhotoRepository $prepo, CategoryPhotoRepository $cprepo, FileUploaderService $fileUploaderService)
   {
-    $photos = $prepo->getPhotoCatByPos($cat->getId());
+    if($hardDelete) {
+      try {
+        $photos = $prepo->getPhotoCatByPos($cat->getId());
 
-    $directory = "photo/" . $cat->getId();
+        $directory = "photo/" . $cat->getId();
 
-    $fileUploaderService->deleteTree($fileUploaderService->getTargetDirectory() . $directory);
-    $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $cat->getPhotoCoverPath());
+        $fileUploaderService->deleteTree($fileUploaderService->getTargetDirectory() . $directory);
+        $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $cat->getPhotoCoverPath());
 
-    foreach($photos as $photo) {
-      $em->remove($photo);
-    } 
+        foreach($photos as $photo) {
+          $em->remove($photo);
+        }
 
-    $this->addFlash("success", "La catégorie, et les photos associés, ont bien été supprimés");
+        $em->remove($cat);
+        $em->flush();
 
-    $em->remove($cat);
-    $em->flush();
+        $this->addFlash("success", "La catégorie, et les photos associés, ont bien été supprimés définitivement");
+
+      } catch (Error $e) {
+        return $this->addFlash("danger", "Une erreur est survenue, la catégorie n'a pas pu être supprimé");
+      }
+    } else {
+      // Soft delete
+      $cprepo->remove($cat);
+      $em->flush();
+
+      $this->addFlash("success", "La catégorie a bien été supprimé");
+    }
 
     return $this->redirectToRoute('admin_categories');
   }

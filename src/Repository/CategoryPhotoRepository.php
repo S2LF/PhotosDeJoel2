@@ -32,16 +32,21 @@ class CategoryPhotoRepository extends ServiceEntityRepository
 
     public function remove(CategoryPhoto $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        // $this->getEntityManager()->remove($entity);
+
+        // if ($flush) {
+        //     $this->getEntityManager()->flush();
+        // }
     }
 
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('cp')
+            ->where('cp.deletedAt IS NULL')
             ->orderBy('cp.position', 'ASC')
             ->getQuery()
             ->getResult()

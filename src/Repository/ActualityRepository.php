@@ -32,16 +32,23 @@ class ActualityRepository extends ServiceEntityRepository
 
     public function remove(Actuality $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        // Make a soft delete
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+
+        // $this->getEntityManager()->remove($entity);
+
+        // if ($flush) {
+        //     $this->getEntityManager()->flush();
+        // }
     }
 
     public function findAllOrderByPos()
     {
 			return $this->createQueryBuilder('a')
+                ->where('a.deletedAt IS NULL')
 				->orderBy('a.position', 'ASC')
 				->getQuery()
 				->getResult()

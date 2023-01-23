@@ -11,6 +11,7 @@ use App\Service\FileUploaderService;
 use App\Repository\BaseRepository;
 use App\Repository\CategoryPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,7 @@ class AdminPhotoController extends AbstractController
       ];
     }
 
-    $photos = $prepo->findBy(['photo_categorie' => $cat], ['position' => 'ASC']);
+    $photos = $prepo->findBy(['categoryPhoto' => $cat, 'deletedAt' => null], ['position' => 'ASC']);
 
     return $this->render('admin/photos/catPhotos.html.twig', [
       'base' => $base,
@@ -159,17 +160,30 @@ class AdminPhotoController extends AbstractController
     }
   }
 
-  #[Route(path: '/photo/delete/{id}', name: 'admin_delete_photo')]
-  public function deletePhoto(Photo $photo, EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
+  #[Route(path: '/photo/delete/{id}/{hardDelete}', name: 'admin_delete_photo')]
+  public function deletePhoto(Photo $photo, $hardDelete = 0, EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
   {
     $cat = $photo->getCategoryPhoto();
 
-    $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $photo->getPath());
+    if($hardDelete) {
+      try {
+        if ($photo->getPath() !== null) {
+          $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $photo->getPath());
+        }
+    
+        $em->remove($photo);
+        $em->flush();
 
-    $em->remove($photo);
-    $em->flush();
+        $this->addFlash("success", "La photo a bien été supprimé définitivement");
+      } catch (Error $e) {
+        return $this->addFlash("danger", "Une erreur est survenue, la photo n'a pas pu être supprimé");
+      }
+    } else {
+      // Soft delete
+      $prepo->remove($photo);
 
-    $this->addFlash("success", "La photo a bien été supprimée");
+      $this->addFlash("success", "La photo a bien été supprimée");
+    }
 
     return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
   }

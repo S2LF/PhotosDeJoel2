@@ -32,11 +32,15 @@ class PhotoRepository extends ServiceEntityRepository
 
     public function remove(Photo $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        // $this->getEntityManager()->remove($entity);
+
+        // if ($flush) {
+        //     $this->getEntityManager()->flush();
+        // }
     }
 
     public function findAllOrderByPos()
@@ -51,7 +55,7 @@ class PhotoRepository extends ServiceEntityRepository
     public function getPhotoCatByPos($catId)
     {
       return $this->createQueryBuilder('p')
-        ->where('p.photo_categorie = ' . $catId)
+        ->where('p.categoryPhoto = ' . $catId)
         ->orderBy('p.position', 'ASC')
         ->getQuery()
         ->getResult();

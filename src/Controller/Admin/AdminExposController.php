@@ -9,6 +9,7 @@ use App\Entity\Exposition;
 use App\Repository\BaseRepository;
 use App\Repository\ExpositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,21 +90,32 @@ class AdminExposController extends BaseController
     }
   }
 
-  #[Route(path: '/expositions/delete/{id}', name: 'admin_expo_delete')]
-  public function deleteActExpou(Exposition $expo = null, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  #[Route(path: '/expositions/delete/{id}/{hardDelete}', name: 'admin_expo_delete')]
+  public function deleteActExpo(Exposition $expo = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, ExpositionRepository $erepo)
   {
     if (!$expo) {
       throw new NotFoundException('Exposition non trouvé');
     }
 
-    if ($expo->getPath() !== null) {
-      $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $expo->getPath());
+    if($hardDelete) {
+      try {
+        if ($expo->getPath() !== null) {
+          $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $expo->getPath());
+        }
+    
+        $em->remove($expo);
+        $em->flush();
+
+        $this->addFlash("success", "L'exposition a bien été supprimé définitivement");
+      } catch (Error $e) {
+        return $this->addFlash("danger", "Une erreur est survenue, l'exposition n'a pas pu être supprimé");
+      }
+    } else {
+      // Soft delete
+      $erepo->remove($expo);
+
+      $this->addFlash("success", "L'exposition a bien été supprimé");
     }
-
-    $em->remove($expo);
-    $em->flush();
-
-    $this->addFlash("success", "L'exposition a bien été supprimé");
 
     return $this->redirectToRoute('admin_expos');
   }

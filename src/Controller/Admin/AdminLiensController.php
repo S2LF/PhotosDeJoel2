@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use App\Service\FileUploaderService;
 use App\Controller\BaseController;
 use App\Entity\Link;
+use App\Form\LinkType;
 use App\Repository\LinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,17 +73,28 @@ class AdminLiensController extends BaseController
     }
   }
 
-  #[Route(path: '/liens/delete/{id}', name: 'admin_link_delete')]
-  public function deleteActu(Link $link = null, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  #[Route(path: '/liens/delete/{id}/{hardDelete}', name: 'admin_link_delete')]
+  public function deleteLink(Link $link = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, LinkRepository $lrepo)
   {
     if (!$link) {
       throw new NotFoundException('Lien non trouvé');
     }
 
-    $em->remove($link);
-    $em->flush();
+    if($hardDelete) {
+      try {    
+        $em->remove($link);
+        $em->flush();
 
-    $this->addFlash("success", "Le lien a bien été supprimé");
+        $this->addFlash("success", "le lien a bien été supprimé définitivement");
+      } catch (Error $e) {
+        return $this->addFlash("danger", "Une erreur est survenue, le lien n'a pas pu être supprimé");
+      }
+    } else {
+      // Soft delete
+      $lrepo->remove($link);
+
+      $this->addFlash("success", "le lien a bien été supprimé");
+    }
 
     return $this->redirectToRoute('admin_link');
   }
