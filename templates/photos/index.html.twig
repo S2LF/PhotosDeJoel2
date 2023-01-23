@@ -10,15 +10,15 @@
   {% for cat in cats %}
   <article class="m-3 rounded">
     <a href="{{ path('photo', {'id':cat.id}) }}">
-      <h3>{{ cat.titre }}
+      <h3>{{ cat.title }}
         <a href="{{ path('admin_edit_cat', {'id':cat.id})}}"></a>
       </h3>
     </a>
     <a href="{{ path('photo', {'id':cat.id}) }}">
       {% if cat.photoCoverPath == null %}
-      <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.titre }}">
+      <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
       {% else %}
-      <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.titre }}">
+      <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
       {% endif %}
     </a>
   </article>

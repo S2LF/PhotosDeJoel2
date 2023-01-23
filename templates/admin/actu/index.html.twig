@@ -27,11 +27,11 @@
         </figure>
         {% endif %}
         <div class="d-flex flex-column justify-content-center">
-          <p>{{actu.categorie}} - {{actu.dateCreation|date('d/m/Y') }}&nbsp;
+          <p>{{actu.category}} - {{actu.creationDate|date('d/m/Y') }}&nbsp;
             <a href="{{ path('admin_actu_edit', {'id':actu.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
+            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
           </p>
-          <p>{{ actu.contenu|raw}}</p>
+          <p>{{ actu.content|raw}}</p>
         </div>
       </div>
     </article>
@@ -45,11 +45,11 @@
         </figure>
         {% endif %}
         <div class="d-flex flex-column justify-content-center">
-          <p>{{actu.categorie}} - {{actu.dateCreation|date('d/m/Y') }}&nbsp;
+          <p>{{actu.category}} - {{actu.creationDate|date('d/m/Y') }}&nbsp;
             <a href="{{ path('admin_actu_edit', {'id':actu.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
+            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
           </p>
-          <p>{{ actu.contenu|raw}}</p>
+          <p>{{ actu.content|raw}}</p>
         </div>
       </div>
     </article>
@@ -62,11 +62,11 @@
         </figure>
         {% endif %}
         <div class="d-flex flex-column justify-content-center">
-          <p>{{actu.categorie}} - {{actu.dateCreation|date('d/m/Y') }}&nbsp;
+          <p>{{actu.category}} - {{actu.creationDate|date('d/m/Y') }}&nbsp;
             <a href="{{ path('admin_actu_edit', {'id':actu.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
+            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
           </p>
-          <p>{{ actu.contenu|raw}}</p>
+          <p>{{ actu.content|raw}}</p>
         </div>
       </div>
     </article>

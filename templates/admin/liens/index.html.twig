@@ -20,10 +20,10 @@
     <article class="m-3" data-id="{{ lien.id }}">
       <div class="rounded border p-2 d-flex">
         <div class="d-flex align-items-center">
-          <h3>{{lien.titre}}&nbsp;<a href="{{ path('admin_link_edit', {'id':lien.id})}}"><i
-                class="fas fa-pen-square text-warning"></i></a>&nbsp;<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
+          <h3>{{lien.title}}&nbsp;<a href="{{ path('admin_link_edit', {'id':lien.id})}}"><i
+                class="fas fa-pen-square text-warning"></i></a>&nbsp;<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
 
-            <small>&nbsp;-&nbsp;<a href="{{ lien.lien | raw}}" target="_blank">{{ lien.lien }}</a></small>
+            <small>&nbsp;-&nbsp;<a href="{{ lien.link | raw}}" target="_blank">{{ lien.link }}</a></small>
           </h3>
         </div>
       </div>

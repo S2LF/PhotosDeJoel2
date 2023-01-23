@@ -25,12 +25,12 @@
           <img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
         </figure>
         {% endif %}
-        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.titre}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-        <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
+        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.title}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
+        <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
         <br>
-          Date de l'expo : {{ expo.dateEvent |date('d/m/Y') }} <br>
-          Date de création : {{expo.dateCreation |date('d/m/Y') }}<br>
-          Contenu :<br>{{ expo.contenu }}</p>
+          Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
+          Date de création : {{expo.creationDate |date('d/m/Y') }}<br>
+          Contenu :<br>{{ expo.content }}</p>
       </div>
     </article>
     {% else %}
@@ -42,12 +42,12 @@
           <img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
         </figure>
         {% endif %}
-        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.titre}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i  class="fas fa-pen-square text-warning"></i></a>
-          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
+        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.title}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i  class="fas fa-pen-square text-warning"></i></a>
+          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
           <br>
-          Date de l'expo : {{ expo.dateEvent |date('d/m/Y') }} <br>
-          Date de création : {{expo.dateCreation |date('d/m/Y') }}<br>
-          Contenu :<br>{{ expo.contenu }}</p>
+          Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
+          Date de création : {{expo.creationDate |date('d/m/Y') }}<br>
+          Contenu :<br>{{ expo.content }}</p>
       </div>
     </article>
     {% else %}
@@ -58,12 +58,12 @@
           <img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
         </figure>
         {% endif %}
-        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.titre}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
+        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.title}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
+          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
           <br>
-          Date de l'expo : {{ expo.dateEvent |date('d/m/Y') }} <br>
-          Date de création : {{expo.dateCreation |date('d/m/Y') }}<br>
-          Contenu :<br>{{ expo.contenu }}</p>
+          Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
+          Date de création : {{expo.creationDate |date('d/m/Y') }}<br>
+          Contenu :<br>{{ expo.content }}</p>
       </div>
     </article>
     {% endif %}

@@ -19,16 +19,16 @@
   <article class="m-3 col-2" data-id="{{ cat.id }}">
     <div class="rounded border">
       <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
-        <h3>{{ cat.titre }} ({{ cat.photos|length }})
+        <h3>{{ cat.title }} ({{ cat.photos|length }})
           <a href="{{ path('admin_edit_cat', {'id':cat.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cette catégorie ? Cela supprimera aussi les photos qui sont relié à cette catégorie')" href="{{ path('admin_delete_cat', {'id':cat.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
+          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cette catégorie ? Cela supprimera aussi les photos qui sont relié à cette catégorie')" href="{{ path('admin_delete_cat', {'id':cat.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
         </h3>
       </a>
       <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
         {% if cat.photoCoverPath == null %}
-        <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.titre }}">
+        <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
         {% else %}
-        <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.titre }}">
+        <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
         {% endif %}
       </a>
     </div>

@@ -3,29 +3,29 @@
 {% block title %}Les Photos de Joël | Admin - Créer photos{% endblock %}
 
 {% block body %}
-<h1 class="text-center">{{ cat.titre }}</h1>
+<h1 class="text-center">{{ cat.title }}</h1>
 
 {% if photos | length == 0 %}
 <h2 class="text-center">Pas de photo dans cette catégorie</h2>
 {% else %}
 <section class="row justify-content-center mx-auto text-center">
-  {% for photo in photos %}
-  <article class="m-3 col-2" data-id="{{ photo.id }}" id="gallery" data-toggle="modal" data-target="#exampleModal">
-    <figure>
-      <img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip'
-        data-placement='right' data-html="true" title="
-                    {% if photo.exifs %}
-                        <strong>EXIFS</strong><br>
-                      {% for key, value in photo.exifs %}
-                      <u>{{ key }}</u> {{ value }}<br>
-                      {% endfor %}    
-                    {% else %}
-                      Aucun exif pour cette photo
-                    {% endif %}
-                    " data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
-      <figcaption>{{ photo.titre }}</figcaption>
-    </figure>
-  </article>
+  {% for photo in photos %}    
+    <article class="m-3 col-2" data-id="{{ photo.id }}" id="gallery" data-toggle="modal" data-target="#exampleModal">
+      <figure>
+        <img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip'
+          data-placement='right' data-html="true" title="
+                      {% if photo.exifs %}
+                          <strong>EXIFS</strong><br>
+                        {% for key, value in photo.exifs %}
+                        <u>{{ key }}</u> {{ value }}<br>
+                        {% endfor %}    
+                      {% else %}
+                        Aucun exif pour cette photo
+                      {% endif %}
+                      " data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
+        <figcaption>{{ photo.title }}</figcaption>
+      </figure>
+    </article>
   {% endfor %}
 </section>
 {% endif %}
