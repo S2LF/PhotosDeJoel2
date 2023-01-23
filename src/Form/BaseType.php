@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\base;
+use App\Entity\Base;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,7 +57,7 @@ class BaseType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-      'data_class' => base::class,
+      'data_class' => Base::class,
     ]);
   }
 }

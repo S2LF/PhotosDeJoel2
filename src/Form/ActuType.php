@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Actualite;
+use App\Entity\Actuality;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,10 +16,10 @@ class ActuType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('categorie', TextType::class, [
+      ->add('category', TextType::class, [
         'label' => 'Catégorie* :'
       ])
-      ->add('titre', TextType::class, [
+      ->add('title', TextType::class, [
         'label' => 'Titre* :'
       ])
       ->add('path', FileType::class, [
@@ -44,7 +44,7 @@ class ActuType extends AbstractType
           ])
         ]
       ])
-      ->add('contenu', CKEditorType::class, [
+      ->add('content', CKEditorType::class, [
         'label' => 'Description* :',
       ]);
   }
@@ -52,7 +52,7 @@ class ActuType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-      'data_class' => Actualite::class,
+      'data_class' => Actuality::class,
     ]);
   }
 }

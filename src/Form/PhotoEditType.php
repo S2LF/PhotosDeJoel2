@@ -13,7 +13,7 @@ class PhotoEditType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('titre', TextType::class, [
+      ->add('title', TextType::class, [
         'label' => 'Titre*:'
       ]);
   }

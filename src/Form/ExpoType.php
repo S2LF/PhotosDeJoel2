@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Expo;
+use App\Entity\Exposition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
@@ -17,13 +17,13 @@ class ExpoType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('titre', TextType::class, [
+      ->add('title', TextType::class, [
         'label' => 'Titre*:'
       ])
-      ->add('date_Event', DateTimeType::class, [
+      ->add('eventDate', DateTimeType::class, [
         'label' => "Date de l'évènement"
       ])
-      ->add('lieu', TextType::class, [
+      ->add('place', TextType::class, [
         'label' => 'Lieu:',
         'required' => false
       ])
@@ -49,7 +49,7 @@ class ExpoType extends AbstractType
           ])
         ]
       ])
-      ->add('contenu', TextareaType::class, [
+      ->add('content', TextareaType::class, [
         'label' => 'Description:',
         'required' => false
       ]);
@@ -58,7 +58,7 @@ class ExpoType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-      'data_class' => Expo::class,
+      'data_class' => Exposition::class,
     ]);
   }
 }

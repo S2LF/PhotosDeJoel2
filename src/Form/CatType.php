@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\PhotoCategorie;
+use App\Entity\CategoryPhoto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
@@ -15,7 +15,7 @@ class CatType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('titre', TextType::class, [
+      ->add('title', TextType::class, [
         'label' => 'Nom de la catégorie*:'
       ])
       ->add('path', FileType::class, [
@@ -45,7 +45,7 @@ class CatType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-      'data_class' => PhotoCategorie::class,
+      'data_class' => CategoryPhoto::class,
     ]);
   }
 }

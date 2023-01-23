@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Photo;
-use App\Entity\PhotoCategorie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +16,7 @@ class PhotoType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('titre', TextType::class, [
+      ->add('title', TextType::class, [
         'label' => 'Titre*:'
       ])
       ->add('path', FileType::class, [
