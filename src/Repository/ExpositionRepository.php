@@ -46,8 +46,8 @@ class ExpositionRepository extends ServiceEntityRepository
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('e')
-            ->where('e.deletedAt IS NULL')
             ->orderBy('e.position', 'ASC')
+            ->where('e.deletedAt IS NULL')
             ->getQuery()
             ->getResult();
     }

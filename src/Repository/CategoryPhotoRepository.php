@@ -46,8 +46,8 @@ class CategoryPhotoRepository extends ServiceEntityRepository
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('cp')
-            ->where('cp.deletedAt IS NULL')
             ->orderBy('cp.position', 'ASC')
+            ->where('cp.deletedAt IS NULL')
             ->getQuery()
             ->getResult()
         ;

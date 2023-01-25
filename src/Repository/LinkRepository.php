@@ -40,8 +40,8 @@ class LinkRepository extends ServiceEntityRepository
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('l')
-            ->where('l.deletedAt IS NULL')
             ->orderBy('l.position', 'ASC')
+            ->where('l.deletedAt IS NULL')
             ->getQuery()
             ->getResult()
         ;
