@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\MailerRepository;
 use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -19,8 +20,10 @@ class ContactController extends BaseController
 {
 
   #[Route(path: '/contact', name: 'contact')]
-  public function index(Request $request, MailerInterface $mailer): Response
+  public function index(Request $request, MailerInterface $mailerInterface, MailerRepository $mailerRepository): Response
   {
+    $mailer = $mailerRepository->findOneBy(['id' => 1]);
+
     $contactForm = $this->createFormBuilder()
       ->add('captcha', Recaptcha3Type::class, [
         'constraints' => new Recaptcha3 ([
@@ -39,7 +42,7 @@ class ContactController extends BaseController
         'attr' => [
           'pattern' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$',
           'match' => false,
-          'message' => 'E-mail incomplet blablabla',
+          'message' => "Mauvais format d'adresse e-mail",
           'placeholder' => 'email@domaine.fr'
         ]
       ])
@@ -53,13 +56,12 @@ class ContactController extends BaseController
         'label' => 'Votre message'
       ])
       ->add('rgpd', CheckboxType::class, [
-        'label' => 'En cochant cette case et en soumettant ce formulaire, j’accepte que mes données personnelles soient utilisées pour me recontacter dans le cadre de ma demande. Aucun autre traitement ne sera effectué avec mes informations.'
+        'label' => $mailer->getRgpdText()
       ])
       ->add('submit', SubmitType::class, [
         'label' => 'Envoyer'
       ])
       ->getForm();
-
 
     $contactForm->handleRequest($request);
     if ($contactForm->isSubmitted() && $contactForm->isValid()) {
@@ -84,12 +86,12 @@ class ContactController extends BaseController
             ';
 
       $email = (new Email())
-        ->from('no-reply@photodejoel.fr')
-        ->to('joel.allain@gmx.fr')
-        ->subject('Formulaire de contact: ' . $data['subject'])
+        ->from($mailer->getNoReplyEmail())
+        ->to($mailer->getAdminEmail())
+        ->subject($mailer->getEmailSubject() .' '. $data['subject'])
         ->html($template);
 
-      $mailer->send($email);
+      $mailerInterface->send($email);
 
       return $this->redirectToRoute('contact');
     }

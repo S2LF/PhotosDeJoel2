@@ -66,7 +66,6 @@ class AdminLiensController extends BaseController
   #[Route(path: '/lien/sort', name: 'admin_link_sort')]
   public function sortableLien(Request $request, EntityManagerInterface $em, LinkRepository $lrepo)
   {
-
     $link_id = $request->request->get('link_id');
     $position = $request->request->get('position');
 
