@@ -21,11 +21,14 @@ class Link
     #[ORM\Column(length: 255)]
     private ?string $link = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $content = null;
+
     #[ORM\Column]
     #[SortablePosition]
     private ?int $position = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deletedAt = null;
 
 
@@ -90,6 +93,30 @@ class Link
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of content
+     *
+     * @return ?string
+     */
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set the value of content
+     *
+     * @param ?string $content
+     *
+     * @return self
+     */
+    public function setContent(?string $content): self
+    {
+        $this->content = $content;
 
         return $this;
     }

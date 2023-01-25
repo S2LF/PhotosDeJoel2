@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Link;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +19,9 @@ class LinkType extends AbstractType
       ])
       ->add('link', TextType::class, [
         'label' => 'Lien*:'
+      ])
+      ->add('content', CKEditorType::class, [
+        'label' => 'Contenu*:'
       ]);
   }
 
