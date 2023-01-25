@@ -26,6 +26,10 @@ class AdminLiensController extends BaseController
 
     return $this->render('admin/liens/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'liens' => $links
     ]);
   }
@@ -52,6 +56,10 @@ class AdminLiensController extends BaseController
     return $this->render('admin/liens/addLien.html.twig', [
       'form' => $form->createView(),
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
     ]);
   }
 

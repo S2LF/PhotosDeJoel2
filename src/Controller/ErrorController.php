@@ -15,19 +15,31 @@ class ErrorController extends BaseController
             return $this->render('bundles/TwigBundle/Exception/error404.html.twig', [
                 "code" => $exception->getStatusCode(),
                 "message" =>$exception->getStatusText(),
-                'base' => $this->base
+                'base' => $this->base,
+                'expositonsCount' => $this->expositionsCount,
+                'linksCount' => $this->linksCount,
+                'actusCount' => $this->actusCount,
+                'categoriesCount' => $this->categoriesCount
             ]);
         } elseif($exception->getStatusCode() === 500) {
             return $this->render('bundles/TwigBundle/Exception/error500.html.twig', [
                 "code" => $exception->getStatusCode(),
                 "message" =>$exception->getStatusText(),
-                'base' => $this->base
+                'base' => $this->base,
+                'expositonsCount' => $this->expositionsCount,
+                'linksCount' => $this->linksCount,
+                'actusCount' => $this->actusCount,
+                'categoriesCount' => $this->categoriesCount
             ]);
         } else {
             return $this->render('bundles/TwigBundle/Exception/error.html.twig', [
                 "code" => $exception->getStatusCode(),
                 "message" =>$exception->getStatusText(),
-                'base' => $this->base
+                'base' => $this->base,
+                'expositonsCount' => $this->expositionsCount,
+                'linksCount' => $this->linksCount,
+                'actusCount' => $this->actusCount,
+                'categoriesCount' => $this->categoriesCount
             ]);
         }
     }

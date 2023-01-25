@@ -7,7 +7,7 @@ use App\Repository\CategoryPhotoRepository;
 use App\Repository\PhotoRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/category')]
+#[Route(path: '/categories')]
 class PhotoController extends BaseController
 {
 
@@ -18,6 +18,10 @@ class PhotoController extends BaseController
 
     return $this->render('photos/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'cats' => $cats
     ]);
   }
@@ -25,12 +29,16 @@ class PhotoController extends BaseController
   #[Route(path: '/{id}/photos', name: 'photo')]
   public function photo_cat(CategoryPhoto $cat, PhotoRepository $prepo)
   {
-    $photos = $prepo->findBy(['category_photo' => $cat, 'deletedAt' => null], ['position' => 'ASC']);
+    $photos = $prepo->findBy(['categoryPhoto' => $cat, 'deletedAt' => null], ['position' => 'ASC']);
 
     return $this->render('photos/catPhotos.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'cat' => $cat,
-      'photos' => $photos
+      'photos' => $photos,
     ]);
   }
 }

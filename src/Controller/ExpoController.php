@@ -16,6 +16,10 @@ class ExpoController extends BaseController
 
     return $this->render('expo/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'expos' => $expos
     ]);
   }

@@ -13,6 +13,10 @@ class HomeController extends BaseController
   {
     return $this->render('home/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount
     ]);
   }
 }

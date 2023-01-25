@@ -21,7 +21,14 @@ class SecurityController extends BaseController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'base' => $this->base]);
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'base' => $this->base,
+            'expositonsCount' => $this->expositionsCount,
+            'linksCount' => $this->linksCount,
+            'actusCount' => $this->actusCount,
+            'categoriesCount' => $this->categoriesCount]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

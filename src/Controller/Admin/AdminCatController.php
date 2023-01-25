@@ -29,6 +29,10 @@ class AdminCatController extends BaseController
 
     return $this->render('admin/cats/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'cats' => $cats,
     ]);
   }
@@ -65,6 +69,10 @@ class AdminCatController extends BaseController
     return $this->render('admin/cats/addCat.html.twig', [
       'form' => $form->createView(),
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'cat' => $cat
     ]);
   }

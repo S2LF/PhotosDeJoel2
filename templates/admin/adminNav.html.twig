@@ -2,7 +2,7 @@
 	<h1 class="text-center  mb-3">Espace Admin</h1>
 
 	<nav class="text-center">
-		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_base' ? 'active' : ''}}" href="{{ path('admin_base') }}">Informations générales</a>
+		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin' ? 'active' : ''}}" href="{{ path('admin') }}">Informations générales</a>
 		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_categories' ? 'active' : ''}}" href="{{ path('admin_categories') }}">Catégories & Photos</a>
 		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_actu' ? 'active' : ''}}" href="{{ path('admin_actu') }}">Actualités</a>
 		<a class="m-5 {{ app.request.attributes.get('_route') == 'admin_expos' ? 'active' : ''}}" href="{{ path('admin_expos') }}">Expos</a>

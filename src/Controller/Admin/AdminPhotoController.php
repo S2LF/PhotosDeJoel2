@@ -2,63 +2,44 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\BaseController;
 use App\Entity\CategoryPhoto;
 use App\Entity\Photo;
 use App\Form\PhotoType;
 use App\Form\PhotoEditType;
 use App\Repository\PhotoRepository;
 use App\Service\FileUploaderService;
-use App\Repository\BaseRepository;
-use App\Repository\CategoryPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/admin')]
 #[IsGranted('ROLE_ADMIN')]
-class AdminPhotoController extends AbstractController
+class AdminPhotoController extends BaseController
 {
   #[Route(path: '/cat/{id}/photos', name: 'admin_cat_photos')]
-  public function index(CategoryPhoto $cat, BaseRepository $grepo, CategoryPhotoRepository $pcrepo, PhotoRepository $prepo)
+  public function index(CategoryPhoto $cat, PhotoRepository $prepo)
   {
-    $base = $grepo->findOneBy(['id' => 1]);
-    if ($base == null) {
-      $base = [
-        "titreDuSiteHeader" => "Titre par défaut",
-        "texteHeader" => "Texte à écrire par défaut",
-        "motPageAccueil" => "Mot page d'accueil par défaut",
-        "photoAccueilPath" => null,
-        "textFooter" => "texte pied de page par défaut"
-      ];
-    }
-
     $photos = $prepo->findBy(['categoryPhoto' => $cat, 'deletedAt' => null], ['position' => 'ASC']);
 
     return $this->render('admin/photos/catPhotos.html.twig', [
-      'base' => $base,
+      'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'cat' => $cat,
       'photos' => $photos
     ]);
   }
 
   #[Route(path: '/cat/{id}/addPhoto', name: 'admin_add_photo')]
-  public function addPhoto(CategoryPhoto $cat, BaseRepository $grepo, CategoryPhotoRepository $pcrepo, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+  public function addPhoto(CategoryPhoto $cat, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
-    $base = $grepo->findOneBy(['id' => 1]);
-    if ($base == null) {
-      $base = [
-        "titreDuSiteHeader" => "Titre par défaut",
-        "texteHeader" => "Texte à écrire par défaut",
-        "motPageAccueil" => "Mot page d'accueil par défaut",
-        "photoAccueilPath" => null,
-        "textFooter" => "texte pied de page par défaut"
-      ];
-    }
-
     $photo = new Photo;
     $form = $this->createForm(PhotoType::class, $photo);
 
@@ -96,32 +77,20 @@ class AdminPhotoController extends AbstractController
     }
 
     return $this->render('admin/photos/addPhoto.html.twig', [
-      'base' => $base,
+      'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'form' => $form->createView()
     ]);
   }
 
-  // /**
-  //  * @Route("/cat/{id_cat}/editPhoto/{id_photo}", name="admin_edit_photo")
-  //  * @ParamConverter("cat", options={"mapping": {"id_cat" : "id"}})
-  //  * @ParamConverter("photo", options={"mapping": {"id_photo" : "id"}})
-  //  */
-  #[Route(path: '/cat/{id_cat}/editPhoto/{id_photo}', name: 'admin_edit_photo')]
-  // #[ParamConverter(path: '/actu/sort', name: 'admin_actu_sort')]
-  // #[ParamConverter(path: '/actu/sort', name: 'admin_actu_sort')]
-  public function editPhoto(CategoryPhoto $cat, Photo $photo, BaseRepository $grepo, CategoryPhotoRepository $pcrepo, Request $request, FileUploaderService $fileUploaderService, EntityManagerInterface $em)
+  #[Route(path: '/cat/{cat_id}/modifier-photo/{photo_id}', name: 'admin_edit_photo')]
+  #[Entity('cat', expr: 'repository.find(cat_id)')]
+  #[Entity('photo', expr: 'repository.find(photo_id)')]
+  public function editPhoto(CategoryPhoto $cat, Photo $photo, Request $request, EntityManagerInterface $em)
   {
-    $base = $grepo->findOneBy(['id' => 1]);
-    if ($base == null) {
-      $base = [
-        "titreDuSiteHeader" => "Titre par défaut",
-        "texteHeader" => "Texte à écrire par défaut",
-        "motPageAccueil" => "Mot page d'accueil par défaut",
-        "photoAccueilPath" => null,
-        "textFooter" => "texte pied de page par défaut"
-      ];
-    }
-
     $form = $this->createForm(PhotoEditType::class, $photo);
 
     $form->handleRequest($request);
@@ -136,7 +105,11 @@ class AdminPhotoController extends AbstractController
     }
 
     return $this->render('admin/photos/addPhoto.html.twig', [
-      'base' => $base,
+      'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'photo' => $photo,
       'form' => $form->createView()
     ]);
@@ -145,7 +118,6 @@ class AdminPhotoController extends AbstractController
   #[Route(path: '/photo/sort', name: 'admin_photo_sort')]
   public function sortablePhoto(Request $request, EntityManagerInterface $em, PhotoRepository $prepo)
   {
-
     $photo_id = $request->request->get('photo_id');
     $position = $request->request->get('position');
 

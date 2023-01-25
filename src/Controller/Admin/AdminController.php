@@ -18,13 +18,7 @@ class AdminController extends BaseController
 {
 
   #[Route(path: '/', name: 'admin')]
-  public function index()
-  {
-    return $this->redirectToRoute('admin_base');
-  }
-
-  #[Route(path: '/base', name: 'admin_base')]
-  public function base(Request $request, EntityManagerInterface $em, BaseRepository $grepo, FileUploaderService $fileUploaderService)
+  public function index(Request $request, EntityManagerInterface $em, BaseRepository $grepo, FileUploaderService $fileUploaderService)
   {
     $baseForm = $grepo->findOneBy(['id' => 1]);
     if (!$baseForm) {
@@ -52,6 +46,10 @@ class AdminController extends BaseController
 
     return $this->render('admin/base.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       "form" => $form->createView()
     ]);
   }

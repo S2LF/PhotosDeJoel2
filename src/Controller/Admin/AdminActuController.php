@@ -28,6 +28,10 @@ class AdminActuController extends BaseController
 
     return $this->render('admin/actu/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'actus' => $actus
     ]);
   }
@@ -72,6 +76,10 @@ class AdminActuController extends BaseController
     return $this->render('admin/actu/addActu.html.twig', [
       'form' => $form->createView(),
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
     ]);
   }
 

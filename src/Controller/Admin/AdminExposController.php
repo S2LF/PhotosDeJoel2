@@ -27,6 +27,10 @@ class AdminExposController extends BaseController
 
     return $this->render('admin/expos/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'expos' => $expos
     ]);
   }
@@ -70,6 +74,10 @@ class AdminExposController extends BaseController
     return $this->render('admin/expos/addExpo.html.twig', [
       'form' => $form->createView(),
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
     ]);
   }
 

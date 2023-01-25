@@ -28,14 +28,22 @@
       {{ base.headerContent|raw }}
     </div>
     <nav class="text-center my-4">
-      <a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}"
-        href="{{ path('cats') }}">Photos</a>
-      <a class="m-5 {{ app.request.attributes.get('_route') == 'expo' ? 'active' : ''}}"
-        href="{{ path('expo') }}">Expos</a>
-      <a class="m-5 {{ app.request.attributes.get('_route') == 'actu' ? 'active' : ''}}"
-        href="{{ path('actu') }}">Actualités</a>
-      <a class="m-5 {{ app.request.attributes.get('_route') == 'links' ? 'active' : ''}}"
-        href="{{ path('links') }}">Liens</a>
+      {% if expositonsCount > 0 %}
+        <a class="m-5 {{ app.request.attributes.get('_route') == 'expo' ? 'active' : ''}}"
+          href="{{ path('expo') }}">Expos</a>
+      {% endif %}
+      {% if categoriesCount > 0 %}
+        <a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}"
+          href="{{ path('cats') }}">Photos</a>
+      {% endif %}
+      {% if actusCount > 0 %}
+        <a class="m-5 {{ app.request.attributes.get('_route') == 'actu' ? 'active' : ''}}"
+          href="{{ path('actu') }}">Actualités</a>
+      {% endif %}
+      {% if linksCount %}
+        <a class="m-5 {{ app.request.attributes.get('_route') == 'links' ? 'active' : ''}}"
+          href="{{ path('links') }}">Liens</a>
+      {% endif %}
       <a class="m-5 {{ app.request.attributes.get('_route') == 'contact' ? 'active' : ''}}"
         href="{{ path('contact') }}">Contact</a>
     </nav>
