@@ -28,7 +28,7 @@ class Photo
     #[SortablePosition]
     private ?int $position = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deletedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
