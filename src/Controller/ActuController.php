@@ -16,6 +16,10 @@ class ActuController extends BaseController
 
     return $this->render('actu/index.html.twig', [
       'base' => $this->base,
+      'expositonsCount' => $this->expositionsCount,
+      'linksCount' => $this->linksCount,
+      'actusCount' => $this->actusCount,
+      'categoriesCount' => $this->categoriesCount,
       'actus' => $actus
     ]);
   }
