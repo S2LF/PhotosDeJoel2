@@ -8,19 +8,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExpoController extends BaseController
 {
+    #[Route(path: '/expositions', name: 'expo')]
+    public function index(ExpositionRepository $exporepo): Response
+    {
+        $expos =  $exporepo->findAllOrderByPos();
 
-  #[Route(path: '/expositions', name: 'expo')]
-  public function index(ExpositionRepository $exporepo): Response
-  {
-    $expos =  $exporepo->findAllOrderByPos();
-
-    return $this->render('expo/index.html.twig', [
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-      'expos' => $expos
-    ]);
-  }
+        return $this->render('expo/index.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'expos' => $expos
+        ]);
+    }
 }

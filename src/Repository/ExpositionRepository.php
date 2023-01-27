@@ -42,7 +42,7 @@ class ExpositionRepository extends ServiceEntityRepository
         //     $this->getEntityManager()->flush();
         // }
     }
-    
+
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('e')

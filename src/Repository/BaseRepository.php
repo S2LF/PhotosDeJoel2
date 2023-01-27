@@ -32,7 +32,6 @@ class BaseRepository extends ServiceEntityRepository
 
     public function remove(Base $entity, bool $flush = false): void
     {
-
         $entity->setDeletedAt(new \DateTime());
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();

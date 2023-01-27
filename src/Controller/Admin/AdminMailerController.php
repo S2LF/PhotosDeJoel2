@@ -19,29 +19,29 @@ class AdminMailerController extends BaseController
     #[Route('/contact', name: 'admin_contact')]
     public function index(Request $request, EntityManagerInterface $em, MailerRepository $mailerRepository): Response
     {
-      $contactForm = $mailerRepository->findOneBy(['id' => 1]);
-      if (!$contactForm) {
-        $contactForm = new Mailer;
-      }
+        $contactForm = $mailerRepository->findOneBy(['id' => 1]);
+        if (!$contactForm) {
+            $contactForm = new Mailer();
+        }
 
-      $form = $this->createForm(ContactType::class, $contactForm);
+        $form = $this->createForm(ContactType::class, $contactForm);
 
-      $form->handleRequest($request);
+        $form->handleRequest($request);
 
-      if ($form->isSubmitted() && $form->isValid()) {
-        $em->persist($contactForm);
-        $em->flush();
-        $this->addFlash("success", "Les informations ont bien été modifiés");
-        return $this->redirectToRoute('admin_contact');
-      }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($contactForm);
+            $em->flush();
+            $this->addFlash("success", "Les informations ont bien été modifiés");
+            return $this->redirectToRoute('admin_contact');
+        }
 
-      return $this->render('admin/mailer/index.html.twig', [
-        'base' => $this->base,
-        'expositonsCount' => $this->expositionsCount,
-        'linksCount' => $this->linksCount,
-        'actusCount' => $this->actusCount,
-        'categoriesCount' => $this->categoriesCount,
-        "form" => $form->createView()
-      ]);
+        return $this->render('admin/mailer/index.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          "form" => $form->createView()
+        ]);
     }
 }

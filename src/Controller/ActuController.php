@@ -8,19 +8,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActuController extends BaseController
 {
+    #[Route(path: '/actualites', name: 'actu')]
+    public function index(ActualityRepository $acturepo): Response
+    {
+        $actus =  $acturepo->findAllOrderByPos();
 
-  #[Route(path: '/actualites', name: 'actu')]
-  public function index(ActualityRepository $acturepo): Response
-  {
-     $actus =  $acturepo->findAllOrderByPos();
-
-    return $this->render('actu/index.html.twig', [
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-      'actus' => $actus
-    ]);
-  }
+        return $this->render('actu/index.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'actus' => $actus
+        ]);
+    }
 }

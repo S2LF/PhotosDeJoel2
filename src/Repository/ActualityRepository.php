@@ -47,16 +47,16 @@ class ActualityRepository extends ServiceEntityRepository
 
     public function findAllOrderByPos()
     {
-			return $this->createQueryBuilder('a')
-                ->orderBy('a.position', 'ASC')
-                ->where('a.deletedAt IS NULL')
-				->getQuery()
-				->getResult()
-			;
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.position', 'ASC')
+            ->where('a.deletedAt IS NULL')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function findAllOrderByPosDeleted()
-    {   
+    {
         return $this->createQueryBuilder('a')
             ->orderBy('a.position', 'ASC')
             ->where('a.deletedAt IS NOT NULL')

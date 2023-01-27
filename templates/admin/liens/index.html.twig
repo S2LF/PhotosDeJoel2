@@ -1,111 +1,105 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin - Liens{% endblock %}
+{% block title %}Les Photos de Joël | Admin - Liens
+{% endblock %}
 
 {% block body %}
 
-{% include "admin/adminNav.html.twig" %}
+	{% include "admin/adminNav.html.twig" %}
 
-<h2 class="text-center">Gestion des liens</h2>
-<div class="container">
-  {% if liens|length == 0 %}
-  <section>
-    <h3 class="text-center">
-      Aucun lien
-    </h3>
-  </section>
-  {% else %}
-  <section class="draggable">
-    {% for lien in liens %}
-    <article class="m-3" data-id="{{ lien.id }}">
-      <div class="rounded border p-2">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <h3>{{lien.title}}&nbsp;
-              <small>&nbsp;-&nbsp;<a href="{{ lien.link | raw}}" target="_blank">{{ lien.link }}</a></small>
-            </h3>
-          </div>
-          <div>
-            <a href="{{ path('admin_link_edit', {'id':lien.id})}}">
-              <i class="fas fa-pen-square fa-2x text-warning"></i>
-            </a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id, 'hardDelete':0})}}">
-              <i class="fas fa-minus-square fa-2x text-danger"></i>
-            </a>
-          </div>
-        </div>
-        {{ lien.content|raw }}
-      </div>
-    </article>
-    {% endfor %}
-  </section>
-  {% endif %}
-  <p class="text-center">
-    <a href="{{ path('admin_link_add') }}" class="btn btn-success">Ajouter un lien</a>
-    {# <a href="{{ path('admin_link_trash') }}" class="btn btn-danger">Corbeille</a> #}
-  </p>
+	<h2 class="text-center">Gestion des liens</h2>
+	<div class="container">
+		{% if liens|length == 0 %}
+			<section>
+				<h3 class="text-center">
+					Aucun lien
+				</h3>
+			</section>
+		{% else %}
+			<section class="draggable">
+				{% for lien in liens %}
+					<article class="m-3" data-id="{{ lien.id }}">
+						<div class="rounded border p-2">
+							<div class="d-flex justify-content-between">
+								<div class="d-flex align-items-center">
+									<h3>{{lien.title}}&nbsp;
+										<small>&nbsp;-&nbsp;<a href="{{ lien.link | raw}}" target="_blank">{{ lien.link }}</a>
+										</small>
+									</h3>
+								</div>
+								<div>
+									<a href="{{ path('admin_link_edit', {'id':lien.id})}}">
+										<i class="fas fa-pen-square fa-2x text-warning"></i>
+									</a>
+									<a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id, 'hardDelete':0})}}">
+										<i class="fas fa-minus-square fa-2x text-danger"></i>
+									</a>
+								</div>
+							</div>
+							{{ lien.content|raw }}
+						</div>
+					</article>
+				{% endfor %}
+			</section>
+		{% endif %}
+		<p class="text-center">
+			<a href="{{ path('admin_link_add') }}" class="btn btn-success">Ajouter un lien</a>
+			{# <a href="{{ path('admin_link_trash') }}" class="btn btn-danger">Corbeille</a> #}
+		</p>
 
-  <section>
-  <h2 class="text-center">Corbeille des liens ({{liensDeleted | length}})</h2>
-  </section>
-  {% if liensDeleted|length > 0 %}
-  <section>
-    {% for lien in liensDeleted %}
-    <article class="m-3" data-id="{{ lien.id }}">
-      <div class="rounded border p-2">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <h3>{{lien.title}}&nbsp;</a>
-              <small>&nbsp;-&nbsp;<a href="{{ lien.link | raw}}" target="_blank">{{ lien.link }}</a></small>
-            </h3>
-          </div>
-          <div>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_link_restore', {'id':lien.id})}}">
-              <i class="fas fa-plus-square fa-2x text-success"></i>
-            </a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id, 'hardDelete':1})}}">
-              <i class="fas fa-minus-square fa-2x text-danger"></i>
-            </a>
+		<section>
+			<h2 class="text-center">Corbeille des liens ({{liensDeleted | length}})</h2>
+		</section>
+		{% if liensDeleted|length > 0 %}
+			<section>
+				{% for lien in liensDeleted %}
+					<article class="m-3" data-id="{{ lien.id }}">
+						<div class="rounded border p-2">
+							<div class="d-flex justify-content-between">
+								<div class="d-flex align-items-center">
+									<h3>{{lien.title}}&nbsp;</a>
+									<small>&nbsp;-&nbsp;<a href="{{ lien.link | raw}}" target="_blank">{{ lien.link }}</a>
+									</small>
+								</h3>
+							</div>
+							<div>
+								<a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_link_restore', {'id':lien.id})}}">
+									<i class="fas fa-plus-square fa-2x text-success"></i>
+								</a>
+								<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_link_delete', {'id':lien.id, 'hardDelete':1})}}">
+									<i class="fas fa-minus-square fa-2x text-danger"></i>
+								</a>
 
-          </div>
-        </div>
-        {{ lien.content|raw }}
-      </div>
-    </article>
-    {% endfor %}
-  </section>
-  {% else %}
-  <section>
-      <p class="text-center">
-        La corbeille est vide
-      </p>
-  </section>
-  {% endif %}
-</div> 
-{% endblock %}
-
-{% block javascripts %}
+							</div>
+						</div>
+						{{ lien.content|raw }}
+					</div>
+				</article>
+			{% endfor %}
+		</section>
+	{% else %}
+		<section>
+			<p class="text-center">
+				La corbeille est vide
+			</p>
+		</section>
+	{% endif %}
+</div>{% endblock %}{% block javascripts %}
 {{ parent() }}
 
 <script>
-  jQuery('.draggable').sortable({
-    stop: function (event, ui) {
-      let id = ui.item.attr('data-id')
-      console.log("id:" + id)
-      let position = ui.item.index()
-      console.log("pos:" + position)
-      $.post(
-        "{{ path('admin_link_sort') }}",
-        {
-          'link_id': id,
-          'position': position
-        },
-        function (data) {
-          console.log(data)
-        }
-      )
-    }
-  })
-</script>
-
-{% endblock %}
+	jQuery('.draggable').sortable({
+stop: function (event, ui) {
+let id = ui.item.attr('data-id')
+console.log("id:" + id)
+let position = ui.item.index()
+console.log("pos:" + position)
+$.post("{{ path('admin_link_sort') }}", {
+'link_id': id,
+'position': position
+}, function (data) {
+console.log(data)
+})
+}
+})
+</script>{% endblock %}

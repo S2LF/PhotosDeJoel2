@@ -51,24 +51,24 @@ class PhotoRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-  
+
     public function getPhotoCatByPos($catId)
     {
-      return $this->createQueryBuilder('p')
-        ->where('p.categoryPhoto = ' . $catId)
-        ->orderBy('p.position', 'ASC')
-        ->andWhere('p.deletedAt IS NULL')
-        ->getQuery()
-        ->getResult();
+        return $this->createQueryBuilder('p')
+          ->where('p.categoryPhoto = ' . $catId)
+          ->orderBy('p.position', 'ASC')
+          ->andWhere('p.deletedAt IS NULL')
+          ->getQuery()
+          ->getResult();
     }
 
     public function getPhotoCatByPosDeleted($catId)
     {
-      return $this->createQueryBuilder('p')
-        ->where('p.categoryPhoto = ' . $catId)
-        ->orderBy('p.position', 'ASC')
-        ->andWhere('p.deletedAt IS NOT NULL')
-        ->getQuery()
-        ->getResult();
+        return $this->createQueryBuilder('p')
+          ->where('p.categoryPhoto = ' . $catId)
+          ->orderBy('p.position', 'ASC')
+          ->andWhere('p.deletedAt IS NOT NULL')
+          ->getQuery()
+          ->getResult();
     }
 }

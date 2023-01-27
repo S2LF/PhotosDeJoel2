@@ -1,73 +1,66 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="UTF-8">
-  <title>{% block title %}Les Photos de Joël{% endblock %}</title>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Les Photos de Joël
+			{% endblock %}
+		</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
-  <script src="https://kit.fontawesome.com/64cfa211f1.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous"/>
+		<script src="https://kit.fontawesome.com/64cfa211f1.js" crossorigin="anonymous"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap"
-    rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-  {{ encore_entry_link_tags('app') }}
-  <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-</head>
+		{{ encore_entry_link_tags('app') }}
+		<link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+	</head>
 
-<body class="p-2">
-  <header>
-    <div class="container-fluid">
-      {# <div class="position-relative">
-        <img class="position-absolute" style="left: 0;" src="{{ asset('/img/Pupille-removebg.png') | imagine_filter('icon' )}}" alt="Logo">
-      </div> #}
-      <div class=" pt-4">
-        <h1 class="display-4 font-weight-bold text-center">{{ base.siteTitle }}</h1>
-      </div>
-      {{ base.headerContent|raw }}
-    </div>
-    <nav class="text-center my-4">
-      {% if expositonsCount > 0 %}
-        <a class="m-5 {{ app.request.attributes.get('_route') == 'expo' ? 'active' : ''}}"
-          href="{{ path('expo') }}">Expos</a>
-      {% endif %}
-      {% if categoriesCount > 0 %}
-        <a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}"
-          href="{{ path('cats') }}">Photos</a>
-      {% endif %}
-      {% if actusCount > 0 %}
-        <a class="m-5 {{ app.request.attributes.get('_route') == 'actu' ? 'active' : ''}}"
-          href="{{ path('actu') }}">Actualités</a>
-      {% endif %}
-      {% if linksCount %}
-        <a class="m-5 {{ app.request.attributes.get('_route') == 'links' ? 'active' : ''}}"
-          href="{{ path('links') }}">Liens</a>
-      {% endif %}
-      <a class="m-5 {{ app.request.attributes.get('_route') == 'contact' ? 'active' : ''}}"
-        href="{{ path('contact') }}">Contact</a>
-    </nav>
-  </header>
+	<body class="p-2">
+		<header>
+			<div
+				class="container-fluid">
+				{# <div class="position-relative">
+          <img class="position-absolute" style="left: 0;" src="{{ asset('/img/Pupille-removebg.png') | imagine_filter('icon' )}}" alt="Logo">
+        </div> #}
+				<div class=" pt-4">
+					<h1 class="display-4 font-weight-bold text-center">{{ base.siteTitle }}</h1>
+				</div>
+				{{ base.headerContent|raw }}
+			</div>
+			<nav class="text-center my-4">
+				{% if expositonsCount > 0 %}
+					<a class="m-5 {{ app.request.attributes.get('_route') == 'expo' ? 'active' : ''}}" href="{{ path('expo') }}">Expos</a>
+				{% endif %}
+				{% if categoriesCount > 0 %}
+					<a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}" href="{{ path('cats') }}">Photos</a>
+				{% endif %}
+				{% if actusCount > 0 %}
+					<a class="m-5 {{ app.request.attributes.get('_route') == 'actu' ? 'active' : ''}}" href="{{ path('actu') }}">Actualités</a>
+				{% endif %}
+				{% if linksCount %}
+					<a class="m-5 {{ app.request.attributes.get('_route') == 'links' ? 'active' : ''}}" href="{{ path('links') }}">Liens</a>
+				{% endif %}
+				<a class="m-5 {{ app.request.attributes.get('_route') == 'contact' ? 'active' : ''}}" href="{{ path('contact') }}">Contact</a>
+			</nav>
+		</header>
 
-  {% block body %}{% endblock %}
+		{% block body %}{% endblock %}
 
-  <footer class="text-center pt-5 pb-2 position-relative">
-    {{ base.textFooter|raw }}
-    <p class="position-absolute" style="right:0px; bottom:-5px" >
-      <a href="{{ path('admin') }}">Espace admin</a>
-    </p>
-  </footer>
+		<footer class="text-center pt-5 pb-2 position-relative">
+			{{ base.textFooter|raw }}
+			<p class="position-absolute" style="right:0px; bottom:-5px">
+				<a href="{{ path('admin') }}">Espace admin</a>
+			</p>
+		</footer>
 
-  {% block javascripts %}
+		{% block javascripts %}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-    integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-    crossorigin="anonymous"></script>
-  {{ encore_entry_script_tags('app') }}
-  {% endblock %}
-</body>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</body>
 
 </html>

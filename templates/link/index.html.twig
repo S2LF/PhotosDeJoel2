@@ -1,36 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Liens{% endblock %}
+{% block title %}Les Photos de Joël | Liens
+{% endblock %}
 
 {% block body %}
 <h1 class="text-center">Liens</h1>
 
-  {% if links|length == 0 %}
-  <section>
-    <h3 class="text-center">
-      Aucun lien
-    </h3>
-  </section>
-  {% else %}
-  <section class="row text-center">
-    <section class="m-auto">
-      {% for links in links %}
-      <article class="m-3">
-        <div class="p-2 d-flex">
-          <div class="d-flex align-items-center">
-            <h3>{{links.title}}</h3>&nbsp;-&nbsp;
-            <a href="{{ links.link | raw}}" target="_blank">
-              <i class="fas fa-external-link-alt"> </i> {{ links.link }}
-            </a>
-            </h3>
-          </div>
-        </div>
-        {{ links.content | raw }}
-        </div>
-      </article>
-      {% endfor %}
-    </section>
-  </section>
-  {% endif %}
-
-{% endblock %}
+{% if links|length == 0 %}
+	<section>
+		<h3 class="text-center">
+			Aucun lien
+		</h3>
+	</section>
+{% else %}
+	<section class="row text-center">
+		<section class="m-auto">
+			{% for links in links %}
+				<article class="m-3">
+					<div class="p-2 d-flex">
+						<div class="d-flex align-items-center">
+							<h3>{{links.title}}</h3>&nbsp;-&nbsp;
+							<a href="{{ links.link | raw}}" target="_blank">
+								<i class="fas fa-external-link-alt"></i>
+								{{ links.link }}
+							</a>
+						</h3>
+					</div>
+				</div>
+				{{ links.content | raw }}
+			</div>
+		</article>
+	{% endfor %}
+</section></section>{% endif %}{% endblock %}

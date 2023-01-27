@@ -20,129 +20,128 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class AdminExposController extends BaseController
 {
-  #[Route(path: '/', name: 'admin_expos')]
-  public function index(BaseRepository $grepo, ExpositionRepository $erepo)
-  {
-    $expos = $erepo->findAllOrderByPos();
-    $exposDeleted = $erepo->findAllOrderByPosDeleted();
+    #[Route(path: '/', name: 'admin_expos')]
+    public function index(BaseRepository $grepo, ExpositionRepository $erepo)
+    {
+        $expos = $erepo->findAllOrderByPos();
+        $exposDeleted = $erepo->findAllOrderByPosDeleted();
 
-    return $this->render('admin/expos/index.html.twig', [
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-      'expos' => $expos,
-      'exposDeleted' => $exposDeleted,
-    ]);
-  }
-
-  #[Route(path: '/add', name: 'admin_expo_add')]
-  #[Route(path: '/edit/{id}', name: 'admin_expo_edit')]
-  public function formCat(Exposition $expo = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
-  {
-    if (!$expo) {
-      $expo = new Exposition;
+        return $this->render('admin/expos/index.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'expos' => $expos,
+          'exposDeleted' => $exposDeleted,
+        ]);
     }
 
-    $form = $this->createForm(ExpoType::class, $expo);
-
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-
-      $expo->setCreationDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
-
-      if ($imageFile = $form->get("path")->getData()) {
-        $newFilename = $expo->getTitle();
-      }
-
-      $em->persist($expo);
-      $em->flush();
-
-      if ($imageFile = $form->get("path")->getData()) {
-        $id = $expo->getId();
-        $directory = "/expo/" . $id;
-        $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
-        $expo->setPath($directory . "/" . $imageFileName);
-
-        $em->persist($expo);
-        $em->flush();
-      }
-      $this->addFlash("success", "L'exposition a bien été ajouté/modifié");
-      return $this->redirectToRoute('admin_expos');
-    }
-
-    return $this->render('admin/expos/addExpo.html.twig', [
-      'form' => $form->createView(),
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-    ]);
-  }
-
-  #[Route(path: '/sort', name: 'admin_expo_sort')]
-  public function sortableExpo(Request $request, EntityManagerInterface $em, ExpositionRepository $erepo)
-  {
-    $expo_id = $request->request->get('expo_id');
-    $position = $request->request->get('position');
-
-    $expo = $erepo->findOneBy(['id' => $expo_id]);
-
-    $expo->setPosition($position);
-
-    try {
-      $em->flush();
-      return new Response(true);
-    } catch (\PdoException $e) {
-    }
-  }
-
-  #[Route(path: '/delete/{id}/{hardDelete}', name: 'admin_expo_delete')]
-  public function deleteActExpo(Exposition $expo = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, ExpositionRepository $erepo)
-  {
-    if (!$expo) {
-      throw new NotFoundException('Exposition non trouvé');
-    }
-
-    if($hardDelete) {
-      try {
-        if ($expo->getPath() !== null) {
-          $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $expo->getPath());
+    #[Route(path: '/add', name: 'admin_expo_add')]
+    #[Route(path: '/edit/{id}', name: 'admin_expo_edit')]
+    public function formCat(Exposition $expo = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+    {
+        if (!$expo) {
+            $expo = new Exposition();
         }
-    
-        $em->remove($expo);
+
+        $form = $this->createForm(ExpoType::class, $expo);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $expo->setCreationDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+
+            if ($imageFile = $form->get("path")->getData()) {
+                $newFilename = $expo->getTitle();
+            }
+
+            $em->persist($expo);
+            $em->flush();
+
+            if ($imageFile = $form->get("path")->getData()) {
+                $id = $expo->getId();
+                $directory = "/expo/" . $id;
+                $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
+                $expo->setPath($directory . "/" . $imageFileName);
+
+                $em->persist($expo);
+                $em->flush();
+            }
+            $this->addFlash("success", "L'exposition a bien été ajouté/modifié");
+            return $this->redirectToRoute('admin_expos');
+        }
+
+        return $this->render('admin/expos/addExpo.html.twig', [
+          'form' => $form->createView(),
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+        ]);
+    }
+
+    #[Route(path: '/sort', name: 'admin_expo_sort')]
+    public function sortableExpo(Request $request, EntityManagerInterface $em, ExpositionRepository $erepo)
+    {
+        $expo_id = $request->request->get('expo_id');
+        $position = $request->request->get('position');
+
+        $expo = $erepo->findOneBy(['id' => $expo_id]);
+
+        $expo->setPosition($position);
+
+        try {
+            $em->flush();
+            return new Response(true);
+        } catch (\PdoException $e) {
+        }
+    }
+
+    #[Route(path: '/delete/{id}/{hardDelete}', name: 'admin_expo_delete')]
+    public function deleteActExpo(Exposition $expo = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, ExpositionRepository $erepo)
+    {
+        if (!$expo) {
+            throw new NotFoundException('Exposition non trouvé');
+        }
+
+        if ($hardDelete) {
+            try {
+                if ($expo->getPath() !== null) {
+                    $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $expo->getPath());
+                }
+
+                $em->remove($expo);
+                $em->flush();
+
+                $this->addFlash("success", "L'exposition a bien été supprimé définitivement");
+            } catch (Error $e) {
+                return $this->addFlash("danger", "Une erreur est survenue, l'exposition n'a pas pu être supprimé");
+            }
+        } else {
+            // Soft delete
+            $erepo->remove($expo);
+
+            $this->addFlash("success", "L'exposition a bien été supprimé");
+        }
+
+        return $this->redirectToRoute('admin_expos');
+    }
+
+    #[Route(path: '/restore/{id}', name: 'admin_expo_restore')]
+    public function restoreExpo(Exposition $expo = null, EntityManagerInterface $em)
+    {
+        if (!$expo) {
+            throw new NotFoundException('Exposition non trouvé');
+        }
+
+        $expo->setDeletedAt(null);
+
         $em->flush();
 
-        $this->addFlash("success", "L'exposition a bien été supprimé définitivement");
-      } catch (Error $e) {
-        return $this->addFlash("danger", "Une erreur est survenue, l'exposition n'a pas pu être supprimé");
-      }
-    } else {
-      // Soft delete
-      $erepo->remove($expo);
+        $this->addFlash("success", "L'exposition a bien été restauré");
 
-      $this->addFlash("success", "L'exposition a bien été supprimé");
+        return $this->redirectToRoute('admin_expos');
     }
-
-    return $this->redirectToRoute('admin_expos');
-  }
-
-  #[Route(path: '/restore/{id}', name: 'admin_expo_restore')]
-  public function restoreExpo(Exposition $expo = null, EntityManagerInterface $em)
-  {
-    if (!$expo) {
-      throw new NotFoundException('Exposition non trouvé');
-    }
-
-    $expo->setDeletedAt(null);
-
-    $em->flush();
-
-    $this->addFlash("success", "L'exposition a bien été restauré");
-
-    return $this->redirectToRoute('admin_expos');
-  }
 }

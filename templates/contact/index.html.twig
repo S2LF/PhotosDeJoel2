@@ -1,16 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Formulaire de contact{% endblock %}
+{% block title %}Les Photos de Joël | Formulaire de contact
+{% endblock %}
 
 {% block body %}
-<h1 class="text-center">Formulaire de contact</h1>
-<section class="container">
-  {{ form_start(contactForm) }}
-  {{ form_row(contactForm.subject) }}
-  {{ form_row(contactForm.name) }}
-  {{ form_row(contactForm.email) }}
-  {{ form_row(contactForm.content, {'attr' : {'cols' : '15'}}) }}
-  {{ form_row(contactForm.rgpd) }}
-  {{ form_end(contactForm) }}
-</section>
+	<h1 class="text-center">Formulaire de contact</h1>
+	<section class="container">
+		{{ form_start(contactForm) }}
+		{{ form_row(contactForm.subject) }}
+		{{ form_row(contactForm.name) }}
+		{{ form_row(contactForm.email) }}
+		{{ form_row(contactForm.content, {'attr' : {'cols' : '15'}}) }}
+		{{ form_row(contactForm.rgpd) }}
+		{{ form_end(contactForm) }}
+	</section>
 {% endblock %}

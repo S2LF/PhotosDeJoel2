@@ -21,158 +21,156 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_ADMIN')]
 class AdminPhotoController extends BaseController
 {
-  #[Route(path: '/{id}/photos', name: 'admin_cat_photos')]
-  public function index(CategoryPhoto $cat, PhotoRepository $prepo)
-  {
-    $photos = $prepo->getPhotoCatByPos($cat->getId());
-    $photosDeleted = $prepo->getPhotoCatByPosDeleted($cat->getId());
+    #[Route(path: '/{id}/photos', name: 'admin_cat_photos')]
+    public function index(CategoryPhoto $cat, PhotoRepository $prepo)
+    {
+        $photos = $prepo->getPhotoCatByPos($cat->getId());
+        $photosDeleted = $prepo->getPhotoCatByPosDeleted($cat->getId());
 
-    return $this->render('admin/photos/catPhotos.html.twig', [
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-      'cat' => $cat,
-      'photos' => $photos,
-      'photosDeleted' => $photosDeleted
-    ]);
-  }
+        return $this->render('admin/photos/catPhotos.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'cat' => $cat,
+          'photos' => $photos,
+          'photosDeleted' => $photosDeleted
+        ]);
+    }
 
-  #[Route(path: '/{id}/addPhoto', name: 'admin_add_photo')]
-  public function addPhoto(CategoryPhoto $cat, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
-  {
-    $photo = new Photo;
-    $form = $this->createForm(PhotoType::class, $photo);
+    #[Route(path: '/{id}/addPhoto', name: 'admin_add_photo')]
+    public function addPhoto(CategoryPhoto $cat, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
+    {
+        $photo = new Photo();
+        $form = $this->createForm(PhotoType::class, $photo);
 
-    $form->handleRequest($request);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-      if ($imageFile = $form->get("path")->getData()) {
-        $exif = @\exif_read_data($imageFile);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($imageFile = $form->get("path")->getData()) {
+                $exif = @\exif_read_data($imageFile);
 
-        if ($exif) {
+                if ($exif) {
+                    $wanted = ["Model" => "", "ExposureTime" => "", "FNumber" => "", "ISOSpeedRatings" => "", "FocalLength" => ""];
+                    $new_exif = array_intersect_key($exif, $wanted);
 
-          $wanted = ["Model" => "", "ExposureTime" => "", "FNumber" => "", "ISOSpeedRatings" => "", "FocalLength" => ""];
-          $new_exif = array_intersect_key($exif, $wanted);
+                    // CHANGE KEY
+                    // $arr[$newkey] = $arr[$oldkey];
+                    // unset($arr[$oldkey]);
 
-          // CHANGE KEY
-          // $arr[$newkey] = $arr[$oldkey];
-          // unset($arr[$oldkey]);
+                    $photo->setExifs($new_exif);
+                }
 
-          $photo->setExifs($new_exif);
+                $newFilename = $photo->getTitle();
+                $directory = "/photo/" . $cat->getId() . "/photo";
+                $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
+                $photo->setPath($directory . "/" . $imageFileName);
+                $photo->setCategoryPhoto($cat);
+            }
+
+            $em->persist($photo);
+            $em->flush();
+            $this->addFlash("success", "La photo a bien été ajoutée");
+            return $this->redirectToRoute('admin_cat_photos', [
+              'id' => $cat->getId()
+            ]);
         }
 
-        $newFilename = $photo->getTitle();
-        $directory = "/photo/" . $cat->getId() . "/photo";
-        $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
-        $photo->setPath($directory . "/" . $imageFileName);
-        $photo->setCategoryPhoto($cat);
-      }
-
-      $em->persist($photo);
-      $em->flush();
-      $this->addFlash("success", "La photo a bien été ajoutée");
-      return $this->redirectToRoute('admin_cat_photos', [
-        'id' => $cat->getId()
-      ]);
+        return $this->render('admin/photos/addPhoto.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'form' => $form->createView()
+        ]);
     }
 
-    return $this->render('admin/photos/addPhoto.html.twig', [
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-      'form' => $form->createView()
-    ]);
-  }
+    #[Route(path: '/{cat_id}/modifier-photo/{photo_id}', name: 'admin_edit_photo')]
+    #[Entity('cat', expr: 'repository.find(cat_id)')]
+    #[Entity('photo', expr: 'repository.find(photo_id)')]
+    public function editPhoto(CategoryPhoto $cat, Photo $photo, Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(PhotoEditType::class, $photo);
 
-  #[Route(path: '/{cat_id}/modifier-photo/{photo_id}', name: 'admin_edit_photo')]
-  #[Entity('cat', expr: 'repository.find(cat_id)')]
-  #[Entity('photo', expr: 'repository.find(photo_id)')]
-  public function editPhoto(CategoryPhoto $cat, Photo $photo, Request $request, EntityManagerInterface $em)
-  {
-    $form = $this->createForm(PhotoEditType::class, $photo);
+        $form->handleRequest($request);
 
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-
-      $em->flush();
-      $this->addFlash("success", "La photo a bien été modifiée");
-      return $this->redirectToRoute('admin_cat_photos', [
-        'id' => $cat->getId()
-      ]);
-    }
-
-    return $this->render('admin/photos/addPhoto.html.twig', [
-      'base' => $this->base,
-      'expositonsCount' => $this->expositionsCount,
-      'linksCount' => $this->linksCount,
-      'actusCount' => $this->actusCount,
-      'categoriesCount' => $this->categoriesCount,
-      'photo' => $photo,
-      'form' => $form->createView()
-    ]);
-  }
-
-  #[Route(path: '/photo/sort', name: 'admin_photo_sort')]
-  public function sortablePhoto(Request $request, EntityManagerInterface $em, PhotoRepository $prepo)
-  {
-    $photo_id = $request->request->get('photo_id');
-    $position = $request->request->get('position');
-
-    $photo = $prepo->findOneBy(['id' => $photo_id]);
-
-    $photo->setPosition($position);
-
-    try {
-      $em->flush();
-      return new Response(true);
-    } catch (\PdoException $e) {
-    }
-  }
-
-  #[Route(path: '/photo/delete/{id}/{hardDelete}', name: 'admin_delete_photo')]
-  public function deletePhoto(Photo $photo, $hardDelete = 0, EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
-  {
-    $cat = $photo->getCategoryPhoto();
-
-    if($hardDelete) {
-      try {
-        if ($photo->getPath() !== null) {
-          $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $photo->getPath());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash("success", "La photo a bien été modifiée");
+            return $this->redirectToRoute('admin_cat_photos', [
+              'id' => $cat->getId()
+            ]);
         }
-    
-        $em->remove($photo);
+
+        return $this->render('admin/photos/addPhoto.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'photo' => $photo,
+          'form' => $form->createView()
+        ]);
+    }
+
+    #[Route(path: '/photo/sort', name: 'admin_photo_sort')]
+    public function sortablePhoto(Request $request, EntityManagerInterface $em, PhotoRepository $prepo)
+    {
+        $photo_id = $request->request->get('photo_id');
+        $position = $request->request->get('position');
+
+        $photo = $prepo->findOneBy(['id' => $photo_id]);
+
+        $photo->setPosition($position);
+
+        try {
+            $em->flush();
+            return new Response(true);
+        } catch (\PdoException $e) {
+        }
+    }
+
+    #[Route(path: '/photo/delete/{id}/{hardDelete}', name: 'admin_delete_photo')]
+    public function deletePhoto(Photo $photo, $hardDelete = 0, EntityManagerInterface $em, PhotoRepository $prepo, FileUploaderService $fileUploaderService)
+    {
+        $cat = $photo->getCategoryPhoto();
+
+        if ($hardDelete) {
+            try {
+                if ($photo->getPath() !== null) {
+                    $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $photo->getPath());
+                }
+
+                $em->remove($photo);
+                $em->flush();
+
+                $this->addFlash("success", "La photo a bien été supprimé définitivement");
+            } catch (Error $e) {
+                return $this->addFlash("danger", "Une erreur est survenue, la photo n'a pas pu être supprimé");
+            }
+        } else {
+            // Soft delete
+            $prepo->remove($photo);
+
+            $this->addFlash("success", "La photo a bien été supprimée");
+        }
+
+        return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
+    }
+
+    #[Route(path: '/restore/{id}', name: 'admin_restore_photo')]
+    public function restorePhoto(Photo $photo, EntityManagerInterface $em)
+    {
+        $cat = $photo->getCategoryPhoto();
+
+        $photo->setDeletedAt(null);
+
         $em->flush();
 
-        $this->addFlash("success", "La photo a bien été supprimé définitivement");
-      } catch (Error $e) {
-        return $this->addFlash("danger", "Une erreur est survenue, la photo n'a pas pu être supprimé");
-      }
-    } else {
-      // Soft delete
-      $prepo->remove($photo);
+        $this->addFlash("success", "La photo a bien été restaurée");
 
-      $this->addFlash("success", "La photo a bien été supprimée");
+        return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
     }
-
-    return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
-  }
-
-  #[Route(path: '/restore/{id}', name: 'admin_restore_photo')]
-  public function restorePhoto(Photo $photo, EntityManagerInterface $em)
-  {
-    $cat = $photo->getCategoryPhoto();
-
-    $photo->setDeletedAt(null);
-
-    $em->flush();
-
-    $this->addFlash("success", "La photo a bien été restaurée");
-
-    return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
-  }
 }
