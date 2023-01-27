@@ -16,11 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-#[Route(path: '/admin')]
+#[Route(path: '/admin/expositions')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminExposController extends BaseController
 {
-  #[Route(path: '/expositions', name: 'admin_expos')]
+  #[Route(path: '/', name: 'admin_expos')]
   public function index(BaseRepository $grepo, ExpositionRepository $erepo)
   {
     $expos = $erepo->findAllOrderByPos();
@@ -37,8 +37,8 @@ class AdminExposController extends BaseController
     ]);
   }
 
-  #[Route(path: '/expositions/add', name: 'admin_expo_add')]
-  #[Route(path: '/expositions/edit/{id}', name: 'admin_expo_edit')]
+  #[Route(path: '/add', name: 'admin_expo_add')]
+  #[Route(path: '/edit/{id}', name: 'admin_expo_edit')]
   public function formCat(Exposition $expo = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$expo) {
@@ -83,7 +83,7 @@ class AdminExposController extends BaseController
     ]);
   }
 
-  #[Route(path: '/expositions/sort', name: 'admin_expo_sort')]
+  #[Route(path: '/sort', name: 'admin_expo_sort')]
   public function sortableExpo(Request $request, EntityManagerInterface $em, ExpositionRepository $erepo)
   {
     $expo_id = $request->request->get('expo_id');
@@ -100,7 +100,7 @@ class AdminExposController extends BaseController
     }
   }
 
-  #[Route(path: '/expositions/delete/{id}/{hardDelete}', name: 'admin_expo_delete')]
+  #[Route(path: '/delete/{id}/{hardDelete}', name: 'admin_expo_delete')]
   public function deleteActExpo(Exposition $expo = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, ExpositionRepository $erepo)
   {
     if (!$expo) {
@@ -126,6 +126,22 @@ class AdminExposController extends BaseController
 
       $this->addFlash("success", "L'exposition a bien été supprimé");
     }
+
+    return $this->redirectToRoute('admin_expos');
+  }
+
+  #[Route(path: '/restore/{id}', name: 'admin_expo_restore')]
+  public function restoreExpo(Exposition $expo = null, EntityManagerInterface $em)
+  {
+    if (!$expo) {
+      throw new NotFoundException('Exposition non trouvé');
+    }
+
+    $expo->setDeletedAt(null);
+
+    $em->flush();
+
+    $this->addFlash("success", "L'exposition a bien été restauré");
 
     return $this->redirectToRoute('admin_expos');
   }

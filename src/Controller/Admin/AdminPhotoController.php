@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin')]
+#[Route(path: '/admin/categories')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminPhotoController extends BaseController
 {
-  #[Route(path: '/cat/{id}/photos', name: 'admin_cat_photos')]
+  #[Route(path: '/{id}/photos', name: 'admin_cat_photos')]
   public function index(CategoryPhoto $cat, PhotoRepository $prepo)
   {
     $photos = $prepo->getPhotoCatByPos($cat->getId());
@@ -39,7 +39,7 @@ class AdminPhotoController extends BaseController
     ]);
   }
 
-  #[Route(path: '/cat/{id}/addPhoto', name: 'admin_add_photo')]
+  #[Route(path: '/{id}/addPhoto', name: 'admin_add_photo')]
   public function addPhoto(CategoryPhoto $cat, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     $photo = new Photo;
@@ -88,7 +88,7 @@ class AdminPhotoController extends BaseController
     ]);
   }
 
-  #[Route(path: '/cat/{cat_id}/modifier-photo/{photo_id}', name: 'admin_edit_photo')]
+  #[Route(path: '/{cat_id}/modifier-photo/{photo_id}', name: 'admin_edit_photo')]
   #[Entity('cat', expr: 'repository.find(cat_id)')]
   #[Entity('photo', expr: 'repository.find(photo_id)')]
   public function editPhoto(CategoryPhoto $cat, Photo $photo, Request $request, EntityManagerInterface $em)
@@ -158,6 +158,20 @@ class AdminPhotoController extends BaseController
 
       $this->addFlash("success", "La photo a bien été supprimée");
     }
+
+    return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
+  }
+
+  #[Route(path: '/restore/{id}', name: 'admin_restore_photo')]
+  public function restorePhoto(Photo $photo, EntityManagerInterface $em)
+  {
+    $cat = $photo->getCategoryPhoto();
+
+    $photo->setDeletedAt(null);
+
+    $em->flush();
+
+    $this->addFlash("success", "La photo a bien été restaurée");
 
     return $this->redirectToRoute('admin_cat_photos', ['id' => $cat->getId()]);
   }

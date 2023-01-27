@@ -15,12 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin')]
+#[Route(path: '/admin/actualites')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminActuController extends BaseController
 {
 
-  #[Route(path: '/actus', name: 'admin_actu')]
+  #[Route(path: '/', name: 'admin_actu')]
   public function index(ActualityRepository $arepo)
   {
     $actus = $arepo->findAllOrderByPos();
@@ -37,8 +37,8 @@ class AdminActuController extends BaseController
     ]);
   }
 
-  #[Route(path: '/actu/add', name: 'admin_actu_add')]
-  #[Route(path: '/actu/edit/{id}', name: 'admin_actu_edit')]
+  #[Route(path: '/add', name: 'admin_actu_add')]
+  #[Route(path: '/edit/{id}', name: 'admin_actu_edit')]
   public function formCat(Actuality $actu = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$actu) {
@@ -84,7 +84,7 @@ class AdminActuController extends BaseController
     ]);
   }
 
-  #[Route(path: '/actu/delete/{id}/{hardDelete}', name: 'admin_actu_delete')]
+  #[Route(path: '/delete/{id}/{hardDelete}', name: 'admin_actu_delete')]
   public function deleteActu(Actuality $actu = null, $hardDelete = 0, EntityManagerInterface $em, FileUploaderService $fileUploaderService, ActualityRepository $arepo)
   {
     if (!$actu) {
@@ -112,7 +112,7 @@ class AdminActuController extends BaseController
     return $this->redirectToRoute('admin_actu');
   }
 
-  #[Route(path: '/actu/sort', name: 'admin_actu_sort')]
+  #[Route(path: '/sort', name: 'admin_actu_sort')]
   public function sortableActu(Request $request, EntityManagerInterface $em, ActualityRepository $arepo)
   {
     $actu_id = $request->request->get('actu_id');
@@ -128,5 +128,21 @@ class AdminActuController extends BaseController
     } catch (\PdoException $e) {
       throw new Error($e);
     }
+  }
+
+  #[Route(path: '/restore/{id}', name: 'admin_actu_restore')]
+  public function restoreActu(Actuality $actu = null, EntityManagerInterface $em)
+  {
+    if (!$actu) {
+      throw new NotFoundException('Actualité non trouvé');
+    }
+
+    $actu->setDeletedAt(null);
+
+    $em->flush();
+
+    $this->addFlash("success", "L'actualité a bien été restaurée");
+
+    return $this->redirectToRoute('admin_actu');
   }
 }

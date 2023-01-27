@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Form\CatType;
-use App\Entity\PhotoCategorie;
 use App\Repository\PhotoRepository;
 use App\Service\FileUploaderService;
 use App\Controller\BaseController;
@@ -16,12 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin')]
+#[Route(path: '/admin/cat')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminCatController extends BaseController
 {
 
-  #[Route(path: '/cat', name: 'admin_categories')]
+  #[Route(path: '/', name: 'admin_categories')]
   public function Index(CategoryPhotoRepository $pcrepo, PhotoRepository $prepo)
   {
     // $cats = $pcrepo->findAll();
@@ -39,8 +38,8 @@ class AdminCatController extends BaseController
     ]);
   }
 
-  #[Route(path: '/cat/editCat/{id}', name: 'admin_edit_cat')]
-  #[Route(path: '/cat/addCat', name: 'admin_add_cat')]
+  #[Route(path: '/editCat/{id}', name: 'admin_edit_cat')]
+  #[Route(path: '/addCat', name: 'admin_add_cat')]
   public function add_cat(CategoryPhoto $cat = null, Request $request, EntityManagerInterface $em, FileUploaderService $fileUploaderService)
   {
     if (!$cat) {
@@ -79,7 +78,7 @@ class AdminCatController extends BaseController
     ]);
   }
 
-  #[Route(path: '/cat/delete/{id}/{hardDelete}', name: 'admin_delete_cat')]
+  #[Route(path: '/delete/{id}/{hardDelete}', name: 'admin_delete_cat')]
   public function deleteCat(CategoryPhoto $cat, $hardDelete = 0, EntityManagerInterface $em, PhotoRepository $prepo, CategoryPhotoRepository $cprepo, FileUploaderService $fileUploaderService)
   {
     if($hardDelete) {
@@ -114,7 +113,7 @@ class AdminCatController extends BaseController
     return $this->redirectToRoute('admin_categories');
   }
 
-  #[Route(path: '/cat/sort', name: 'admin_cat_sort')]
+  #[Route(path: '/sort', name: 'admin_cat_sort')]
   public function sortableCat(Request $request, EntityManagerInterface $em, CategoryPhotoRepository $lrepo)
   {
     $cat_id = $request->request->get('cat_id');
@@ -129,5 +128,16 @@ class AdminCatController extends BaseController
       return new Response(true);
     } catch (\PdoException $e) {
     }
+  }
+
+  #[Route(path: '/restore/{id}', name: 'admin_restore_cat')]
+  public function restoreCat(CategoryPhoto $cat, EntityManagerInterface $em)
+  {
+    $cat->setDeletedAt(null);
+    $em->flush();
+
+    $this->addFlash("success", "La catégorie a bien été restauré");
+
+    return $this->redirectToRoute('admin_categories');
   }
 }

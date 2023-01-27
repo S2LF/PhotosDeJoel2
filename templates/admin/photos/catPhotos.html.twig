@@ -75,7 +75,14 @@
                             Aucun exif pour cette photo
                           {% endif %}
                           ">
-            <figcaption>{{ photo.title }} <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_delete_photo', {'id':photo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></figcaption>
+            <figcaption>{{ photo.title }} 
+              <a href="{{ path('admin_restore_photo', {'id':photo.id})}}">
+                <i class="fas fa-plus-square text-success"></i>
+              </a>
+              <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_delete_photo', {'id':photo.id, 'hardDelete':1})}}">
+                <i class="fas fa-minus-square text-danger"></i>
+              </a>
+            </figcaption>
           </figure>
 
           <!-- <details>

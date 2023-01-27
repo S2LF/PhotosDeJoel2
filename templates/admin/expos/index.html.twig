@@ -87,11 +87,13 @@
               </figure>
               {% endif %}
               <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.title}}&nbsp;
-              <a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
-              <br>
-                Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
-                Date de création : {{expo.creationDate |date('d/m/Y') }}<br>
-                Contenu :<br>{{ expo.content }}</p>
+                <a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_expo_restore', {'id':expo.id})}}"><i class="fas fa-plus-square text-success"></i></a></span>
+                <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
+                <br>
+                  Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
+                  Date de création : {{expo.creationDate |date('d/m/Y') }}<br>
+                  Contenu :<br>{{ expo.content }}
+              </p>
             </div>
           </article>
         {% else %}
@@ -104,11 +106,13 @@
               </figure>
               {% endif %}
               <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.title}}&nbsp;
-                <a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
+                <a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_expo_restore', {'id':expo.id})}}"><i class="fas fa-plus-square text-success"></i></a></span>
+                <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
                 <br>
                 Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
                 Date de création : {{expo.creationDate |date('d/m/Y') }}<br>
-                Contenu :<br>{{ expo.content }}</p>
+                Contenu :<br>{{ expo.content }}
+              </p>
             </div>
           </article>
           {% else %}
@@ -120,7 +124,8 @@
               </figure>
               {% endif %}
               <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.title}}&nbsp;
-                <a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
+                <a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_expo_restore', {'id':expo.id})}}"><i class="fas fa-plus-square text-success"></i></a></span>
+                <a onclick="return confirm('Êtes-vous sûre de vouloir mettre supprimer définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
                 <br>
                 Date de l'expo : {{ expo.eventDate |date('d/m/Y') }} <br>
                 Date de création : {{expo.creationDate |date('d/m/Y') }}<br>

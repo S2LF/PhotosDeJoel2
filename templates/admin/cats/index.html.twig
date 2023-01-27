@@ -46,6 +46,7 @@
           <div class="rounded border">
             <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
               <h3>{{ cat.title }} ({{ cat.photos|length }})
+                <a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cette catégorie ?')" href="{{ path('admin_restore_cat', {'id':cat.id})}}"><i class="fas fa-plus-square text-success"></i></a>
                 <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cette catégorie ? Cela supprimera aussi les photos associé.')" href="{{ path('admin_delete_cat', {'id':cat.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a>
               </h3>
             </a>
