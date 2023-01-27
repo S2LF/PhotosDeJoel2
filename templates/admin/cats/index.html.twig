@@ -9,38 +9,58 @@
 <h2 class="text-center">Gestions des catégories</h2>
 
 {% if cats == null %}
-<p>
-<h3 class="text-center">Pas de catégories</h3>
-</p>
+  <p class="text-center">Pas de catégories</p>
 {% else %}
-<section class="draggable row justify-content-center mx-auto text-center">
-  {% if 'admin/cat' in app.request.uri %}
-  {% for cat in cats %}
-  <article class="m-3 col-2" data-id="{{ cat.id }}">
-    <div class="rounded border">
-      <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
-        <h3>{{ cat.title }} ({{ cat.photos|length }})
-          <a href="{{ path('admin_edit_cat', {'id':cat.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cette catégorie ? Cela supprimera aussi les photos qui sont relié à cette catégorie')" href="{{ path('admin_delete_cat', {'id':cat.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
-        </h3>
-      </a>
-      <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
-        {% if cat.photoCoverPath == null %}
-        <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
-        {% else %}
-        <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
-        {% endif %}
-      </a>
-    </div>
-  </article>
-  {% endfor %}
-  {% endif %}
-</section>
+  <section class="draggable row justify-content-center mx-auto text-center">
+    {% for cat in cats %}
+      <article class="m-3 col-2" data-id="{{ cat.id }}">
+        <div class="rounded border">
+          <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
+            <h3>{{ cat.title }} ({{ cat.photos|length }})
+              <a href="{{ path('admin_edit_cat', {'id':cat.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
+              <a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cette catégorie ?')" href="{{ path('admin_delete_cat', {'id':cat.id, 'hardDelete':0})}}"><i class="fas fa-minus-square text-danger"></i></a>
+            </h3>
+          </a>
+          <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
+            {% if cat.photoCoverPath == null %}
+            <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
+            {% else %}
+            <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
+            {% endif %}
+          </a>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
 {% endif %}
 <div class="text-center">
   <a href="{{ path('admin_add_cat')}}" class="btn btn-success">Ajouter une catégorie</a>
 </div>
-
+  <section>
+    <h2 class="text-center">Corbeille des catégories ({{catsDeleted | length}})</h2>
+  </section>
+  {% if catsDeleted|length > 0 %}
+    <section class="row justify-content-center mx-auto text-center">
+      {% for cat in catsDeleted %}
+        <article class="m-3 col-2" data-id="{{ cat.id }}">
+          <div class="rounded border">
+            <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
+              <h3>{{ cat.title }} ({{ cat.photos|length }})
+                <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cette catégorie ? Cela supprimera aussi les photos associé.')" href="{{ path('admin_delete_cat', {'id':cat.id, 'hardDelete':1})}}"><i class="fas fa-minus-square text-danger"></i></a>
+              </h3>
+            </a>
+            <a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
+              {% if cat.photoCoverPath == null %}
+              <img src="{{ asset('img/default/Default.png' ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
+              {% else %}
+              <img src="{{ asset('img/' ~ cat.photoCoverPath ) | imagine_filter('miniature') }}" alt="{{ cat.title }}">
+              {% endif %}
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    </section>
+  {% endif %}
 {% endblock %}
 
 {% block javascripts %}

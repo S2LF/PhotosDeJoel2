@@ -46,4 +46,14 @@ class LinkRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllOrderByPosDeleted()
+    {
+        return $this->createQueryBuilder('l')
+            ->orderBy('l.position', 'ASC')
+            ->where('l.deletedAt IS NOT NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

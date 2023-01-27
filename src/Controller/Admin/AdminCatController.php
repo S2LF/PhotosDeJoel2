@@ -26,6 +26,7 @@ class AdminCatController extends BaseController
   {
     // $cats = $pcrepo->findAll();
     $cats = $pcrepo->findAllOrderByPos();
+    $catsDeleted = $pcrepo->findAllOrderByPosDeleted();
 
     return $this->render('admin/cats/index.html.twig', [
       'base' => $this->base,
@@ -34,6 +35,7 @@ class AdminCatController extends BaseController
       'actusCount' => $this->actusCount,
       'categoriesCount' => $this->categoriesCount,
       'cats' => $cats,
+      'catsDeleted' => $catsDeleted
     ]);
   }
 

@@ -24,7 +24,8 @@ class AdminPhotoController extends BaseController
   #[Route(path: '/cat/{id}/photos', name: 'admin_cat_photos')]
   public function index(CategoryPhoto $cat, PhotoRepository $prepo)
   {
-    $photos = $prepo->findBy(['categoryPhoto' => $cat, 'deletedAt' => null], ['position' => 'ASC']);
+    $photos = $prepo->getPhotoCatByPos($cat->getId());
+    $photosDeleted = $prepo->getPhotoCatByPosDeleted($cat->getId());
 
     return $this->render('admin/photos/catPhotos.html.twig', [
       'base' => $this->base,
@@ -33,7 +34,8 @@ class AdminPhotoController extends BaseController
       'actusCount' => $this->actusCount,
       'categoriesCount' => $this->categoriesCount,
       'cat' => $cat,
-      'photos' => $photos
+      'photos' => $photos,
+      'photosDeleted' => $photosDeleted
     ]);
   }
 

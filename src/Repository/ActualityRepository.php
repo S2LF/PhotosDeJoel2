@@ -54,4 +54,14 @@ class ActualityRepository extends ServiceEntityRepository
 				->getResult()
 			;
     }
+
+    public function findAllOrderByPosDeleted()
+    {   
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.position', 'ASC')
+            ->where('a.deletedAt IS NOT NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

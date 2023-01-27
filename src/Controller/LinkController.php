@@ -12,7 +12,7 @@ class LinkController extends BaseController
   #[Route(path: '/liens', name: 'links')]
   public function index(LinkRepository $lienrepo): Response
   {
-    $links =  $lienrepo->findBy([], ['position' => 'ASC']);
+    $links =  $lienrepo->findAllOrderByPos();
 
     return $this->render('link/index.html.twig', [
       'base' => $this->base,

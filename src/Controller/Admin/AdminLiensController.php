@@ -19,10 +19,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class AdminLiensController extends BaseController
 {
-  #[Route(path: '/lien', name: 'admin_link')]
+  #[Route(path: '/liens', name: 'admin_link')]
   public function index(LinkRepository $lrepo)
   {
     $links = $lrepo->findAllOrderByPos();
+    $linksDeleted = $lrepo->findAllOrderByPosDeleted();
 
     return $this->render('admin/liens/index.html.twig', [
       'base' => $this->base,
@@ -30,12 +31,13 @@ class AdminLiensController extends BaseController
       'linksCount' => $this->linksCount,
       'actusCount' => $this->actusCount,
       'categoriesCount' => $this->categoriesCount,
-      'liens' => $links
+      'liens' => $links,
+      'liensDeleted' => $linksDeleted,
     ]);
   }
 
-  #[Route(path: '/lien/add', name: 'admin_link_add')]
-  #[Route(path: '/lien/edit/{id}', name: 'admin_link_edit')]
+  #[Route(path: '/liens/add', name: 'admin_link_add')]
+  #[Route(path: '/liens/edit/{id}', name: 'admin_link_edit')]
   public function formCat(Link $link = null, Request $request, EntityManagerInterface $em)
   {
     if (!$link) {

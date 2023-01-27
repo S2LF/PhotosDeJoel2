@@ -12,7 +12,7 @@ class ActuController extends BaseController
   #[Route(path: '/actualites', name: 'actu')]
   public function index(ActualityRepository $acturepo): Response
   {
-    $actus =  $acturepo->findBy([], ['position' => 'ASC']);
+    $actus =  $acturepo->findAllOrderByPos();
 
     return $this->render('actu/index.html.twig', [
       'base' => $this->base,

@@ -14,7 +14,7 @@ class PhotoController extends BaseController
   #[Route(path: '/', name: 'cats')]
   public function index(CategoryPhotoRepository $pcrepo)
   {
-    $cats =  $pcrepo->findBy([], ['position' => 'ASC']);
+    $cats =  $pcrepo->findAllOrderByPos();
 
     return $this->render('photos/index.html.twig', [
       'base' => $this->base,
@@ -29,7 +29,7 @@ class PhotoController extends BaseController
   #[Route(path: '/{id}/photos', name: 'photo')]
   public function photo_cat(CategoryPhoto $cat, PhotoRepository $prepo)
   {
-    $photos = $prepo->findBy(['categoryPhoto' => $cat, 'deletedAt' => null], ['position' => 'ASC']);
+    $photos = $prepo->findAllOrderByPos();
 
     return $this->render('photos/catPhotos.html.twig', [
       'base' => $this->base,

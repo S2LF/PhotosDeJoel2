@@ -24,6 +24,7 @@ class AdminExposController extends BaseController
   public function index(BaseRepository $grepo, ExpositionRepository $erepo)
   {
     $expos = $erepo->findAllOrderByPos();
+    $exposDeleted = $erepo->findAllOrderByPosDeleted();
 
     return $this->render('admin/expos/index.html.twig', [
       'base' => $this->base,
@@ -31,7 +32,8 @@ class AdminExposController extends BaseController
       'linksCount' => $this->linksCount,
       'actusCount' => $this->actusCount,
       'categoriesCount' => $this->categoriesCount,
-      'expos' => $expos
+      'expos' => $expos,
+      'exposDeleted' => $exposDeleted,
     ]);
   }
 

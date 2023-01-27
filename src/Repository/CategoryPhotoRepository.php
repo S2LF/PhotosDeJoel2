@@ -52,4 +52,14 @@ class CategoryPhotoRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllOrderByPosDeleted()
+    {
+        return $this->createQueryBuilder('cp')
+            ->orderBy('cp.position', 'ASC')
+            ->where('cp.deletedAt IS NOT NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

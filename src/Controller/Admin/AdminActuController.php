@@ -24,7 +24,7 @@ class AdminActuController extends BaseController
   public function index(ActualityRepository $arepo)
   {
     $actus = $arepo->findAllOrderByPos();
-
+    $actusDeleted = $arepo->findAllOrderByPosDeleted();
 
     return $this->render('admin/actu/index.html.twig', [
       'base' => $this->base,
@@ -32,7 +32,8 @@ class AdminActuController extends BaseController
       'linksCount' => $this->linksCount,
       'actusCount' => $this->actusCount,
       'categoriesCount' => $this->categoriesCount,
-      'actus' => $actus
+      'actus' => $actus,
+      'actusDeleted' => $actusDeleted,
     ]);
   }
 

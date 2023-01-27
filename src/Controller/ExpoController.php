@@ -12,7 +12,7 @@ class ExpoController extends BaseController
   #[Route(path: '/expositions', name: 'expo')]
   public function index(ExpositionRepository $exporepo): Response
   {
-    $expos =  $exporepo->findBy([], ['position' => 'ASC']);
+    $expos =  $exporepo->findAllOrderByPos();
 
     return $this->render('expo/index.html.twig', [
       'base' => $this->base,
