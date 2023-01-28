@@ -1,110 +1,213 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin - Créer actualité{% endblock %}
+{% block title %}Les Photos de Joël | Admin - Créer actualité
+{% endblock %}
 
 {% block body %}
 
-{% include "admin/adminNav.html.twig" %}
+	{% include "admin/adminNav.html.twig" %}
 
-<h2 class="text-center">Gestion des actualités</h2>
+	<h2 class="text-center">Gestion des actualités</h2>
 
-<div class="container">
-  {% if actus|length == 0 %}
-  <section>
-    <h3 class="text-center">
-      Aucune actualité
-    </h3>
-  </section>
-  {% else %}
-  <section class="draggable">
-    {% for actu in actus %}
-    {% if actu.path is null %}
-    <article class="text-center justify-content-center m-3" data-id="{{ actu.id }}">
-      <div class="rounded border p-2 d-flex flex-column">
-        {% if actu.path %}
-        <figure class="m-1 mr-2 align-self-center">
-          <img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
-        </figure>
-        {% endif %}
-        <div class="d-flex flex-column justify-content-center">
-          <p>{{actu.categorie}} - {{actu.dateCreation|date('d/m/Y') }}&nbsp;
-            <a href="{{ path('admin_actu_edit', {'id':actu.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
-          </p>
-          <p>{{ actu.contenu|raw}}</p>
-        </div>
-      </div>
-    </article>
-    {% else %}
-    {% if loop.index is odd %}
-    <article class="row text-center justify-content-center m-3" data-id="{{ actu.id }}">
-      <div class="rounded border p-2 d-flex">
-        {% if actu.path %}
-        <figure class="m-1 mr-2 align-self-center">
-          <img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
-        </figure>
-        {% endif %}
-        <div class="d-flex flex-column justify-content-center">
-          <p>{{actu.categorie}} - {{actu.dateCreation|date('d/m/Y') }}&nbsp;
-            <a href="{{ path('admin_actu_edit', {'id':actu.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
-          </p>
-          <p>{{ actu.contenu|raw}}</p>
-        </div>
-      </div>
-    </article>
-    {% else %}
-    <article class="row text-center justify-content-center m-3" data-id="{{ actu.id }}">
-      <div class="rounded border p-2 d-flex flex-row-reverse">
-        {% if actu.path %}
-        <figure class="m-1 mr-2 align-self-center">
-          <img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
-        </figure>
-        {% endif %}
-        <div class="d-flex flex-column justify-content-center">
-          <p>{{actu.categorie}} - {{actu.dateCreation|date('d/m/Y') }}&nbsp;
-            <a href="{{ path('admin_actu_edit', {'id':actu.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-            <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id})}}"><i class="fas fa-minus-square text-danger"></i></a>
-          </p>
-          <p>{{ actu.contenu|raw}}</p>
-        </div>
-      </div>
-    </article>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
-  </section>
-  {% endif %}
-  <div class="text-center">
-    <a href="{{ path('admin_actu_add') }}" class="btn btn-success">Ajouter une actualité</a>
-  </div>
-</div>
+	<div class="container">
+		{% if actus|length == 0 %}
+			<section>
+				<p class="text-center">
+					Aucune actualité
+				</p>
+			</section>
+		{% else %}
+			<section class="draggable">
+				{% for actu in actus %}
+					{% if actu.path is null %}
+						<article class="text-center justify-content-center m-3" data-id="{{ actu.id }}">
+							<div class="rounded border p-2 d-flex flex-column">
+								{% if actu.path %}
+									<figure class="m-1 mr-2 align-self-center">
+										<img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
+									</figure>
+								{% endif %}
+								<div class="d-flex flex-column justify-content-center">
+									<p>{{actu.category}}
+										-
+										{{actu.creationDate|date('d/m/Y') }}&nbsp;
+										<a href="{{ path('admin_actu_edit', {'id':actu.id})}}">
+											<i class="fas fa-pen-square text-warning"></i>
+										</a>
+										<a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':0})}}">
+											<i class="fas fa-minus-square text-danger"></i>
+										</a>
+									</p>
+									<p>{{ actu.content|raw}}</p>
+								</div>
+							</div>
+						</article>
+					{% else %}
+						{% if loop.index is odd %}
+							<article class="row text-center justify-content-center m-3" data-id="{{ actu.id }}">
+								<div class="rounded border p-2 d-flex">
+									{% if actu.path %}
+										<figure class="m-1 mr-2 align-self-center">
+											<img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
+										</figure>
+									{% endif %}
+									<div class="d-flex flex-column justify-content-center">
+										<p>{{actu.category}}
+											-
+											{{actu.creationDate|date('d/m/Y') }}&nbsp;
+											<a href="{{ path('admin_actu_edit', {'id':actu.id})}}">
+												<i class="fas fa-pen-square text-warning"></i>
+											</a>
+											<a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':0})}}">
+												<i class="fas fa-minus-square text-danger"></i>
+											</a>
+										</p>
+										<p>{{ actu.content|raw}}</p>
+									</div>
+								</div>
+							</article>
+						{% else %}
+							<article class="row text-center justify-content-center m-3" data-id="{{ actu.id }}">
+								<div class="rounded border p-2 d-flex flex-row-reverse">
+									{% if actu.path %}
+										<figure class="m-1 mr-2 align-self-center">
+											<img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
+										</figure>
+									{% endif %}
+									<div class="d-flex flex-column justify-content-center">
+										<p>{{actu.category}}
+											-
+											{{actu.creationDate|date('d/m/Y') }}&nbsp;
+											<a href="{{ path('admin_actu_edit', {'id':actu.id})}}">
+												<i class="fas fa-pen-square text-warning"></i>
+											</a>
+											<a onclick="return confirm('Êtes-vous sûre de vouloir mettre à la corbeille cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':0})}}">
+												<i class="fas fa-minus-square text-danger"></i>
+											</a>
+										</p>
+										<p>{{ actu.content|raw}}</p>
+									</div>
+								</div>
+							</article>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</section>
+		{% endif %}
+		<div class="text-center">
+			<a href="{{ path('admin_actu_add') }}" class="btn btn-success">Ajouter une actualité</a>
+		</div>
+
+		<section>
+			<h2 class="text-center">Corbeille des actualités ({{actusDeleted | length}})</h2>
+		</section>
+		{% if actusDeleted|length > 0 %}
+			<section>
+				{% for actu in actusDeleted %}
+					{% if actu.path is null %}
+						<article class="text-center justify-content-center m-3" data-id="{{ actu.id }}">
+							<div class="rounded border p-2 d-flex flex-column">
+								{% if actu.path %}
+									<figure class="m-1 mr-2 align-self-center">
+										<img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
+									</figure>
+								{% endif %}
+								<div class="d-flex flex-column justify-content-center">
+									<p>{{actu.category}}
+										-
+										{{actu.creationDate|date('d/m/Y') }}&nbsp;
+										<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':1})}}">
+											<i class="fas fa-minus-square text-danger"></i>
+										</a>
+										<a href="{{ path('admin_actu_restore', {'id':actu.id})}}">
+											<i class="fas fa-plus-square text-success"></i>
+										</a>
+									</p>
+									<p>{{ actu.content|raw}}</p>
+								</div>
+							</div>
+						</article>
+					{% else %}
+						{% if loop.index is odd %}
+							<article class="row text-center justify-content-center m-3" data-id="{{ actu.id }}">
+								<div class="rounded border p-2 d-flex">
+									{% if actu.path %}
+										<figure class="m-1 mr-2 align-self-center">
+											<img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
+										</figure>
+									{% endif %}
+									<div class="d-flex flex-column justify-content-center">
+										<p>{{actu.category}}
+											-
+											{{actu.creationDate|date('d/m/Y') }}&nbsp;
+											<a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_actu_restore', {'id':actu.id})}}">
+												<i class="fas fa-plus-square text-success"></i>
+											</a>
+											<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':1})}}">
+												<i class="fas fa-minus-square text-danger"></i>
+											</a>
+										</p>
+										<p>{{ actu.content|raw}}</p>
+									</div>
+								</div>
+							</article>
+						{% else %}
+							<article class="row text-center justify-content-center m-3" data-id="{{ actu.id }}">
+								<div class="rounded border p-2 d-flex flex-row-reverse">
+									{% if actu.path %}
+										<figure class="m-1 mr-2 align-self-center">
+											<img src="{{ asset('/img/' ~ actu.path) | imagine_filter('expo') }}" alt="">
+										</figure>
+									{% endif %}
+									<div class="d-flex flex-column justify-content-center">
+										<p>{{actu.category}}
+											-
+											{{actu.creationDate|date('d/m/Y') }}&nbsp;
+											<a href="{{ path('admin_actu_restore', {'id':actu.id})}}">
+												<i class="fas fa-plus-square text-success"></i>
+											</a>
+											<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_actu_delete', {'id':actu.id, 'hardDelete':1})}}">
+												<i class="fas fa-minus-square text-danger"></i>
+											</a>
+										</p>
+										<p>{{ actu.content|raw}}</p>
+									</div>
+								</div>
+							</article>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</section>
+		{% else %}
+			<section>
+				<p class="text-center">
+					La corbeille est vide
+				</p>
+			</section>
+		{% endif %}
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
+	{{ parent() }}
 
-<script>
-  jQuery('.draggable').sortable({
-    stop: function (event, ui) {
-      let id = ui.item.attr('data-id')
-      console.log("id:" + id)
-      let position = ui.item.index()
-      console.log("pos:" + position)
-      $.post(
-        "{{ path('admin_actu_sort') }}",
-        {
-          'actu_id': id,
-          'position': position
-        },
-        function (data) {
-          console.log(data)
-        }
-      )
+	<script>
+		jQuery('.draggable').sortable({
+stop: function (event, ui) {
+let id = ui.item.attr('data-id')
+console.log("id:" + id)
+let position = ui.item.index()
+console.log("pos:" + position)
+$.post("{{ path('admin_actu_sort') }}", {
+'actu_id': id,
+'position': position
+}, function (data) {
+console.log(data)
+})
 
-    }
+}
 
-  })
-</script>
+})
+	</script>
 
 {% endblock %}

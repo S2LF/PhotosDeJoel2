@@ -1,30 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin{% endblock %}
+{% block title %}Les Photos de Joël | Admin
+{% endblock %}
 
 {% block body %}
 
-{% include "admin/adminNav.html.twig" %}
+	{% include "admin/adminNav.html.twig" %}
 
 
-<div class="container">
-  <div class="card bg-dark">
-    <div class="card-header">
-      <h2 class="text-center">Informations générale du site</h2>
-    </div>
-    <div class="card-body">
-      {{ form_start(form)}}
+	<div class="container">
+		<div class="card bg-dark">
+			<div class="card-header">
+				<h2 class="text-center">Informations générale du site</h2>
+			</div>
+			<div class="card-body">
+				{{ form_start(form)}}
 
-      {{ form_row(form.siteTitle)}}
-      {{ form_row(form.headerContent)}}
-      {{ form_row(form.homepageWord)}}
-      {{ form_row(form.homepageImagePath)}}
-      {{ form_row(form.text_footer)}}
+				{{ form_row(form.siteTitle)}}
+				{{ form_row(form.headerContent)}}
+				{{ form_row(form.homepageWord)}}
+				{{ form_row(form.homepageImagePath)}}
+				{{ form_row(form.text_footer)}}
 
-      <button class="btn btn-success" type="submit">Valider</button>
-      {{ form_end(form)}}
-    </div>
-  </div>
-</div>
+				<button class="btn btn-success" type="submit">Valider</button>
+				{{ form_end(form)}}
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

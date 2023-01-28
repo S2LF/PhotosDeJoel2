@@ -1,84 +1,142 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin - Créer photos{% endblock %}
+{% block title %}Les Photos de Joël | Admin - Créer photos
+{% endblock %}
 
 {% block body %}
 
-{% include "admin/adminNav.html.twig" %}
+	{% include "admin/adminNav.html.twig" %}
 
-<h1 class="text-center">{{ cat.titre }}</h1>
+	<h1 class="text-center">{{ cat.title }}</h1>
 
-{% if photos | length == 0 %}
-<h2 class="text-center">Pas de photo dans cette catégorie</h2>
-{% else %}
-<section class="draggable row justify-content-center mx-auto text-center">
-  {% for photo in photos %}
-  <article class="m-3 col-2" data-id="{{ photo.id }}">
-    <figure class="rounded border">
-      <img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip'
-        data-placement='right' data-html="true" title="
-                    {% if photo.exifs %}
-                        <strong>EXIFS</strong><br>
-                      {% for key, value in photo.exifs %}
-                      <u>{{ key }}</u> {{ value }}<br>
-                      {% endfor %}    
-                    {% else %}
-                      Aucun exif pour cette photo
-                    {% endif %}
-                    ">
-      <figcaption>{{ photo.titre }} <a href="{{ path('admin_edit_photo', {'id_cat':cat.id, 'id_photo':photo.id})}}"><i
-            class="fas fa-pen-square text-warning"></i></a><a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_delete_photo', {'id':photo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></figcaption>
-    </figure>
+	{% if photos | length == 0 %}
+		<p class="text-center">Pas de photo dans cette catégorie</p>
+	{% else %}
+		<section class="draggable row justify-content-center mx-auto text-center">
+			{% for photo in photos %}
+				<article class="m-3 col-2" data-id="{{ photo.id }}">
+					<figure class="rounded border">
+						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
+							                        {% if photo.exifs %}
+							                            <strong>EXIFS</strong><br>
+							                          {% for key, value in photo.exifs %}
+							                          <u>{{ key }}</u> {{ value }}<br>
+							                          {% endfor %}
+							                        {% else %}
+							                          Aucun exif pour cette photo
+							                        {% endif %}
+							                        ">
+						<figcaption>{{ photo.title }}
+							<a href="{{ path('admin_edit_photo', {'cat_id':cat.id, 'photo_id':photo.id})}}">
+								<i class="fas fa-pen-square text-warning"></i>
+							</a>
+							<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_delete_photo', {'id':photo.id, 'hardDelete':0})}}">
+								<i class="fas fa-minus-square text-danger"></i>
+							</a>
+						</figcaption>
+					</figure>
 
-    <!-- <details>
-                    <summary>Exifs</summary>
-                    <table>
-                        <tbody>
-                          {% if photo.exifs %}
-                            {% for key, value in photo.exifs %}
-                            <tr>
-                              <td>{{ key }}</td><td>{{ value }}</td>
-                            </tr>
-                            {% endfor %}    
-                            
-                          {% else %}
-                            <p>Aucun exif pour cette photo</p>
-                          {% endif %}
-                        </tbody>
-                    </table>
-                </details> -->
-  </article>
-  {% endfor %}
-</section>
-{% endif %}
+					<!-- <details>
+					                        <summary>Exifs</summary>
+					                        <table>
+					                            <tbody>
+					                              {% if photo.exifs %}
+					                                {% for key, value in photo.exifs %}
+					                                <tr>
+					                                  <td>{{ key }}</td><td>{{ value }}</td>
+					                                </tr>
+					                                {% endfor %}    
+					                                
+					                              {% else %}
+					                                <p>Aucun exif pour cette photo</p>
+					                              {% endif %}
+					                            </tbody>
+					                        </table>
+					                    </details> -->
+				</article>
+			{% endfor %}
+		</section>
+	{% endif %}
 
-<div class="text-center"><a href="{{ path('admin_add_photo', {'id':cat.id}) }}" class="btn btn-success">Ajouter une
-    photo</a></div>
+	<div class="text-center">
+		<a href="{{ path('admin_add_photo', {'id':cat.id}) }}" class="btn btn-success">Ajouter une photo</a>
+	</div>
 
+	<section>
+		<h2 class="text-center">Corbeille des photos de la catégorie
+			{{ cat.title }}
+			({{photosDeleted | length}})</h2>
+	</section>
+	{% if photosDeleted|length > 0 %}
+		<section class="row justify-content-center mx-auto text-center">
+			{% for photo in photosDeleted %}
+				<article class="m-3 col-2" data-id="{{ photo.id }}">
+					<figure class="rounded border">
+						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
+							                          {% if photo.exifs %}
+							                              <strong>EXIFS</strong><br>
+							                            {% for key, value in photo.exifs %}
+							                            <u>{{ key }}</u> {{ value }}<br>
+							                            {% endfor %}
+							                          {% else %}
+							                            Aucun exif pour cette photo
+							                          {% endif %}
+							                          ">
+						<figcaption>{{ photo.title }}
+							<a href="{{ path('admin_restore_photo', {'id':photo.id})}}">
+								<i class="fas fa-plus-square text-success"></i>
+							</a>
+							<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_delete_photo', {'id':photo.id, 'hardDelete':1})}}">
+								<i class="fas fa-minus-square text-danger"></i>
+							</a>
+						</figcaption>
+					</figure>
 
+					<!-- <details>
+					                          <summary>Exifs</summary>
+					                          <table>
+					                              <tbody>
+					                                {% if photo.exifs %}
+					                                  {% for key, value in photo.exifs %}
+					                                  <tr>
+					                                    <td>{{ key }}</td><td>{{ value }}</td>
+					                                  </tr>
+					                                  {% endfor %}    
+					                                  
+					                                {% else %}
+					                                  <p>Aucun exif pour cette photo</p>
+					                                {% endif %}
+					                              </tbody>
+					                          </table>
+					                      </details> -->
+				</article>
+			{% endfor %}
+		</section>
+	{% else %}
+		<section>
+			<p class="text-center">
+				La corbeille est vide
+			</p>
+		</section>
+	{% endif %}
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
+	{{ parent() }}
 
-<script>
-  jQuery('.draggable').sortable({
-    stop: function (event, ui) {
-      let id = ui.item.attr('data-id')
-      // console.log("id:"+id)
-      let position = ui.item.index()
-      // console.log("pos:"+position)
-      $.post(
-        "{{ path('admin_photo_sort') }}",
-        {
-          'photo_id': id,
-          'position': position
-        },
-        function (data) {
-          // console.log(data)
-        }
-      )
-    }
-  })
-</script>
+	<script>
+		jQuery('.draggable').sortable({
+stop: function (event, ui) {
+let id = ui.item.attr('data-id')
+// console.log("id:"+id)
+let position = ui.item.index()
+// console.log("pos:"+position)
+$.post("{{ path('admin_photo_sort') }}", {
+'photo_id': id,
+'position': position
+}, function (data) { // console.log(data)
+})
+}
+})
+	</script>
 {% endblock %}

@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ExpositionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ExpositionRepository;
+use Gedmo\Mapping\Annotation\SortablePosition;
 
 #[ORM\Entity(repositoryClass: ExpositionRepository::class)]
 class Exposition
@@ -27,6 +28,7 @@ class Exposition
     private ?string $content = null;
 
     #[ORM\Column]
+    #[SortablePosition]
     private ?int $position = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -35,6 +37,8 @@ class Exposition
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $path = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
 
     public function getId(): ?int
     {
@@ -121,6 +125,30 @@ class Exposition
     public function setPath(?string $path): self
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deletedAt
+     *
+     * @return ?\DateTimeInterface
+     */
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set the value of deletedAt
+     *
+     * @param ?\DateTimeInterface $deletedAt
+     *
+     * @return self
+     */
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }

@@ -21,6 +21,13 @@ class PhotoRepository extends ServiceEntityRepository
         parent::__construct($registry, Photo::class);
     }
 
+    /**
+     * save
+     *
+     * @param  mixed $entity
+     * @param  mixed $flush
+     * @return void
+     */
     public function save(Photo $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,15 +37,31 @@ class PhotoRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * remove
+     *
+     * @param  mixed $entity
+     * @param  mixed $flush
+     * @return void
+     */
     public function remove(Photo $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        // $this->getEntityManager()->remove($entity);
+
+        // if ($flush) {
+        //     $this->getEntityManager()->flush();
+        // }
     }
 
+    /**
+     * findAllOrderByPos
+     *
+     * @return void
+     */
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('p')
@@ -47,13 +70,36 @@ class PhotoRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-  
+
+    /**
+     * getPhotoCatByPos
+     *
+     * @param  mixed $catId
+     * @return Photo[]
+     */
     public function getPhotoCatByPos($catId)
     {
-      return $this->createQueryBuilder('p')
-        ->where('p.photo_categorie = ' . $catId)
-        ->orderBy('p.position', 'ASC')
-        ->getQuery()
-        ->getResult();
+        return $this->createQueryBuilder('p')
+            ->where('p.categoryPhoto = ' . $catId)
+            ->andWhere('p.deletedAt IS NULL')
+            ->orderBy('p.position', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * getPhotoCatByPosDeleted
+     *
+     * @param  mixed $catId
+     * @return Photo[]
+     */
+    public function getPhotoCatByPosDeleted($catId)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.categoryPhoto = ' . $catId)
+            ->andWhere('p.deletedAt IS NOT NULL')
+            ->orderBy('p.position', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

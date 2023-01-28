@@ -32,18 +32,32 @@ class ExpositionRepository extends ServiceEntityRepository
 
     public function remove(Exposition $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        // $this->getEntityManager()->remove($entity);
+
+        // if ($flush) {
+        //     $this->getEntityManager()->flush();
+        // }
     }
-    
+
     public function findAllOrderByPos()
     {
         return $this->createQueryBuilder('e')
-        ->orderBy('e.position', 'ASC')
-        ->getQuery()
-        ->getResult();
+            ->orderBy('e.position', 'ASC')
+            ->where('e.deletedAt IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllOrderByPosDeleted()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.position', 'ASC')
+            ->where('e.deletedAt IS NOT NULL')
+            ->getQuery()
+            ->getResult();
     }
 }

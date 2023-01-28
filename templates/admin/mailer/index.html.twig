@@ -1,27 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin - Créer exposition
+{% block title %}Les Photos de Joël | Admin
 {% endblock %}
 
 {% block body %}
 
 	{% include "admin/adminNav.html.twig" %}
 
+
 	<div class="container">
 		<div class="card bg-dark">
 			<div class="card-header">
-				<h2>Créer/Modifier une exposition</h2>
+				<h2 class="text-center">Contact</h2>
 			</div>
 			<div class="card-body">
 				{{ form_start(form)}}
 
-				{{ form_row(form.title)}}
-				{{ form_row(form.eventDate)}}
-				{{ form_row(form.place)}}
-				{{ form_row(form.path)}}
-				{{ form_row(form.content)}}
+				{{ form_row(form.NoReplyEmail)}}
+				{{ form_row(form.adminEmail)}}
+				{{ form_row(form.rgpdText)}}
+				{{ form_row(form.emailSubject)}}
 
-				<input type="submit" value="Valider">
+				<button class="btn btn-success" type="submit">Valider</button>
 				{{ form_end(form)}}
 			</div>
 		</div>

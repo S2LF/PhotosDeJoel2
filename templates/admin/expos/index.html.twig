@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin - Expositions{% endblock %}
+{% block title %}Les Photos de Joël | Admin - Expositions
+{% endblock %}
 
 {% block body %}
 
@@ -8,97 +9,207 @@
 
 <h2 class="text-center">Gestion des expositions</h2>
 <div class="container">
-  {% if expos|length == 0 %}
-  <p>
-  <h3 class="text-center">
-    Aucune exposition
-  </h3>
-  </p>
-  {% else %}
-  <section class="draggable">
-    {% for expo in expos %}
-    {% if expo.path is null %}
-    <article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
-      <div class="rounded border p-2 d-flex flex-column">
-        {% if expo.path %}
-        <figure class="m-1 mr-2 align-self-center">
-          <img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
-        </figure>
-        {% endif %}
-        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.titre}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-        <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
-        <br>
-          Date de l'expo : {{ expo.dateEvent |date('d/m/Y') }} <br>
-          Date de création : {{expo.dateCreation |date('d/m/Y') }}<br>
-          Contenu :<br>{{ expo.contenu }}</p>
-      </div>
-    </article>
-    {% else %}
-    {% if loop.index is odd %}
-    <article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
-      <div class="rounded border p-2 d-flex">
-        {% if expo.path %}
-        <figure class="m-1 mr-2 align-self-center">
-          <img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
-        </figure>
-        {% endif %}
-        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.titre}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i  class="fas fa-pen-square text-warning"></i></a>
-          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
-          <br>
-          Date de l'expo : {{ expo.dateEvent |date('d/m/Y') }} <br>
-          Date de création : {{expo.dateCreation |date('d/m/Y') }}<br>
-          Contenu :<br>{{ expo.contenu }}</p>
-      </div>
-    </article>
-    {% else %}
-    <article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
-      <div class="rounded border p-2 d-flex flex-row-reverse">
-        {% if expo.path %}
-        <figure class="m-1 mr-2 align-self-center">
-          <img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
-        </figure>
-        {% endif %}
-        <p class="d-flex flex-column justify-content-center"><span>Titre : {{expo.titre}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}"><i class="fas fa-pen-square text-warning"></i></a>
-          <a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id})}}"><i class="fas fa-minus-square text-danger"></i></a></span>
-          <br>
-          Date de l'expo : {{ expo.dateEvent |date('d/m/Y') }} <br>
-          Date de création : {{expo.dateCreation |date('d/m/Y') }}<br>
-          Contenu :<br>{{ expo.contenu }}</p>
-      </div>
-    </article>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
-  </section>
-  {% endif %}
-  <div class="text-center">
-    <a href="{{ path('admin_expo_add') }}" class="btn btn-success">Ajouter une exposition</a>
-  </div>
-</div>
-{% endblock %}
-
-{% block javascripts %}
-{{ parent() }}
-
-<script>
-  jQuery('.draggable').sortable({
-    stop: function (event, ui) {
-      let id = ui.item.attr('data-id')
-      console.log("id:" + id)
-      let position = ui.item.index()
-      console.log("pos:" + position)
-      $.post(
-        "{{ path('admin_expo_sort') }}",
-        {
-          'expo_id': id,
-          'position': position
-        },
-        function (data) {
-          console.log(data)
-        }
-      )
-    }
-  })
-</script>
-
-{% endblock %}
+	{% if expos|length == 0 %}
+		<p class="text-center">
+			Aucune exposition
+		</p>
+	{% else %}
+		<section class="draggable">
+			{% for expo in expos %}
+				{% if expo.path is null %}
+					<article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
+						<div class="rounded border p-2 d-flex flex-column">
+							{% if expo.path %}
+								<figure class="m-1 mr-2 align-self-center">
+									<img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
+								</figure>
+							{% endif %}
+							<p class="d-flex flex-column justify-content-center">
+								<span>Titre :
+									{{expo.title}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}">
+										<i class="fas fa-pen-square text-warning"></i>
+									</a>
+									<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':0})}}">
+										<i class="fas fa-minus-square text-danger"></i>
+									</a>
+								</span>
+								<br>
+								Date de l'expo :
+								{{ expo.eventDate |date('d/m/Y') }}
+								<br>
+								Date de création :
+								{{expo.creationDate |date('d/m/Y') }}<br>
+								Contenu :<br>{{ expo.content }}</p>
+						</div>
+					</article>
+				{% else %}
+					{% if loop.index is odd %}
+						<article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
+							<div class="rounded border p-2 d-flex">
+								{% if expo.path %}
+									<figure class="m-1 mr-2 align-self-center">
+										<img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
+									</figure>
+								{% endif %}
+								<p class="d-flex flex-column justify-content-center">
+									<span>Titre :
+										{{expo.title}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}">
+											<i class="fas fa-pen-square text-warning"></i>
+										</a>
+										<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':0})}}">
+											<i class="fas fa-minus-square text-danger"></i>
+										</a>
+									</span>
+									<br>
+									Date de l'expo :
+									{{ expo.eventDate |date('d/m/Y') }}
+									<br>
+									Date de création :
+									{{expo.creationDate |date('d/m/Y') }}<br>
+									Contenu :<br>{{ expo.content }}</p>
+							</div>
+						</article>
+					{% else %}
+						<article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
+							<div class="rounded border p-2 d-flex flex-row-reverse">
+								{% if expo.path %}
+									<figure class="m-1 mr-2 align-self-center">
+										<img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
+									</figure>
+								{% endif %}
+								<p class="d-flex flex-column justify-content-center">
+									<span>Titre :
+										{{expo.title}}&nbsp;<a href="{{ path('admin_expo_edit', {'id':expo.id})}}">
+											<i class="fas fa-pen-square text-warning"></i>
+										</a>
+										<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':0})}}">
+											<i class="fas fa-minus-square text-danger"></i>
+										</a>
+									</span>
+									<br>
+									Date de l'expo :
+									{{ expo.eventDate |date('d/m/Y') }}
+									<br>
+									Date de création :
+									{{expo.creationDate |date('d/m/Y') }}<br>
+									Contenu :<br>{{ expo.content }}</p>
+							</div>
+						</article>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+		</section>
+	{% endif %}
+	<div class="text-center">
+		<a href="{{ path('admin_expo_add') }}" class="btn btn-success">Ajouter une exposition</a>
+	</div>
+	<section>
+		<h2 class="text-center">Corbeille des expositions ({{exposDeleted | length}})</h2>
+	</section>
+	{% if exposDeleted|length > 0 %}
+		<section>
+			{% for expo in exposDeleted %}
+				{% if expo.path is null %}
+					<article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
+						<div class="rounded border p-2 d-flex flex-column">
+							{% if expo.path %}
+								<figure class="m-1 mr-2 align-self-center">
+									<img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
+								</figure>
+							{% endif %}
+							<p class="d-flex flex-column justify-content-center">
+								<span>Titre :
+									{{expo.title}}&nbsp;
+									<a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_expo_restore', {'id':expo.id})}}">
+										<i class="fas fa-plus-square text-success"></i>
+									</a>
+								</span>
+								<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}">
+									<i class="fas fa-minus-square text-danger"></i>
+								</a>
+							</p>
+						</span>
+						<br>
+						Date de l'expo :
+						{{ expo.eventDate |date('d/m/Y') }}
+						<br>
+						Date de création :
+						{{expo.creationDate |date('d/m/Y') }}<br>
+						Contenu :<br>{{ expo.content }}
+					</p>
+				</div>
+			</article>
+		{% else %}
+			{% if loop.index is odd %}
+				<article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
+					<div class="rounded border p-2 d-flex">
+						{% if expo.path %}
+							<figure class="m-1 mr-2 align-self-center">
+								<img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
+							</figure>
+						{% endif %}
+						<p class="d-flex flex-column justify-content-center">
+							<span>Titre :
+								{{expo.title}}&nbsp;
+								<a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_expo_restore', {'id':expo.id})}}">
+									<i class="fas fa-plus-square text-success"></i>
+								</a>
+							</span>
+							<a onclick="return confirm('Êtes-vous sûre de vouloir supprimer définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}">
+								<i class="fas fa-minus-square text-danger"></i>
+							</a>
+						</p>
+					</span>
+					<br>
+					Date de l'expo :
+					{{ expo.eventDate |date('d/m/Y') }}
+					<br>
+					Date de création :
+					{{expo.creationDate |date('d/m/Y') }}<br>
+					Contenu :<br>{{ expo.content }}
+				</p>
+			</div>
+		</article>
+	{% else %}
+		<article class="row text-center justify-content-center m-3" data-id="{{ expo.id }}">
+			<div class="rounded border p-2 d-flex flex-row-reverse">
+				{% if expo.path %}
+					<figure class="m-1 mr-2 align-self-center">
+						<img src="{{ asset('/img/' ~ expo.path) | imagine_filter('expo') }}" alt="">
+					</figure>
+				{% endif %}
+				<p class="d-flex flex-column justify-content-center">
+					<span>Titre :
+						{{expo.title}}&nbsp;
+						<a onclick="return confirm('Êtes-vous sûre de vouloir restaurer cet élément ?')" href="{{ path('admin_expo_restore', {'id':expo.id})}}">
+							<i class="fas fa-plus-square text-success"></i>
+						</a>
+					</span>
+					<a onclick="return confirm('Êtes-vous sûre de vouloir mettre supprimer définitivement cet élément ?')" href="{{ path('admin_expo_delete', {'id':expo.id, 'hardDelete':1})}}">
+						<i class="fas fa-minus-square text-danger"></i>
+					</a>
+				</p>
+			</span>
+			<br>
+			Date de l'expo :
+			{{ expo.eventDate |date('d/m/Y') }}
+			<br>
+			Date de création :
+			{{expo.creationDate |date('d/m/Y') }}<br>
+			Contenu :<br>{{ expo.content }}
+		</p>
+	</div>
+</article>{% endif %}{% endif %}{% endfor %}</section>{% else %}<section><p class="text-center">La corbeille est vide</p></section>{% endif %}</div>{% endblock %}{% block javascripts %}{{ parent() }}<script>jQuery('.draggable').sortable({
+stop: function (event, ui) {
+let id = ui.item.attr('data-id')
+console.log("id:" + id)
+let position = ui.item.index()
+console.log("pos:" + position)
+$.post("{{ path('admin_expo_sort') }}", {
+'expo_id': id,
+'position': position
+}, function (data) {
+console.log(data)
+})
+}
+})</script>{% endblock %}

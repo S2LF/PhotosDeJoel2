@@ -32,44 +32,36 @@ class ActualityRepository extends ServiceEntityRepository
 
     public function remove(Actuality $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        // Make a soft delete
+        $entity->setDeletedAt(new \DateTime());
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+
+        // $this->getEntityManager()->remove($entity);
+
+        // if ($flush) {
+        //     $this->getEntityManager()->flush();
+        // }
     }
 
     public function findAllOrderByPos()
     {
-			return $this->createQueryBuilder('a')
-				->orderBy('a.position', 'ASC')
-				->getQuery()
-				->getResult()
-			;
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.position', 'ASC')
+            ->where('a.deletedAt IS NULL')
+            ->getQuery()
+            ->getResult()
+        ;
     }
-    
-//    /**
-//     * @return Actuality[] Returns an array of Actuality objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Actuality
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAllOrderByPosDeleted()
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.position', 'ASC')
+            ->where('a.deletedAt IS NOT NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

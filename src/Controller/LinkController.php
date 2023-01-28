@@ -8,15 +8,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LinkController extends BaseController
 {
+    #[Route(path: '/liens', name: 'links')]
+    public function index(LinkRepository $lienrepo): Response
+    {
+        $links =  $lienrepo->findAllOrderByPos();
 
-  #[Route(path: '/liens', name: 'links')]
-  public function index(LinkRepository $lienrepo): Response
-  {
-    $links =  $lienrepo->findBy([], ['position' => 'ASC']);
-
-    return $this->render('link/index.html.twig', [
-      'base' => $this->base,
-      'links' => $links
-    ]);
-  }
+        return $this->render('link/index.html.twig', [
+          'base' => $this->base,
+          'expositonsCount' => $this->expositionsCount,
+          'linksCount' => $this->linksCount,
+          'actusCount' => $this->actusCount,
+          'categoriesCount' => $this->categoriesCount,
+          'links' => $links
+        ]);
+    }
 }

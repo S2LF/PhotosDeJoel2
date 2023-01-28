@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PhotoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PhotoRepository;
+use Gedmo\Mapping\Annotation\SortablePosition;
 
 #[ORM\Entity(repositoryClass: PhotoRepository::class)]
 class Photo
@@ -20,11 +21,15 @@ class Photo
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $exifs = [];
 
     #[ORM\Column]
+    #[SortablePosition]
     private ?int $position = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
     #[ORM\JoinColumn(nullable: false)]
@@ -91,6 +96,30 @@ class Photo
     public function setCategoryPhoto(?CategoryPhoto $categoryPhoto): self
     {
         $this->categoryPhoto = $categoryPhoto;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deletedAt
+     *
+     * @return ?\DateTimeInterface
+     */
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set the value of deletedAt
+     *
+     * @param ?\DateTimeInterface $deletedAt
+     *
+     * @return self
+     */
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }

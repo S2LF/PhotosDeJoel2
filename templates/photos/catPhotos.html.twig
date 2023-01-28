@@ -1,68 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les Photos de Joël | Admin - Créer photos{% endblock %}
+{% block title %}Les Photos de Joël | Admin - Créer photos
+{% endblock %}
 
 {% block body %}
-<h1 class="text-center">{{ cat.titre }}</h1>
+	<h1 class="text-center">{{ cat.title }}</h1>
 
-{% if photos | length == 0 %}
-<h2 class="text-center">Pas de photo dans cette catégorie</h2>
-{% else %}
-<section class="row justify-content-center mx-auto text-center">
-  {% for photo in photos %}
-  <article class="m-3 col-2" data-id="{{ photo.id }}" id="gallery" data-toggle="modal" data-target="#exampleModal">
-    <figure>
-      <img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip'
-        data-placement='right' data-html="true" title="
-                    {% if photo.exifs %}
-                        <strong>EXIFS</strong><br>
-                      {% for key, value in photo.exifs %}
-                      <u>{{ key }}</u> {{ value }}<br>
-                      {% endfor %}    
-                    {% else %}
-                      Aucun exif pour cette photo
-                    {% endif %}
-                    " data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
-      <figcaption>{{ photo.titre }}</figcaption>
-    </figure>
-  </article>
-  {% endfor %}
-</section>
-{% endif %}
+	{% if photos | length == 0 %}
+		<h2 class="text-center">Pas de photo dans cette catégorie</h2>
+	{% else %}
+		<section class="row justify-content-center mx-auto text-center">
+			{% for photo in photos %}
+				<article class="m-3 col-2" data-id="{{ photo.id }}" id="gallery" data-toggle="modal" data-target="#exampleModal">
+					<figure>
+						<img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
+                      {% if photo.exifs %}
+                          <strong>EXIFS</strong><br>
+                        {% for key, value in photo.exifs %}
+                        <u>{{ key }}</u> {{ value }}<br>
+                        {% endfor %}
+                      {% else %}
+                        Aucun exif pour cette photo
+                      {% endif %}
+                      " data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
+						<figcaption>{{ photo.title }}</figcaption>
+					</figure>
+				</article>
+			{% endfor %}
+		</section>
+	{% endif %}
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <!-- Carousel markup: https://getbootstrap.com/docs/4.4/components/carousel/ -->
-        <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="false">
-          <div class="carousel-inner">
-            {% for photo in photos %}
-            <img class="carousel-item {{ loop.index == 1 ? 'active' : '' }}"
-              src="{{ asset('img/' ~ photo.path )  | imagine_filter('show') }}" alt="" data-toggle='tooltip'
-              data-placement='right' data-html="true" title="
-                    {% if photo.exifs %}
-                        <strong>EXIFS</strong><br>
-                      {% for key, value in photo.exifs %}
-                      <u>{{ key }}</u> {{ value }}<br>
-                      {% endfor %}    
-                    {% else %}
-                      Aucun exif pour cette photo
-                    {% endif %}
-                    ">
-            {% endfor %}
-          </div>
-          <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div
+					class="modal-body">
+					<!-- Carousel markup: https://getbootstrap.com/docs/4.4/components/carousel/ -->
+					<div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="false">
+						<div class="carousel-inner">
+							{% for photo in photos %}
+								<img class="carousel-item {{ loop.index == 1 ? 'active' : '' }}" src="{{ asset('img/' ~ photo.path ) | imagine_filter('show') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" 
+                      title="
+                      {% if photo.exifs %}
+                          <strong>EXIFS</strong><br>
+                        {% for key, value in photo.exifs %}
+                        <u>{{ key }}</u> {{ value }}<br>
+                        {% endfor %}
+                      {% else %}
+                        Aucun exif pour cette photo
+                      {% endif %}
+                      ">
+							{% endfor %}
+						</div>
+						<a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

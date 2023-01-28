@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryPhotoRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoryPhotoRepository;
+use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation\SortablePosition;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CategoryPhotoRepository::class)]
 class CategoryPhoto
@@ -25,7 +27,12 @@ class CategoryPhoto
     private Collection $photos;
 
     #[ORM\Column]
+    #[SortablePosition]
     private ?int $position = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
+
 
     public function __construct()
     {
@@ -99,6 +106,30 @@ class CategoryPhoto
     public function setPosition(int $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deletedAt
+     *
+     * @return ?\DateTimeInterface
+     */
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set the value of deletedAt
+     *
+     * @param ?\DateTimeInterface $deletedAt
+     *
+     * @return self
+     */
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
