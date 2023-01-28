@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PhotoController extends BaseController
 {
     #[Route(path: '/', name: 'cats')]
-    public function index(CategoryPhotoRepository $pcrepo)
+    public function index(CategoryPhotoRepository $pcrepo, PhotoRepository $prepo)
     {
         $cats =  $pcrepo->findAllOrderByPos();
 
@@ -28,7 +28,7 @@ class PhotoController extends BaseController
     #[Route(path: '/{id}/photos', name: 'photo')]
     public function photo_cat(CategoryPhoto $cat, PhotoRepository $prepo)
     {
-        $photos = $prepo->findAllOrderByPos();
+        $photos = $prepo->findAllOrderByPos($cat->getId());
 
         return $this->render('photos/catPhotos.html.twig', [
           'base' => $this->base,

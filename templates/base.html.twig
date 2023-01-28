@@ -46,7 +46,9 @@
 			</nav>
 		</header>
 
-		{% block body %}{% endblock %}
+    <div class="grow">
+        {% block body %}{% endblock %}
+    </div>
 
 		<footer class="text-center pt-5 pb-2 position-relative">
 			{{ base.textFooter|raw }}
