@@ -28,7 +28,7 @@ class PhotoController extends BaseController
     #[Route(path: '/{id}/photos', name: 'photo')]
     public function photo_cat(CategoryPhoto $cat, PhotoRepository $prepo)
     {
-        $photos = $prepo->findAllOrderByPos($cat->getId());
+        $photos = $prepo->getPhotoCatByPos($cat->getId());
 
         return $this->render('photos/catPhotos.html.twig', [
           'base' => $this->base,
