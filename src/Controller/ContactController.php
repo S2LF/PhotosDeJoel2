@@ -95,6 +95,8 @@ class ContactController extends BaseController
             return $this->redirectToRoute('contact');
         }
 
+        $this->addFlash("success", "Le formulaire a bien été envoyé.");
+
         return $this->render('contact/index.html.twig', [
           'base' => $this->base,
           'expositonsCount' => $this->expositionsCount,
