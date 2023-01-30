@@ -92,10 +92,10 @@ class ContactController extends BaseController
 
             $mailerInterface->send($email);
 
+        $this->addFlash("success", "Le formulaire a bien été envoyé.");
+
             return $this->redirectToRoute('contact');
         }
-
-        $this->addFlash("success", "Le formulaire a bien été envoyé.");
 
         return $this->render('contact/index.html.twig', [
           'base' => $this->base,
