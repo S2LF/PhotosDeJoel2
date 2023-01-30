@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
@@ -90,7 +91,11 @@ class ContactController extends BaseController
               ->subject($mailer->getEmailSubject() .' '. $data['subject'])
               ->html($template);
 
-            $mailerInterface->send($email);
+            try {
+              $mailerInterface->send($email);
+            } catch (TransportExceptionInterface $e) {
+              dump($e);
+            }
 
         $this->addFlash("success", "Le formulaire a bien été envoyé.");
 
