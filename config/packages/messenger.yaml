@@ -1,5 +1,5 @@
-# framework:
-#     messenger:
+framework:
+    messenger:
 #         failure_transport: failed
 
 #         transports:
@@ -15,8 +15,8 @@
 #             failed: 'doctrine://default?queue_name=failed'
 #             # sync: 'sync://'
 
-#         routing:
-#             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+        routing:
+            Symfony\Component\Mailer\Messenger\SendEmailMessage: null
 #             Symfony\Component\Notifier\Message\ChatMessage: async
 #             Symfony\Component\Notifier\Message\SmsMessage: async
 
