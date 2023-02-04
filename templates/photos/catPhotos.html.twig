@@ -13,7 +13,8 @@
 			{% for photo in photos %}
 				<article class="m-3 col-2" data-id="{{ photo.id }}" id="gallery" data-toggle="modal" data-target="#exampleModal">
 					<figure>
-						<img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
+						<img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true"
+							{# title="
 									{% if photo.exifs %}
 										<b>EXIFS</b><br>
 										{% if photo.exifs.model != NULL %}
@@ -30,7 +31,7 @@
 										{% endif %}
 									{% else %}
 										Aucun exif pour cette photo
-									{% endif %}"
+									{% endif %}" #}
 								data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
 						<figcaption>{{ photo.title }}</figcaption>
 					</figure>
@@ -49,7 +50,7 @@
 						<div class="carousel-inner">
 							{% for photo in photos %}
 								<img class="carousel-item {{ loop.index == 1 ? 'active' : '' }}" src="{{ asset('img/' ~ photo.path ) | imagine_filter('show') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" 
-									title="
+									{# title="
 									{% if photo.exifs %}
 										<b>EXIFS</b><br>
 										{% if photo.exifs.model != NULL %}
@@ -66,8 +67,8 @@
 										{% endif %}
 									{% else %}
 										Aucun exif pour cette photo
-									{% endif %}
-								">
+									{% endif %}" #}
+								>
 							{% endfor %}
 						</div>
 						<a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
