@@ -16,7 +16,21 @@
 				{{ form_start(form)}}
 
 				{{ form_row(form.title)}}
-				{{ form_row(form.path) }}
+				{{ form_label(form.path) }}
+				<div class="row">
+					<div class="col-4">
+						{{ form_widget(form.path, { "attr" : { "data-browse" : "Naviguer" }})}}
+						<div class="form-error">
+							{{ form_errors(form.path) }}
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						OU
+					</div>
+					<div class="col-4">
+						{{ form_row(form.is_random_image)}}
+					</div>
+				</div>
 				<input type="submit" value="Valider">
 				{{ form_end(form)}}
 

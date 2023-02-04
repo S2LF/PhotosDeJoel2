@@ -19,8 +19,26 @@
 				{{ form_row(form.siteTitle)}}
 				{{ form_row(form.headerContent)}}
 				{{ form_row(form.homepageWord)}}
-				{{ form_row(form.homepageImagePath)}}
+				{{ form_label(form.homepageImagePath) }}
+				<div class="row">
+					<div class="col-4">
+						{{ form_widget(form.homepageImagePath, { "attr" : { "data-browse" : "Naviguer" }})}}
+						<div class="form-error">
+							{{ form_errors(form.homepageImagePath) }}
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						OU
+					</div>
+					<div class="col-4">
+						{{ form_row(form.is_random_image)}}
+					</div>
+				</div>
+
+<div class="row">
 				{{ form_row(form.text_footer)}}
+
+</div>
 
 				<button class="btn btn-success" type="submit">Valider</button>
 				{{ form_end(form)}}

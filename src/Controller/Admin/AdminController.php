@@ -29,10 +29,26 @@ class AdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($imageFile = $form->get("homepageImagePath")->getData()) {
+
+            $isRandomImage = $form->get("is_random_image")->getData();
+            $isImage = $form->get("homepageImagePath")->getData();
+
+            if (!$isRandomImage && !$isImage) {
+                $this->addFlash("danger", "Vous devez choisir une image ou une image aléatoire");
+                return $this->redirectToRoute('admin');
+            }
+
+            if ($isRandomImage) {
+                $baseForm->setIsRandomImage(true);
+                $baseForm->setHomepageImagePath(null);
+
+                if ($this->base->getHomepageImagePath() !== null) {
+                    $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $this->base->getHomepageImagePath());
+                }
+            } else {
                 $newFilename = "home";
                 $directory = "/base/";
-                $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
+                $imageFileName = $fileUploaderService->upload($isImage, $newFilename, $directory);
                 $baseForm->setHomepageImagePath($directory . "/" . $imageFileName);
             }
 
@@ -43,12 +59,12 @@ class AdminController extends BaseController
         }
 
         return $this->render('admin/base.html.twig', [
-          'base' => $this->base,
-          'expositonsCount' => $this->expositionsCount,
-          'linksCount' => $this->linksCount,
-          'actusCount' => $this->actusCount,
-          'categoriesCount' => $this->categoriesCount,
-          "form" => $form->createView()
+            'base' => $this->base,
+            'expositonsCount' => $this->expositionsCount,
+            'linksCount' => $this->linksCount,
+            'actusCount' => $this->actusCount,
+            'categoriesCount' => $this->categoriesCount,
+            "form" => $form->createView()
         ]);
     }
 }

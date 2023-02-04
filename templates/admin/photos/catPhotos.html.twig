@@ -17,15 +17,24 @@
 				<article class="m-3 col-2" data-id="{{ photo.id }}">
 					<figure class="rounded border">
 						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
-							                        {% if photo.exifs %}
-							                            <strong>EXIFS</strong><br>
-							                          {% for key, value in photo.exifs %}
-							                          <u>{{ key }}</u> {{ value }}<br>
-							                          {% endfor %}
-							                        {% else %}
-							                          Aucun exif pour cette photo
-							                        {% endif %}
-							                        ">
+									{% if photo.exifs %}
+										<b>EXIFS</b><br>
+										{% if photo.exifs.model != NULL %}
+											<b>Modèle</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.exposure != NULL %}
+											<b>Temps d'ouverture</b> : {{ photo.exifs.exposure }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>ISO</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>Longueur focale</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+									{% else %}
+										Aucun exif pour cette photo
+									{% endif %}
+						">
 						<figcaption>{{ photo.title }}
 							<a href="{{ path('admin_edit_photo', {'cat_id':cat.id, 'photo_id':photo.id})}}">
 								<i class="fas fa-pen-square text-warning"></i>
@@ -35,24 +44,6 @@
 							</a>
 						</figcaption>
 					</figure>
-
-					<!-- <details>
-					                        <summary>Exifs</summary>
-					                        <table>
-					                            <tbody>
-					                              {% if photo.exifs %}
-					                                {% for key, value in photo.exifs %}
-					                                <tr>
-					                                  <td>{{ key }}</td><td>{{ value }}</td>
-					                                </tr>
-					                                {% endfor %}    
-					                                
-					                              {% else %}
-					                                <p>Aucun exif pour cette photo</p>
-					                              {% endif %}
-					                            </tbody>
-					                        </table>
-					                    </details> -->
 				</article>
 			{% endfor %}
 		</section>
@@ -73,15 +64,24 @@
 				<article class="m-3 col-2" data-id="{{ photo.id }}">
 					<figure class="rounded border">
 						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
-							                          {% if photo.exifs %}
-							                              <strong>EXIFS</strong><br>
-							                            {% for key, value in photo.exifs %}
-							                            <u>{{ key }}</u> {{ value }}<br>
-							                            {% endfor %}
-							                          {% else %}
-							                            Aucun exif pour cette photo
-							                          {% endif %}
-							                          ">
+									{% if photo.exifs %}
+										<b>EXIFS</b><br>
+										{% if photo.exifs.model != NULL %}
+											<b>Modèle</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.exposure != NULL %}
+											<b>Temps d'ouverture</b> : {{ photo.exifs.exposure }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>ISO</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>Longueur focale</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+									{% else %}
+										Aucun exif pour cette photo
+									{% endif %}
+								">
 						<figcaption>{{ photo.title }}
 							<a href="{{ path('admin_restore_photo', {'id':photo.id})}}">
 								<i class="fas fa-plus-square text-success"></i>
@@ -91,24 +91,6 @@
 							</a>
 						</figcaption>
 					</figure>
-
-					<!-- <details>
-					                          <summary>Exifs</summary>
-					                          <table>
-					                              <tbody>
-					                                {% if photo.exifs %}
-					                                  {% for key, value in photo.exifs %}
-					                                  <tr>
-					                                    <td>{{ key }}</td><td>{{ value }}</td>
-					                                  </tr>
-					                                  {% endfor %}    
-					                                  
-					                                {% else %}
-					                                  <p>Aucun exif pour cette photo</p>
-					                                {% endif %}
-					                              </tbody>
-					                          </table>
-					                      </details> -->
 				</article>
 			{% endfor %}
 		</section>

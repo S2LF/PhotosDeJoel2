@@ -14,7 +14,7 @@
 	{% else %}
 		<section class="draggable row justify-content-center mx-auto text-center">
 			{% for cat in cats %}
-				<article class="m-3 col-2" data-id="{{ cat.id }}">
+				<article class="m-3 col-2 max-with-100" data-id="{{ cat.id }}">
 					<div class="rounded border">
 						<a href="{{ path('admin_cat_photos', {'id':cat.id}) }}">
 							<h3>{{ cat.title }}

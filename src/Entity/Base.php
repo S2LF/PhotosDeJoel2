@@ -32,6 +32,9 @@ class Base
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deletedAt = null;
 
+    #[ORM\Column]
+    private ?bool $is_random_image = null;
+
 
     public function getId(): ?int
     {
@@ -67,7 +70,7 @@ class Base
         return $this->homepageWord;
     }
 
-    public function setHomepageWord(string $homepageWord): self
+    public function setHomepageWord(?string $homepageWord): self
     {
         $this->homepageWord = $homepageWord;
 
@@ -79,7 +82,7 @@ class Base
         return $this->homepageImagePath;
     }
 
-    public function setHomepageImagePath(string $homepageImagePath): self
+    public function setHomepageImagePath(string|null $homepageImagePath): self
     {
         $this->homepageImagePath = $homepageImagePath;
 
@@ -118,6 +121,18 @@ class Base
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isIsRandomImage(): ?bool
+    {
+        return $this->is_random_image;
+    }
+
+    public function setIsRandomImage(bool $is_random_image = false): self
+    {
+        $this->is_random_image = $is_random_image;
 
         return $this;
     }

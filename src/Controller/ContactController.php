@@ -65,37 +65,62 @@ class ContactController extends BaseController
 
         $contactForm->handleRequest($request);
         if ($contactForm->isSubmitted() && $contactForm->isValid()) {
-            $data = $contactForm->getData();
 
-            $template = '
-            <p>
-                <b>Objet :</b> ' . $data['subject'] . '
-            </p>
-            <p>
-                <b>Nom :</b> ' . $data['name'] . '<br>
-                <b>Email :</b> <a href="mailto:' . $data['email'] . '">' . $data['email'] . '</a>
-            </p>
-            <p>
-                <b>Message :</b><br>
-                ' . $data['content'] . '
-            </p>
-            <hr class="style-seven">
-            <p>
-                Ce message a été envoyé via le formulaire de contact du site Les Photos de Joël
-            </p>
-            ';
 
-            $email = (new Email())
-              ->from($mailer->getNoReplyEmail())
-              ->to($mailer->getAdminEmail())
-              ->subject($mailer->getEmailSubject() .' '. $data['subject'])
-              ->html($template);
+                $nom= "test";
+                $mail= "test";
+                $sujet= "test";
+                $message= "test";
 
-            try {
-              $mailerInterface->send($email);
-            } catch (TransportExceptionInterface $e) {
-              dump($e);
-            }
+                $headers = "From: noreply@sylvainallain.fr"."\n"; // Adresse fictive expediteur
+                $headers .= "Content-Type: text/html; charset=UTF-8"."\n";
+                $headers .='Content-Transfer-Encoding: 8bit';
+
+                $destinataire="contact@sylvainallain.fr"; // Mon adresse mail
+                $monMessage="
+                Vous avez reçu un message du formulaire sur sylvainallain.fr.<br>
+                Le voici:<br>
+                De: $nom <br>
+                Sujet: $sujet <br>
+                Email: $mail <br>
+                Message: $message<br>";
+
+                mail($destinataire,$sujet,$monMessage,$headers);
+
+
+            // $data = $contactForm->getData();
+
+            // $template = '
+            // <p>
+            //     <b>Objet :</b> ' . $data['subject'] . '
+            // </p>
+            // <p>
+            //     <b>Nom :</b> ' . $data['name'] . '<br>
+            //     <b>Email :</b> <a href="mailto:' . $data['email'] . '">' . $data['email'] . '</a>
+            // </p>
+            // <p>
+            //     <b>Message :</b><br>
+            //     ' . $data['content'] . '
+            // </p>
+            // <hr class="style-seven">
+            // <p>
+            //     Ce message a été envoyé via le formulaire de contact du site Les Photos de Joël
+            // </p>
+            // ';
+
+            // $email = (new Email())
+            //   ->from($mailer->getNoReplyEmail())
+            //   ->to($mailer->getAdminEmail())
+            //   ->subject($mailer->getEmailSubject() .' '. $data['subject'])
+            //   ->html($template);
+
+            // try {
+            //   $mailerInterface->send($email);
+            // } catch (TransportExceptionInterface $e) {
+            //   dump($e);
+            // }
+
+
 
         $this->addFlash("success", "Le formulaire a bien été envoyé.");
 

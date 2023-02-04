@@ -7,13 +7,14 @@
 
 	<h1>{{ base.homepageWord|raw}}</h1>
 
-
-	{% if base.homepageImagePath == NULL %}
-		<img style="width: 350px" src="{{ asset('img/default/Default.png' ) }}" alt="">
-	{% else %}
-		<figure class="text-center">
-			<img src="{{ asset('img/'~ base.homepageImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
-		</figure>
-	{% endif %}
+	<figure class="text-center">
+		<a href="{{ path('cats')}}">
+			{% if base.isRandomImage %}
+				<img src="{{ asset('img/'~ randomImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
+			{% else %}
+				<img src="{{ asset('img/'~ base.homepageImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
+			{% endif %}
+		</a>
+	</figure>
 
 {% endblock %}

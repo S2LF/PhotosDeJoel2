@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BaseController extends AbstractController
 {
     protected $base;
+    protected $randomImagePath;
     protected $expositionsCount;
     protected $linksCount;
     protected $actusCount;
@@ -20,6 +21,7 @@ class BaseController extends AbstractController
 
     public function __construct(
         BaseRepository $baseRepository,
+        PhotoRepository $photoRepository,
         CategoryPhotoRepository $categoryPhotoRepository,
         ExpositionRepository $expositionRepository,
         LinkRepository $linkRepository,
@@ -29,12 +31,25 @@ class BaseController extends AbstractController
 
         if ($base == null) {
             $base = [
-              "siteTitle" => "Titre par défaut",
-              "headerContent" => "Texte à écrire par défaut",
-              "homepageWord" => "Mot page d'accueil par défaut",
-              "homepageImagePath" => null,
-              "textFooter" => "texte pied de page par défaut"
+                "siteTitle" => "Titre par défaut",
+                "headerContent" => "Texte à écrire par défaut",
+                "homepageWord" => "Mot page d'accueil par défaut",
+                "homepageImagePath" => null,
+                "textFooter" => "texte pied de page par défaut"
             ];
+        }
+
+        // Get random image for homepage
+        $photos = $photoRepository->findAll();
+
+        if($photos == null) {
+            $randomPhoto = [
+                "path" => null
+            ];
+            $this->randomImagePath = $randomPhoto['path'];
+        } else {
+            $randomPhoto = $photos[array_rand($photos)];
+            $this->randomImagePath = $randomPhoto->getPath();
         }
 
         $this->base = $base;

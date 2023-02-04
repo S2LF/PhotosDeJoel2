@@ -20,10 +20,10 @@ class CategoryPhoto
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoCoverPath = null;
 
-    #[ORM\OneToMany(mappedBy: 'categoryPhoto', targetEntity: Photo::class)]
+    #[ORM\OneToMany(mappedBy: 'categoryPhoto', targetEntity: Photo::class, cascade: ['remove'])]
     private Collection $photos;
 
     #[ORM\Column]
@@ -32,6 +32,9 @@ class CategoryPhoto
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deletedAt = null;
+
+    #[ORM\Column]
+    private ?bool $isRandomImage = null;
 
 
     public function __construct()
@@ -58,10 +61,17 @@ class CategoryPhoto
 
     public function getPhotoCoverPath(): ?string
     {
-        return $this->photoCoverPath;
+        // if isRandomImage is true, return a random image from the category
+        if ($this->isRandomImage) {
+            $photos = $this->getPhotos();
+            $randomPhoto = $photos[array_rand($photos->toArray())];
+            return $randomPhoto->getPath();
+        } else {
+            return $this->photoCoverPath;
+        }
     }
 
-    public function setPhotoCoverPath(string $photoCoverPath): self
+    public function setPhotoCoverPath(string|null $photoCoverPath): self
     {
         $this->photoCoverPath = $photoCoverPath;
 
@@ -130,6 +140,18 @@ class CategoryPhoto
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isIsRandomImage(): ?bool
+    {
+        return $this->isRandomImage;
+    }
+
+    public function setIsRandomImage(bool $isRandomImage): self
+    {
+        $this->isRandomImage = $isRandomImage;
 
         return $this;
     }
