@@ -14,15 +14,24 @@
 				<article class="m-3 col-2" data-id="{{ photo.id }}" id="gallery" data-toggle="modal" data-target="#exampleModal">
 					<figure>
 						<img src="{{ asset('img/' ~ photo.path ) | imagine_filter('list') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
-                      {% if photo.exifs %}
-                          <strong>EXIFS</strong><br>
-                        {% for key, value in photo.exifs %}
-                        <u>{{ key }}</u> {{ value }}<br>
-                        {% endfor %}
-                      {% else %}
-                        Aucun exif pour cette photo
-                      {% endif %}
-                      " data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
+									{% if photo.exifs %}
+										<b>EXIFS</b><br>
+										{% if photo.exifs.model != NULL %}
+											<b>Modèle</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.exposure != NULL %}
+											<b>Temps d'ouverture</b> : {{ photo.exifs.exposure }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>ISO</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>Longueur focale</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+									{% else %}
+										Aucun exif pour cette photo
+									{% endif %}"
+								data-target="#carouselExample" data-slide-to="{{ loop.index -1 }}">
 						<figcaption>{{ photo.title }}</figcaption>
 					</figure>
 				</article>
@@ -40,16 +49,25 @@
 						<div class="carousel-inner">
 							{% for photo in photos %}
 								<img class="carousel-item {{ loop.index == 1 ? 'active' : '' }}" src="{{ asset('img/' ~ photo.path ) | imagine_filter('show') }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" 
-                      title="
-                      {% if photo.exifs %}
-                          <strong>EXIFS</strong><br>
-                        {% for key, value in photo.exifs %}
-                        <u>{{ key }}</u> {{ value }}<br>
-                        {% endfor %}
-                      {% else %}
-                        Aucun exif pour cette photo
-                      {% endif %}
-                      ">
+									title="
+									{% if photo.exifs %}
+										<b>EXIFS</b><br>
+										{% if photo.exifs.model != NULL %}
+											<b>Modèle</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.exposure != NULL %}
+											<b>Temps d'ouverture</b> : {{ photo.exifs.exposure }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>ISO</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+										{% if photo.exifs.model != NULL %}
+											<b>Longueur focale</b> : {{ photo.exifs.model }}<br>
+										{% endif %}
+									{% else %}
+										Aucun exif pour cette photo
+									{% endif %}
+								">
 							{% endfor %}
 						</div>
 						<a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
