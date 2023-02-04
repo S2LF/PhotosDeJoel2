@@ -21,7 +21,7 @@ final class Version20230204161235 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE base ADD is_random_image TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE category_photo ADD is_random_image');
+        $this->addSql('ALTER TABLE category_photo ADD is_random_image BOOLEAN NOT NULL');
         $this->addSql('ALTER TABLE category_photo CHANGE photo_cover_path photo_cover_path VARCHAR(255) DEFAULT NULL');
     }
 

@@ -28,14 +28,14 @@ class AdminPhotoController extends BaseController
         $photosDeleted = $prepo->getPhotoCatByPosDeleted($cat->getId());
 
         return $this->render('admin/photos/catPhotos.html.twig', [
-          'base' => $this->base,
-          'expositonsCount' => $this->expositionsCount,
-          'linksCount' => $this->linksCount,
-          'actusCount' => $this->actusCount,
-          'categoriesCount' => $this->categoriesCount,
-          'cat' => $cat,
-          'photos' => $photos,
-          'photosDeleted' => $photosDeleted
+            'base' => $this->base,
+            'expositonsCount' => $this->expositionsCount,
+            'linksCount' => $this->linksCount,
+            'actusCount' => $this->actusCount,
+            'categoriesCount' => $this->categoriesCount,
+            'cat' => $cat,
+            'photos' => $photos,
+            'photosDeleted' => $photosDeleted
         ]);
     }
 
@@ -52,7 +52,7 @@ class AdminPhotoController extends BaseController
                 $exif = @\exif_read_data($imageFile);
 
                 $data = exif_read_data($imageFile, 'EXIF', true);
-                
+
                 if ($data === false) {
                     $exifs = [];
                 } else {
@@ -63,30 +63,26 @@ class AdminPhotoController extends BaseController
                         'iso' => null,
                         'focal' => null
                     ];
-    
-                    if(is_string($data['IFD0']['Model']) || is_float($data['IFD0']['Model']))
-                    {
+
+                    if (is_string($data['IFD0']['Model']) || is_float($data['IFD0']['Model'])) {
                         $exifs['model'] = $data['IFD0']['Model'];
                     }
-    
-                    if(is_string($data['EXIF']['ExposureTime']) || is_float($data['EXIF']['ExposureTime']))
-                    {
+
+                    if (is_string($data['EXIF']['ExposureTime']) || is_float($data['EXIF']['ExposureTime'])) {
                         $exifs['exposure'] = $data['EXIF']['ExposureTime'];
                     }
-    
+
                     if (is_string($data['EXIF']['FNumber']) || is_float($data['EXIF']['FNumber'])) {
                         $exifs['aperture'] = $data['EXIF']['FNumber'];
                     } else {
                         $exifs['aperture'] = $data['EXIF']['FNumber'][0] / $data['EXIF']['FNumber'][1];
                     }
-    
-                    if(is_string($data['EXIF']['ISOSpeedRatings']) || is_float($data['EXIF']['ISOSpeedRatings']))
-                    {
+
+                    if (is_string($data['EXIF']['ISOSpeedRatings']) || is_float($data['EXIF']['ISOSpeedRatings'])) {
                         $exifs['iso'] = $data['EXIF']['ISOSpeedRatings'];
                     }
-    
-                    if(is_string($data['EXIF']['FocalLength']) || is_float($data['EXIF']['FocalLength']))
-                    {
+
+                    if (is_string($data['EXIF']['FocalLength']) || is_float($data['EXIF']['FocalLength'])) {
                         $exifs['focal'] = $data['EXIF']['FocalLength'];
                     }
                 }
@@ -104,17 +100,17 @@ class AdminPhotoController extends BaseController
             $em->flush();
             $this->addFlash("success", "La photo a bien été ajoutée");
             return $this->redirectToRoute('admin_cat_photos', [
-              'id' => $cat->getId()
+                'id' => $cat->getId()
             ]);
         }
 
         return $this->render('admin/photos/addPhoto.html.twig', [
-          'base' => $this->base,
-          'expositonsCount' => $this->expositionsCount,
-          'linksCount' => $this->linksCount,
-          'actusCount' => $this->actusCount,
-          'categoriesCount' => $this->categoriesCount,
-          'form' => $form->createView()
+            'base' => $this->base,
+            'expositonsCount' => $this->expositionsCount,
+            'linksCount' => $this->linksCount,
+            'actusCount' => $this->actusCount,
+            'categoriesCount' => $this->categoriesCount,
+            'form' => $form->createView()
         ]);
     }
 
@@ -131,18 +127,18 @@ class AdminPhotoController extends BaseController
             $em->flush();
             $this->addFlash("success", "La photo a bien été modifiée");
             return $this->redirectToRoute('admin_cat_photos', [
-              'id' => $cat->getId()
+                'id' => $cat->getId()
             ]);
         }
 
         return $this->render('admin/photos/addPhoto.html.twig', [
-          'base' => $this->base,
-          'expositonsCount' => $this->expositionsCount,
-          'linksCount' => $this->linksCount,
-          'actusCount' => $this->actusCount,
-          'categoriesCount' => $this->categoriesCount,
-          'photo' => $photo,
-          'form' => $form->createView()
+            'base' => $this->base,
+            'expositonsCount' => $this->expositionsCount,
+            'linksCount' => $this->linksCount,
+            'actusCount' => $this->actusCount,
+            'categoriesCount' => $this->categoriesCount,
+            'photo' => $photo,
+            'form' => $form->createView()
         ]);
     }
 
