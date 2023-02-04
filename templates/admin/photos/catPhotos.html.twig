@@ -16,7 +16,8 @@
 			{% for photo in photos %}
 				<article class="m-3 col-2" data-id="{{ photo.id }}">
 					<figure class="rounded border">
-						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
+						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" 
+							{# title="
 									{% if photo.exifs %}
 										<b>EXIFS</b><br>
 										{% if photo.exifs.model != NULL %}
@@ -33,8 +34,8 @@
 										{% endif %}
 									{% else %}
 										Aucun exif pour cette photo
-									{% endif %}
-						">
+									{% endif %}" #}
+						>
 						<figcaption>{{ photo.title }}
 							<a href="{{ path('admin_edit_photo', {'cat_id':cat.id, 'photo_id':photo.id})}}">
 								<i class="fas fa-pen-square text-warning"></i>
