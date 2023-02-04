@@ -21,11 +21,10 @@
 		<header>
 			<div
 				class="container-fluid">
-				{# <div class="position-relative">
-          <img class="position-absolute" style="left: 0;" src="{{ asset('/img/Pupille-removebg.png') | imagine_filter('icon' )}}" alt="Logo">
-        </div> #}
 				<div class=" pt-4">
-					<h1 class="display-4 font-weight-bold text-center">{{ base.siteTitle }}</h1>
+					<a href="{{ path('home')}}">
+						<h1 class="display-4 font-weight-bold text-center">{{ base.siteTitle }}</h1>
+					</a>
 				</div>
 				{{ base.headerContent|raw }}
 			</div>
@@ -51,7 +50,9 @@
     </div>
 
 		<footer class="text-center pt-5 pb-2 position-relative">
+			<a href="{{ path('contact') }}">
 			{{ base.textFooter|raw }}
+			</a>
 			<p class="position-absolute" style="right:0px; bottom:-5px">
 				<a href="{{ path('admin') }}">Espace admin</a>
 			</p>
