@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Base;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,6 +52,10 @@ class BaseType extends AbstractType
           ])
           ->add('text_footer', TextType::class, [
             'label' => 'Texte pied de page*:'
+          ])
+          ->add('is_random_image', CheckboxType::class, [
+            'label' => 'Image aléatoire',
+            'required' => false
           ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CategoryPhoto;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +26,7 @@ class CatType extends AbstractType
             'mapped' => false,
             // make it optional so you don't have to re-upload the PDF file
             // every time you edit the Product details
-            'required' => true,
+            'required' => false,
             // unmapped fields can't define their validation using annotations
             // in the associated entity, so you can use the PHP constraint classes
             'constraints' => [
@@ -39,6 +40,10 @@ class CatType extends AbstractType
                 'mimeTypesMessage' => 'Veuillez respecter les restrictions de taille et de format',
               ])
             ]
+          ])
+          ->add('is_random_image', CheckboxType::class, [
+            'label' => 'Image aléatoire',
+            'required' => false
           ]);
     }
 

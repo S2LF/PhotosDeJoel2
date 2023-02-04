@@ -11,6 +11,7 @@ class HomeController extends BaseController
     {
         return $this->render('home/index.html.twig', [
           'base' => $this->base,
+          'randomImagePath' => $this->randomImagePath,
           'expositonsCount' => $this->expositionsCount,
           'linksCount' => $this->linksCount,
           'actusCount' => $this->actusCount,

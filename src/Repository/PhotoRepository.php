@@ -102,4 +102,15 @@ class PhotoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    
+    public function getRandomPhoto()
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.deletedAt IS NULL')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -53,12 +53,30 @@ class AdminCatController extends BaseController
             $newFilename = $cat->getTitle();
         }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($imageFile = $form->get("path")->getData()) {
-                $directory = "/photo/cover";
-                $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
-                $cat->setPhotoCoverPath($directory . "/" . $imageFileName);
+        if ($form->isSubmitted() && $form->isValid()) {            
+            $isRandomImage = $form->get("is_random_image")->getData();
+            $isImage = $form->get("path")->getData();
+
+            if (!$isRandomImage && !$isImage) {
+                $this->addFlash("danger", "Vous devez choisir une image ou une image aléatoire");
+                return $this->redirectToRoute('admin');
             }
+
+            if ($isRandomImage) {
+                $cat->setIsRandomImage(true);
+                $cat->setPhotoCoverPath(null);
+
+                if ($this->base->getHomepageImagePath() !== null) {
+                    $fileUploaderService->deleteFile($fileUploaderService->getTargetDirectory() . $cat->getPhotoCoverPath());
+                }
+            } else {
+                if ($imageFile === $isImage) {
+                    $directory = "/photo/cover";
+                    $imageFileName = $fileUploaderService->upload($imageFile, $newFilename, $directory);
+                    $cat->setPhotoCoverPath($directory . "/" . $imageFileName);
+                }
+            }
+
             $em->persist($cat);
             $em->flush();
 
@@ -67,13 +85,13 @@ class AdminCatController extends BaseController
         }
 
         return $this->render('admin/cats/addCat.html.twig', [
-          'form' => $form->createView(),
-          'base' => $this->base,
-          'expositonsCount' => $this->expositionsCount,
-          'linksCount' => $this->linksCount,
-          'actusCount' => $this->actusCount,
-          'categoriesCount' => $this->categoriesCount,
-          'cat' => $cat
+            'form' => $form->createView(),
+            'base' => $this->base,
+            'expositonsCount' => $this->expositionsCount,
+            'linksCount' => $this->linksCount,
+            'actusCount' => $this->actusCount,
+            'categoriesCount' => $this->categoriesCount,
+            'cat' => $cat
         ]);
     }
 
