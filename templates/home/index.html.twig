@@ -8,11 +8,13 @@
 	<h1>{{ base.homepageWord|raw}}</h1>
 
 	<figure class="text-center">
-		{% if base.isRandomImage %}
-			<img src="{{ asset('img/'~ randomImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
-		{% else %}
-			<img src="{{ asset('img/'~ base.homepageImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
-		{% endif %}
+		<a href="{{ path('cats')}}">
+			{% if base.isRandomImage %}
+				<img src="{{ asset('img/'~ randomImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
+			{% else %}
+				<img src="{{ asset('img/'~ base.homepageImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
+			{% endif %}
+		</a>
 	</figure>
 
 {% endblock %}
