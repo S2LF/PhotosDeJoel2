@@ -75,7 +75,7 @@ class ContactController extends BaseController
             $headers .= "Content-Type: text/html; charset=UTF-8"."\n";
             $headers .='Content-Transfer-Encoding: 8bit';
 
-            $destinataire="contact@sylvainallain.fr"; // Mon adresse mail
+            $destinataire= $mailer->getAdminEmail(); // Mon adresse mail
 
             $template = '
             <p>
