@@ -23,7 +23,7 @@ class CategoryPhoto
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoCoverPath = null;
 
-    #[ORM\OneToMany(mappedBy: 'categoryPhoto', targetEntity: Photo::class)]
+    #[ORM\OneToMany(mappedBy: 'categoryPhoto', targetEntity: Photo::class, cascade: ['remove'])]
     private Collection $photos;
 
     #[ORM\Column]

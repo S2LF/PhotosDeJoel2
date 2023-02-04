@@ -41,10 +41,18 @@ class BaseController extends AbstractController
 
         // Get random image for homepage
         $photos = $photoRepository->findAll();
-        $randomPhoto = $photos[array_rand($photos)];
+
+        if($photos == null) {
+            $randomPhoto = [
+                "path" => null
+            ];
+            $this->randomImagePath = $randomPhoto['path'];
+        } else {
+            $randomPhoto = $photos[array_rand($photos)];
+            $this->randomImagePath = $randomPhoto->getPath();
+        }
 
         $this->base = $base;
-        $this->randomImagePath = $randomPhoto->getPath();
         $this->expositionsCount = $expositionRepository->count(['deletedAt' => null]);
         $this->linksCount = $linkRepository->count(['deletedAt' => null]);
         $this->actusCount = $actualityRepository->count(['deletedAt' => null]);
