@@ -65,28 +65,37 @@ class ContactController extends BaseController
 
         $contactForm->handleRequest($request);
         if ($contactForm->isSubmitted() && $contactForm->isValid()) {
+            $data = $contactForm->getData();
 
+            $name= $data['name'];
+            $email= $data['email'];
+            $subjet= $mailer->getEmailSubject() .' '. $data['subject'];
 
-                $nom= "test";
-                $mail= "test";
-                $sujet= "test";
-                $message= "test";
+            $headers = "From: noreply@joelallainphotos.fr"."\n"; // Adresse fictive expediteur
+            $headers .= "Content-Type: text/html; charset=UTF-8"."\n";
+            $headers .='Content-Transfer-Encoding: 8bit';
 
-                $headers = "From: noreply@sylvainallain.fr"."\n"; // Adresse fictive expediteur
-                $headers .= "Content-Type: text/html; charset=UTF-8"."\n";
-                $headers .='Content-Transfer-Encoding: 8bit';
+            $destinataire="contact@sylvainallain.fr"; // Mon adresse mail
 
-                $destinataire="contact@sylvainallain.fr"; // Mon adresse mail
-                $monMessage="
-                Vous avez reçu un message du formulaire sur sylvainallain.fr.<br>
-                Le voici:<br>
-                De: $nom <br>
-                Sujet: $sujet <br>
-                Email: $mail <br>
-                Message: $message<br>";
+            $template = '
+            <p>
+                <b>Objet :</b> ' . $data['subject'] . '
+            </p>
+            <p>
+                <b>Nom :</b> ' . $name . '<br>
+                <b>Email :</b> <a href="mailto:' . $email . '">' . $email . '</a>
+            </p>
+            <p>
+                <b>Message :</b><br>
+                ' . $data['content'] . '
+            </p>
+            <hr class="style-seven">
+            <p>
+                Ce message a été envoyé via le formulaire de contact du site Les Photos de Joël
+            </p>
+            ';
 
-                mail($destinataire,$sujet,$monMessage,$headers);
-
+            mail($destinataire, $subjet, $template, $headers);
 
             // $data = $contactForm->getData();
 
@@ -122,7 +131,7 @@ class ContactController extends BaseController
 
 
 
-        $this->addFlash("success", "Le formulaire a bien été envoyé.");
+            $this->addFlash("success", "Le formulaire a bien été envoyé.");
 
             return $this->redirectToRoute('contact');
         }
