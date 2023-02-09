@@ -1,7 +1,30 @@
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
-
+    handlers:
+        main:
+        type:         fingers_crossed
+        action_level: critical
+        handler:      grouped
+        grouped:
+        type:    group
+        members: [streamed, deduplicated]
+        streamed:
+        type:  stream
+        path:  '%kernel.logs_dir%/%kernel.environment%.log'
+        level: debug
+        deduplicated:
+        type:    deduplication
+        time: 10
+        handler: symfony_mailer
+        symfony_mailer:
+        type:         symfony_mailer
+        from_email:   'no-reply@joelallainphotos.fr'
+        to_email:     'sylvainallain.dev@gmail.com'
+        subject:      'An Error Occurred! %%message%%'
+        level:        debug
+        formatter:    monolog.formatter.html
+        content_type: text/html
 when@dev:
     monolog:
         handlers:
