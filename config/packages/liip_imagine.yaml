@@ -14,13 +14,13 @@ liip_imagine:
     filter_sets:
 
         miniature:
-            quality: 25
+            quality: 50
             filters:
                 scale:
                     dim: [280, 280]
 
         list:
-            quality: 25
+            quality: 50
             filters:
                 scale:
                     dim: [225, 150]
@@ -41,7 +41,7 @@ liip_imagine:
             quality: 100
 
         expo:
-            quality: 25
+            quality: 50
             filters:
                 scale:
                     dim: [250, 250]
