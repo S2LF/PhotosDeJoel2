@@ -29,11 +29,11 @@
 				{{ base.headerContent|raw }}
 			</div>
 			<nav class="text-center my-4">
-				{% if expositonsCount > 0 %}
-					<a class="m-5 {{ app.request.attributes.get('_route') == 'expo' ? 'active' : ''}}" href="{{ path('expo') }}">Expos</a>
-				{% endif %}
 				{% if categoriesCount > 0 %}
 					<a class="m-5 {{ app.request.attributes.get('_route') == 'cats' ? 'active' : ''}}" href="{{ path('cats') }}">Photos</a>
+				{% endif %}
+				{% if expositonsCount > 0 %}
+					<a class="m-5 {{ app.request.attributes.get('_route') == 'expo' ? 'active' : ''}}" href="{{ path('expo') }}">Expos</a>
 				{% endif %}
 				{% if actusCount > 0 %}
 					<a class="m-5 {{ app.request.attributes.get('_route') == 'actu' ? 'active' : ''}}" href="{{ path('actu') }}">Actualités</a>

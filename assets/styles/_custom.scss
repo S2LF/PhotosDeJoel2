@@ -8,17 +8,20 @@ body {
     flex-grow: 1;
 }
 
-.draggable article{
+.draggable article {
     cursor: pointer;
 }
 
-nav a{
+nav a {
     color: white;
-    &:hover{
+
+    &:hover {
         color: white;
-        text-decoration: none;;
+        text-decoration: none;
+        ;
     }
 }
+
 /* Detail EXIF */
 
 details {
@@ -45,14 +48,17 @@ details[open] summary {
 // hr
 
 hr.style-seven {
-    overflow: visible; /* For IE */
+    overflow: visible;
+    /* For IE */
     height: 30px;
     border-style: solid;
     border-color: white;
     border-width: 1px 0 0 0;
     border-radius: 20px;
 }
-hr.style-seven:before { /* Not really supposed to work, but does */
+
+hr.style-seven:before {
+    /* Not really supposed to work, but does */
     display: block;
     content: "";
     height: 30px;
@@ -73,8 +79,9 @@ a.active {
 a {
     color: white !important;
     text-decoration: inherit !important;
-    &:hover{
-        color:white !important;
+
+    &:hover {
+        color: white !important;
         text-decoration: inherit !important;
     }
 }
@@ -85,4 +92,23 @@ a {
 
 article.max-with-100 {
     max-width: 100%;
+}
+
+// Make media queries for mobile
+
+
+// Make media queries work with sass
+@mixin for-phone-only {
+    @media (max-width: 930px) {
+        @content;
+    }
+}
+
+@include for-phone-only {
+    .home-image img {
+        max-width: 40vh;
+    }
+    footer p.position-absolute {
+        position: relative !important;
+    }
 }

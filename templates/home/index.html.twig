@@ -7,7 +7,7 @@
 
 	<h1>{{ base.homepageWord|raw}}</h1>
 
-	<figure class="text-center">
+	<figure class="text-center home-image">
 		<a href="{{ path('cats')}}">
 			{% if base.isRandomImage %}
 				<img src="{{ asset('img/'~ randomImagePath ) |imagine_filter('home') }}" alt="{{ base.siteTitle }}">
