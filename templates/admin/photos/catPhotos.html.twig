@@ -64,7 +64,8 @@
 			{% for photo in photosDeleted %}
 				<article class="m-3 col-2" data-id="{{ photo.id }}">
 					<figure class="rounded border">
-						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" title="
+						<img style="width: 100px;" src="{{ asset('img/' ~ photo.path ) }}" alt="" data-toggle='tooltip' data-placement='right' data-html="true" 
+						{# title="
 									{% if photo.exifs %}
 										<b>EXIFS</b><br>
 										{% if photo.exifs.model != NULL %}
@@ -82,7 +83,8 @@
 									{% else %}
 										Aucun exif pour cette photo
 									{% endif %}
-								">
+								" #}
+								>
 						<figcaption>{{ photo.title }}
 							<a href="{{ path('admin_restore_photo', {'id':photo.id})}}">
 								<i class="fas fa-plus-square text-success"></i>
